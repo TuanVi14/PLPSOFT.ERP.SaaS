@@ -1,0 +1,57 @@
+﻿@model PLPSOFT.ERP.Sales.SaaS.V2026.Models.Supplier
+
+<div class="container mt-4">
+    <h2 class="mb-4"> Thêm nhà cung cấp</h2>
+
+    <form asp-action="Create" method="post" class="card p-4 shadow-sm">
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Mã</label>
+                <input asp-for="SupplierCode" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Tên</label>
+                <input asp-for="SupplierName" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Nhóm</label>
+                <select asp-for="SupplierGroupID" class="form-select">
+                    <option value="">-- Chọn nhóm --</option>
+                    @foreach (var item in ViewBag.SupplierGroups)
+                    {
+                        <option value="@item.SupplierGroupID">@item.GroupName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Phone</label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Giới hạn tín dụng</label>
+                <input asp-for="CreditLimit" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Số ngày thanh toán</label>
+                <input asp-for="PaymentTermDays" class="form-control" />
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success"> Lưu</button>
+            <a asp-action="Index" class="btn btn-secondary"> Quay lại</a>
+        </div>
+
+    </form>
+</div>
