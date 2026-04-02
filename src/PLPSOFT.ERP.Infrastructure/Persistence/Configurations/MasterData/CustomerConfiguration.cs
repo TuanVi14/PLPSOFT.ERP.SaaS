@@ -1,0 +1,46 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PLPSOFT.ERP.Domain.Entities.MasterData;
+
+namespace src.PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
+{
+    public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
+    {
+        public void Configure(EntityTypeBuilder<Customer> builder)
+        {
+            builder.ToTable("Customers");
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Code)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            builder.Property(x => x.Email)
+                .HasMaxLength(200);
+
+            builder.Property(x => x.Phone)
+                .HasMaxLength(50);
+
+            builder.Property(x => x.TaxCode)
+                .HasMaxLength(50);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.CreatedAt)
+                .IsRequired();
+
+            builder.HasOne(x => x.CustomerGroup)
+                .WithMany(x => x.Customers)
+                .HasForeignKey(x => x.CustomerGroupId);
+
+            builder.HasMany(x => x.Addresses)
+                .WithOne(x => x.Customer)
+                .HasForeignKey(x => x.CustomerId);
+        }
+    }
+}
