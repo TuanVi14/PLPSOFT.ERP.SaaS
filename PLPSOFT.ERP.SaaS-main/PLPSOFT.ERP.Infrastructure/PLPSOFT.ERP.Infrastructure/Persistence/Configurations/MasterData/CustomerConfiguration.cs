@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 
-namespace PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
+namespace src.PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
 {
     public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
@@ -17,7 +17,7 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
 
             builder.Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(300);
+                .HasMaxLength(200);
 
             builder.Property(x => x.Email)
                 .HasMaxLength(200);
@@ -26,20 +26,21 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
                 .HasMaxLength(50);
 
             builder.Property(x => x.TaxCode)
-                .HasMaxLength(100);
+                .HasMaxLength(50);
 
             builder.Property(x => x.IsActive)
                 .HasDefaultValue(true);
 
             builder.Property(x => x.CreatedAt)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .IsRequired();
+
+            builder.HasOne(x => x.CustomerGroup)
+                .WithMany(x => x.Customers)
+                .HasForeignKey(x => x.CustomerGroupId);
 
             builder.HasMany(x => x.Addresses)
                 .WithOne(x => x.Customer)
-                .HasForeignKey(x => x.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasIndex(x => x.Code).IsUnique();
+                .HasForeignKey(x => x.CustomerId);
         }
     }
 }

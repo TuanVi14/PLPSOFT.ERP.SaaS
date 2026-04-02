@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 
-namespace PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
+namespace src.PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
 {
     public class CustomerGroupConfiguration : IEntityTypeConfiguration<CustomerGroup>
     {
@@ -26,12 +26,11 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
                 .HasDefaultValue(true);
 
             builder.Property(x => x.CreatedAt)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .IsRequired();
 
             builder.HasMany(x => x.Customers)
                 .WithOne(x => x.CustomerGroup)
-                .HasForeignKey(x => x.CustomerGroupId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(x => x.CustomerGroupId);
         }
     }
 }

@@ -1,0 +1,44 @@
+@model IEnumerable<src.PLPSOFT.ERP.Application.Features.Customers.DTOs.CustomerDto>
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Customers</h1>
+
+<p>
+    <a asp-area="MasterData" asp-controller="Customers" asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @model IEnumerable<src.PLPSOFT.ERP.Application.Features.Customers.DTOs.CustomerDto>
+
+            @{
+                ViewData["Title"] = "Customers";
+            }
+
+            <th>Code</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var c in Model)
+    {
+        <tr>
+            <td>@c.Code</td>
+            <td>@c.Name</td>
+            <td>@c.Email</td>
+            <td>@c.Phone</td>
+            <td>
+                <a asp-area="MasterData" asp-controller="Customers" asp-action="Edit" asp-route-id="@c.Id">Edit</a> |
+                <a asp-area="MasterData" asp-controller="Customers" asp-action="Delete" asp-route-id="@c.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
