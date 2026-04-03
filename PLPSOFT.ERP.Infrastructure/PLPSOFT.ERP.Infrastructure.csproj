@@ -26,8 +26,4 @@
     <ProjectReference Include="..\PLPSOFT.ERP.Shared\PLPSOFT.ERP.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Persistence\" />
-  </ItemGroup>
-
 </Project>
