@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 using System.Data;
 using Microsoft.Extensions.Configuration;
+using PLPSOFT.ERP.Domain.Entities;
 
 namespace PLPSOFT.ERP.Infrastructure.Persistence.Repositories;
 

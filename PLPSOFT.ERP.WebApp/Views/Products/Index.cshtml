@@ -1,249 +1,52 @@
-﻿@{
-    ViewData["Title"] = "Quản lý Sản phẩm";
+﻿@model IEnumerable<PLPSOFT.ERP.WebApp.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
 }
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between mb-3">
-        <h2>Danh sách Sản phẩm</h2>
-        <button class="btn btn-success"
-                onclick="currentEditId = null; $('#addProductModalLabel').text('Thêm sản phẩm mới'); $('#productForm')[0].reset();"
-                data-bs-toggle="modal"
-                data-bs-target="#addProductModal">
-            + Thêm mới
-        </button>
-    </div>
-    @* <div class="row mb-3">
-        <div class="col-md-4">
-            <div class="input-group">
-                <input type="text" id="txtSearch" class="form-control" placeholder="Nhập mã hoặc tên sản phẩm...">
-                <button class="btn btn-primary" onclick="performSearch()">Tìm kiếm</button>
-            </div>
+    <h2>@ViewData["Title"]</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Thêm sản phẩm mới</a>
+    </p>
+    <form asp-action="Index" method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="searchString" value="@ViewBag.SearchString"
+                   class="form-control" placeholder="Tìm mã hoặc tên sản phẩm..." />
+
+            <button type="submit" class="btn btn-primary">Tìm</button>
+
+            <a asp-action="Index" class="btn btn-secondary">Reset</a>
         </div>
-    </div> *@
-    <table id="productTable" class="table table-hover table-bordered shadow-sm">
-        <thead class="table-dark">
+    </form>
+    <table class="table table-bordered table-striped">
+        <thead>
             <tr>
                 <th>Mã SP</th>
-                <th>Tên Sản phẩm</th>
+                <th>Tên sản phẩm</th>
                 <th>Danh mục</th>
                 <th>Đơn vị</th>
                 <th>Giá chuẩn</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductCode</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.CategoryName</td>
+                    <td>@item.UnitName</td>
+                    <td>@item.StandardPrice.ToString("N0") VNĐ</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductID" class="btn btn-sm btn-warning">Sửa</a>
+                        <a asp-action="Delete" asp-route-id="@item.ProductID"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>
-
-<div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thêm Sản Phẩm Mới</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="productForm">
-                    <div class="mb-3">
-                        <label class="form-label">Mã sản phẩm</label>
-                        <input type="text" class="form-control" id="productCode" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="productName" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Danh mục</label>
-                            <select class="form-select" id="categorySelect"></select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Đơn vị tính</label>
-                            <select class="form-select" id="unitSelect"></select>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Giá chuẩn</label>
-                        <input type="number" class="form-control" id="standardPrice" value="0">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="saveProduct()">Lưu lại</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-    <script>
-        let table;
-        let currentEditId = null; // Biến này để phân biệt là đang thêm mới hay đang sửa
-
-        $(document).ready(function () {
-        // Khởi tạo DataTable
-        table = $('#productTable').DataTable({
-        "ajax": {
-        "url": "https://localhost:7296/api/Products/1",
-        "dataSrc": ""
-        },
-        "columns": [
-        { "data": "productCode" },
-        { "data": "productName" },
-        { "data": "categoryName" },
-        { "data": "unitName" },
-        {
-        "data": "standardPrice",
-        "render": $.fn.dataTable.render.number(',', '.', 0, '', ' đ')
-        },
-        {
-        "data": null, // Đổi từ "productID" thành null để lấy toàn bộ dữ liệu của dòng
-        "render": function (data, type, row) {
-        // row chính là toàn bộ thông tin sản phẩm (mã, tên, giá...)
-        // Chúng ta dùng JSON.stringify để biến object row thành chuỗi an toàn cho HTML
-        let rowData = JSON.stringify(row).replace(/'/g, "\\'");
-        
-        return `
-        <button class="btn btn-sm btn-primary" onclick='editProduct(${rowData})'>Sửa</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${row.productID})">Xóa</button>
-        `;
-        }
-        }
-
-        ],
-        "language": { "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json" }
-        });
-
-        // Load dữ liệu cho các Dropdown trong Modal
-        loadDropdowns();
-        });
-
-        function openAddModal() {
-        $('#productForm')[0].reset();
-        $('#addProductModal').modal('show');
-        }
-        function loadDropdowns() {
-        // 1. Load Danh mục
-        $.get('https://localhost:7296/api/ProductCategories/1', function (data) {
-        let html = '<option value="">-- Chọn danh mục --</option>';
-        if (data && data.length > 0) {
-        html += data.map(x => {
-        let id = x.categoryID || x.categoryId;
-        let name = x.categoryName || x.CategoryName || "Chưa có tên";
-        return `<option value="${id}">${name}</option>`;
-        }).join('');
-        }
-        $('#categorySelect').html(html);
-        }).fail(function () {
-        console.error("Không load được Danh mục");
-        });
-
-        // 2. Load Đơn vị tính
-        $.get('https://localhost:7296/api/ProductUnits/1', function (data) {
-        let html = '<option value="">-- Chọn đơn vị --</option>';
-        if (data && data.length > 0) {
-        data.forEach(function (item) {
-        // Fix lỗi undefined bằng cách check cả chữ hoa và chữ thường
-        let id = item.unitID || item.unitId || item.UnitID;
-        let name = item.unitName || item.UnitName || "Chưa có tên";
-        html += `<option value="${id}">${name}</option>`;
-        });
-        }
-        $('#unitSelect').html(html);
-        }).fail(function () {
-        console.error("Không load được Đơn vị");
-        });
-        }
-
-        function saveProduct() {
-        const productData = {
-        productCode: $('#productCode').val(),
-        productName: $('#productName').val(),
-        productCategoryID: parseInt($('#categorySelect').val()),
-        baseUnitID: parseInt($('#unitSelect').val()),
-        standardPrice: parseFloat($('#standardPrice').val()) || 0
-        };
-
-        // KIỂM TRA ĐIỀU KIỆN Ở ĐÂY
-        let method = "POST";
-        let apiUrl = "https://localhost:7296/api/Products";;
-
-        if (currentEditId) {
-        method = "PUT"; // Nếu có ID thì dùng PUT (Sửa)
-        apiUrl = "https://localhost:7296/api/Products/" + currentEditId;
-        productData.productID = currentEditId; // Gửi kèm ID trong body
-        }
-
-        $.ajax({
-        url: apiUrl,
-        type: method,
-        contentType: 'application/json',
-        data: JSON.stringify(productData),
-        success: function (res) {
-        alert(res.message);
-        $('#addProductModal').modal('hide');
-            
-        currentEditId = null; // RESET SAU KHI XONG
-            
-        $('#productTable').DataTable().ajax.reload();
-        },
-        error: function (xhr) {
-        // Nếu vẫn hiện lỗi "Duplicate key" ở đây, nghĩa là biến method vẫn đang là POST
-        alert("Lỗi hệ thống: " + xhr.responseText);
-        }
-        });
-        }
-
-        function editProduct(row) {
-        currentEditId = row.productID; // Lưu ID lại để lát nữa dùng cho hàm Save (PUT)
-    
-        // Đổi tiêu đề Modal cho người dùng biết là đang sửa
-        $('#addProductModalLabel').text("Chỉnh sửa sản phẩm: " + row.productCode);
-    
-        // Đổ dữ liệu từ 'row' vào các ô input trong Modal
-        $('#productCode').val(row.productCode);
-        $('#productName').val(row.productName);
-        $('#categorySelect').val(row.productCategoryID); // Lưu ý: Tên phải khớp với Model Product.cs
-        $('#unitSelect').val(row.baseUnitID);
-        $('#standardPrice').val(row.standardPrice);
-    
-        // Mở Modal lên
-        $('#addProductModal').modal('show');
-        }
-
-        function deleteProduct(id) {
-        if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
-        $.ajax({
-        url: 'https://localhost:7296/api/Products/' + id,
-        type: 'DELETE',
-        success: function (res) {
-        alert(res.message);
-        $('#productTable').DataTable().ajax.reload(); // Load lại bảng ngay lập tức
-        },
-        error: function () {
-        alert("Lỗi khi xóa sản phẩm!");
-        }
-        });
-        }
-        }
-        // function performSearch() {
-        // let keyword = $('#txtSearch').val();
-        // // Sử dụng Port 7261 của API đã xác định ở Bước 4
-        // let newUrl = `https://localhost:7261/api/Products/search/1?keyword=${encodeURIComponent(keyword)}`;
-    
-        // // Thay đổi URL của DataTable và tải lại dữ liệu
-        // table.ajax.url(newUrl).load();
-        // }
-
-        // // Thêm sự kiện nhấn Enter để tìm kiếm cho tiện
-        // $('#txtSearch').on('keypress', function (e) {
-        // if (e.which === 13) {
-        // performSearch();
-        // }
-        // });
-    </script>
-}

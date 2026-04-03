@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PLPSOFT.ERP.Infrastructure.Persistence.Repositories;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
+using PLPSOFT.ERP.Domain.Entities;
 
 namespace PLPSOFT.ERP.Api.Controllers.v1
 {
@@ -25,7 +26,7 @@ namespace PLPSOFT.ERP.Api.Controllers.v1
             {
                 // Gán các giá trị mặc định để không bị lỗi Database
                 model.CompanyID = 1;
-                model.ProductTypeID = 1;
+      
 
                 var result = await _repo.InsertAsync(model);
                 return Ok(new { success = true, message = "Thêm thành công!" });
@@ -47,7 +48,7 @@ namespace PLPSOFT.ERP.Api.Controllers.v1
         {
             try
             {
-                model.ProductID = id; // Đảm bảo ID khớp với đường dẫn URL
+                model.ProductID = (int)id; // Đảm bảo ID khớp với đường dẫn URL
                 var result = await _repo.UpdateAsync(model);
                 return Ok(new { success = true, message = "Cập nhật thành công!" });
             }
