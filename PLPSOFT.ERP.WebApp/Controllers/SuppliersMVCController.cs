@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Models;
 
 public class SuppliersMVCController : Controller
 {

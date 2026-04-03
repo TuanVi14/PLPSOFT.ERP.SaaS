@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Models;
+using PLPSOFT.ERP.Domain.Entities.MasterData;
 namespace PLPSOFT.ERP.Sales.SaaS.V2026.Data;
 
 public class AppDbContext : DbContext
