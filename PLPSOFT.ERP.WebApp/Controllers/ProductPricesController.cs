@@ -29,74 +29,65 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
         // POST: Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductPrice model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                _context.ProductPrices.Add(model);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
-            _context.ProductPrices.Add(model);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            return View(model);
         }
 
         // GET: Edit
         public async Task<IActionResult> Edit(long id)
         {
             var data = await _context.ProductPrices.FindAsync(id);
-
-            if (data == null)
-            {
-                return NotFound();
-            }
-
+            if (data == null) return NotFound();
             return View(data);
         }
 
         // POST: Edit
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductPrice model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                try
+                {
+                    _context.Update(model);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductPriceExists(model.PriceId)) return NotFound();
+                    else throw;
+                }
+                return RedirectToAction(nameof(Index));
             }
+            return View(model);
+        }
 
-            var entity = await _context.ProductPrices.FindAsync(model.PriceId);
-
-            if (entity == null)
+        // POST: Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long id)
+        {
+            var entity = await _context.ProductPrices.FindAsync(id);
+            if (entity != null)
             {
-                return NotFound();
+                _context.ProductPrices.Remove(entity);
+                await _context.SaveChangesAsync();
             }
-
-            entity.ProductId = model.ProductId;
-            entity.BranchId = model.BranchId;
-            entity.CompanyId = model.CompanyId;
-            entity.Price = model.Price;
-            entity.EffectiveFrom = model.EffectiveFrom;
-            entity.EffectiveTo = model.EffectiveTo;
-
-            await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
 
-        // DELETE (optional)
-        public async Task<IActionResult> Delete(long id)
+        private bool ProductPriceExists(long id)
         {
-            var entity = await _context.ProductPrices.FindAsync(id);
-
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            _context.ProductPrices.Remove(entity);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            return _context.ProductPrices.Any(e => e.PriceId == id);
         }
     }
 }

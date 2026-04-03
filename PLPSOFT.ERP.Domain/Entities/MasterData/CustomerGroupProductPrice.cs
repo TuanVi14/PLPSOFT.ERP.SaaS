@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData
 {
-        public class CustomerGroupProductPrice
+    public class CustomerGroupProductPrice
     {
+        [Key]
         public long GroupPriceId { get; set; }
 
         public long CustomerGroupId { get; set; }

@@ -1,9 +1,12 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Infrastructure.Persistence;
+using Microsoft.Extensions.DependencyInjection;
+using PLPSOFT.ERP.WebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddHttpClient(); // Đã có dòng này là rất tốt
-builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<PLPSOFTERPWebAppContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PLPSOFTERPWebAppContext") ?? throw new InvalidOperationException("Connection string 'PLPSOFTERPWebAppContext' not found.")));
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
