@@ -12,6 +12,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddControllers();
 
+//  Cấu hình CORS 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // ?? Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,6 +33,15 @@ builder.Services.AddMediatR(cfg =>
 
 // Repository
 builder.Services.AddScoped<IProductPriceRepository, ProductPriceRepository>();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddScoped<ProductRepository>(sp => new ProductRepository(builder.Configuration));
+// Đăng ký cho Loại sản phẩm
+builder.Services.AddScoped<ProductCategoryRepository>(sp => new ProductCategoryRepository(builder.Configuration));
+
+// Đăng ký cho Đơn vị tính
+builder.Services.AddScoped<ProductUnitRepository>(sp => new ProductUnitRepository(builder.Configuration));
 
 var app = builder.Build();
 
@@ -36,6 +56,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseCors("AllowAll");
 app.MapControllers();
 
 app.Run();
