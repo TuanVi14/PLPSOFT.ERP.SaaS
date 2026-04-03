@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; }
     public DbSet<ProductUnitMapping> ProductUnitMappings { get; set; }
+    public DbSet<CustomerAddress> CustomerAddresses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

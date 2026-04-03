@@ -5,8 +5,6 @@
     <h2 class="mb-4">Danh sách nhà cung cấp</h2>
 
     <div class="d-flex justify-content-between mb-3">
-
-        <!-- Search -->
         <form method="get" class="d-flex" style="width: 300px;">
             <input type="text" name="search" value="@ViewBag.Search"
                    class="form-control me-2"
@@ -14,7 +12,6 @@
             <button type="submit" class="btn btn-dark">Tìm</button>
         </form>
 
-        <!-- Add -->
         <a class="btn btn-primary" href="/SuppliersMVC/Create">Thêm mới</a>
     </div>
 
@@ -57,6 +54,8 @@
                     <td>
                         <a class="btn btn-sm btn-warning" href="/SuppliersMVC/Edit/@item.SupplierID">Sửa</a>
                         <a class="btn btn-sm btn-danger" href="/SuppliersMVC/Delete/@item.SupplierID">Xóa</a>
+                        @* Nút của Thư thêm vào ở đây *@
+                        <a class="btn btn-sm btn-info" href="/CustomerAddresses/Index?customerId=@item.SupplierID">📍 Địa chỉ</a>
                     </td>
                 </tr>
             }
