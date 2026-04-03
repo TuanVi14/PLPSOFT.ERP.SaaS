@@ -1,4 +1,4 @@
-﻿namespace PLPSOFT.ERP.Sales.SaaS.V2026.Models;
+﻿namespace PLPSOFT.ERP.Domain.Entities.MasterData;
 public class SupplierGroup
 {
     public long SupplierGroupID { get; set; }

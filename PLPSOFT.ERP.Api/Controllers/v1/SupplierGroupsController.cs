@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Models;
 
-namespace PLPSOFT.ERP.Sales.SaaS.V2026.Controllers
+namespace PLPSOFT.ERP.Api.Controllers.v1
 {
     [Route("api/[controller]")]
     [ApiController]
