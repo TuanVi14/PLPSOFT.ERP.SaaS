@@ -1,0 +1,26 @@
+﻿@model PLPSOFT.ERP.WebApp.Models.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Sửa danh mục";
+}
+
+<div class="container mt-4">
+    <h3>Sửa danh mục</h3>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="CategoryID" />
+
+        <div class="mb-3">
+            <label>Mã danh mục</label>
+            <input asp-for="CategoryCode" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Tên danh mục</label>
+            <input asp-for="CategoryName" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>

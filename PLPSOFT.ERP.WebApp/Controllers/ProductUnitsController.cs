@@ -1,51 +1,89 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PLPSOFT.ERP.Infrastructure.Persistence;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.WebApp.Models;
+using PLPSOFT.ERP.Infrastructure.Persistence;
 
-namespace PLPSOFT.ERP.WebApp.Controllers
+
+public class ProductUnitsController : Controller
 {
-    public class ProductUnitsController : Controller
+    private readonly AppDbContext _context;
+
+    public ProductUnitsController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
-        public ProductUnitsController(AppDbContext context) => _context = context;
+        _context = context;
+    }
 
-        // Hiển thị danh sách
-        public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index()
+    {
+        var data = await _context.ProductUnits.ToListAsync();
+        return View(data);
+    }
+
+    public IActionResult Create()
+    {
+        PopulateUnitTypes(); 
+        return View();
+    }
+
+    [HttpPost]
+    [HttpPost]
+    public async Task<IActionResult> Create(ProductUnit model)
+    {
+        if (ModelState.IsValid)
         {
-            var units = await _context.ProductUnits
-                .Select(u => new ProductUnitViewModel
-                {
-                    ProductUnitID = u.ProductUnitID,
-                    UnitCode = u.UnitCode,
-                    UnitName = u.UnitName
-                }).ToListAsync();
-            return View(units);
+            _context.Add(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Create() => View();
+        PopulateUnitTypes(model.UnitTypeID); // 🔥 giữ dropdown
+        return View(model);
+    }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductUnitViewModel model)
+    public async Task<IActionResult> Edit(long id)
+    {
+        var data = await _context.ProductUnits.FindAsync(id);
+        if (data == null) return NotFound();
+
+        PopulateUnitTypes(data.UnitTypeID); // 🔥 QUAN TRỌNG
+
+        return View(data);
+    }
+
+    [HttpPost]
+    [HttpPost]
+    public async Task<IActionResult> Edit(ProductUnit model)
+    {
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
-            {
-                var unit = new ProductUnit
-                {
-                    
-                    UnitCode = model.UnitCode,
-                    UnitName = model.UnitName,
-                    IsActive = true
-                };
-                _context.Add(unit);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
+            _context.Update(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // Tương tự cho Edit và Delete...
+        PopulateUnitTypes(model.UnitTypeID); 
+        return View(model);
+    }
+
+    public async Task<IActionResult> Delete(long id)
+    {
+        var data = await _context.ProductUnits.FindAsync(id);
+        if (data != null)
+        {
+            _context.Remove(data);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToAction(nameof(Index));
+    }
+    private void PopulateUnitTypes(object selected = null)
+    {
+        ViewBag.UnitTypeID = new SelectList(
+            _context.SystemTypeValues
+                .Where(x => x.TypeID == 2 && x.IsActive == true), // 🔥 CHUẨN
+            "TypeValueID",
+            "ValueName",
+            selected
+        );
     }
 }
