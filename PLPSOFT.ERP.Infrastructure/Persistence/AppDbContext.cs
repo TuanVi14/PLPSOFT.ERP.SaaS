@@ -22,6 +22,7 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence
         public DbSet<ProductPrice> ProductPrices { get; set; }
         public DbSet<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; }
         public DbSet<ProductUnitMapping> ProductUnitMappings { get; set; }
+        public DbSet<SystemTypeValue> SystemTypeValues { get; set; }
 
 
 
