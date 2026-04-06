@@ -8,10 +8,20 @@
         </a>
     </div>
 
+    <div class="mb-3">
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text" id="searchInput" class="form-control"
+                   placeholder="Tìm theo mã hoặc tên thuế..." />
+        </div>
+    </div>
+
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-bordered table-hover align-middle" id="taxTable">
                     <thead class="table-dark text-center">
                         <tr>
                             <th>Mã thuế</th>
@@ -29,18 +39,22 @@
                             <tr>
                                 <td>@item.TaxCode</td>
                                 <td>@item.TaxName</td>
+
                                 <td class="text-end fw-semibold text-success">
                                     @item.Rate.ToString("N2")
                                 </td>
+
                                 <td>
                                     @item.EffectiveFrom.ToString("dd/MM/yyyy")
                                 </td>
+
                                 <td>
                                     @(item.EffectiveTo.HasValue
                                                                     ? item.EffectiveTo.Value.ToString("dd/MM/yyyy")
                                                                     : "-")
                             </td>
-                            <td class="text-center">
+
+                                <td class="text-center">
                                 @if (item.IsActive)
                                     {
                                         <span class="badge bg-success">Đang hoạt động</span>
@@ -50,8 +64,10 @@
                                         <span class="badge bg-secondary">Ngưng</span>
                                     }
                                 </td>
+
                                 <td class="text-center">
-                                    <a asp-action="Edit" asp-route-id="@item.TaxRateId"
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.TaxRateId"
                                        class="btn btn-sm btn-warning">
                                         Sửa
                                     </a>
@@ -64,6 +80,57 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const rows = document.querySelectorAll("tbody tr");
+
+        let debounceTimer;
+
+        searchInput.addEventListener("input", function () {
+            clearTimeout(debounceTimer);
+
+            debounceTimer = setTimeout(() => {
+                const filter = searchInput.value.toLowerCase();
+
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+
+                    if (text.includes(filter)) {
+                        row.style.display = "";
+                        highlightText(row, filter);
+                    } else {
+                        row.style.display = "none";
+                        removeHighlight(row);
+                    }
+                });
+
+            }, 300); // debounce 300ms
+        });
+
+        // Highlight chữ tìm kiếm
+        function highlightText(row, keyword) {
+            removeHighlight(row);
+
+            if (!keyword) return;
+
+            const cells = row.querySelectorAll("td");
+
+            cells.forEach(cell => {
+                const regex = new RegExp(`(${keyword})`, "gi");
+                cell.innerHTML = cell.innerHTML.replace(regex, "<mark>$1</mark>");
+            });
+        }
+
+        // Xóa highlight cũ
+        function removeHighlight(row) {
+            const marks = row.querySelectorAll("mark");
+            marks.forEach(mark => {
+                mark.replaceWith(mark.textContent);
+            });
+        }
+    </script>
 }
