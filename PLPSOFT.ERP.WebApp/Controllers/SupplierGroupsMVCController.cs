@@ -1,80 +1,81 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+﻿//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using PLPSOFT.ERP.Domain.Entities.MasterData;
+//using PLPSOFT.ERP.Infrastructure.Persistence;
 
-public class SupplierGroupsMVCController : Controller
-{
-    private readonly AppDbContext _context;
 
-    public SupplierGroupsMVCController(AppDbContext context)
-    {
-        _context = context;
-    }
+//public class SupplierGroupsMVCController : Controller
+//{
+//    private readonly AppDbContext _context;
 
-    // CREATE
-    public IActionResult Create()
-    {
-        return View();
-    }
+//    public SupplierGroupsMVCController(AppDbContext context)
+//    {
+//        _context = context;
+//    }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(SupplierGroup model)
-    {
-        model.CompanyID = 1;
-        model.IsActive = true;
+//    // CREATE
+//    public IActionResult Create()
+//    {
+//        return View();
+//    }
 
-        _context.SupplierGroups.Add(model);
-        await _context.SaveChangesAsync();
+//    [HttpPost]
+//    public async Task<IActionResult> Create(SupplierGroup model)
+//    {
+//        model.CompanyID = 1;
+//        model.IsActive = true;
 
-        return RedirectToAction("Index");
-    }
+//        _context.SupplierGroups.Add(model);
+//        await _context.SaveChangesAsync();
 
-    // EDIT
-    public async Task<IActionResult> Edit(long id)
-    {
-        var data = await _context.SupplierGroups.FindAsync(id);
-        if (data == null) return NotFound();
+//        return RedirectToAction("Index");
+//    }
 
-        return View(data);
-    }
+//    // EDIT
+//    public async Task<IActionResult> Edit(long id)
+//    {
+//        var data = await _context.SupplierGroups.FindAsync(id);
+//        if (data == null) return NotFound();
 
-    [HttpPost]
-    public async Task<IActionResult> Edit(long id, SupplierGroup model)
-    {
-        var data = await _context.SupplierGroups.FindAsync(id);
-        if (data == null) return NotFound();
+//        return View(data);
+//    }
 
-        data.GroupName = model.GroupName;
-        data.GroupCode = model.GroupCode;
+//    [HttpPost]
+//    public async Task<IActionResult> Edit(long id, SupplierGroup model)
+//    {
+//        var data = await _context.SupplierGroups.FindAsync(id);
+//        if (data == null) return NotFound();
 
-        await _context.SaveChangesAsync();
+//        data.GroupName = model.GroupName;
+//        data.GroupCode = model.GroupCode;
 
-        return RedirectToAction("Index");
-    }
+//        await _context.SaveChangesAsync();
 
-    // DELETE
-    public async Task<IActionResult> Delete(long id)
-    {
-        var data = await _context.SupplierGroups.FindAsync(id);
-        if (data == null) return NotFound();
+//        return RedirectToAction("Index");
+//    }
 
-        _context.SupplierGroups.Remove(data);
-        await _context.SaveChangesAsync();
+//    // DELETE
+//    public async Task<IActionResult> Delete(long id)
+//    {
+//        var data = await _context.SupplierGroups.FindAsync(id);
+//        if (data == null) return NotFound();
 
-        return RedirectToAction("Index");
-    }
-    public async Task<IActionResult> Index(string search)
-    {
-        var data = _context.SupplierGroups.AsQueryable();
+//        _context.SupplierGroups.Remove(data);
+//        await _context.SaveChangesAsync();
 
-        if (!string.IsNullOrEmpty(search))
-        {
-            data = data.Where(x => x.GroupName.Contains(search));
-        }
+//        return RedirectToAction("Index");
+//    }
+//    public async Task<IActionResult> Index(string search)
+//    {
+//        var data = _context.SupplierGroups.AsQueryable();
 
-        ViewBag.Search = search;
+//        if (!string.IsNullOrEmpty(search))
+//        {
+//            data = data.Where(x => x.GroupName.Contains(search));
+//        }
 
-        return View(await data.ToListAsync());
-    }
-}
+//        ViewBag.Search = search;
+
+//        return View(await data.ToListAsync());
+//    }
+//}

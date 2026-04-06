@@ -3,15 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData;
 
-[Table("ProductUnits")]
-public class ProductUnit
+public partial class ProductUnit
 {
-    [Key]
-    [System.ComponentModel.DataAnnotations.Schema.Column("UnitID")]
-    public long ProductUnitID { get; set; }
+    public long UnitId { get; set; }
 
-    public string UnitCode { get; set; } = string.Empty;
-    public string UnitName { get; set; } = string.Empty;
-    public bool IsActive { get; set; } = true;
-    public long UnitTypeID { get; set; }
+    public string UnitCode { get; set; } = null!;
+
+    public string UnitName { get; set; } = null!;
+
+    public long UnitTypeId { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public virtual ICollection<ProductUnitMapping> ProductUnitMappings { get; set; } = new List<ProductUnitMapping>();
+
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
+    public virtual SystemTypeValue UnitType { get; set; } = null!;
 }

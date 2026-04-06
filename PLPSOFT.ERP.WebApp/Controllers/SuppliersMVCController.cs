@@ -1,92 +1,93 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+﻿//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using PLPSOFT.ERP.Domain.Entities.MasterData;
+//using PLPSOFT.ERP.Infrastructure.Persistence;
 
-public class SuppliersMVCController : Controller
-{
-    private readonly AppDbContext _context;
 
-    public SuppliersMVCController(AppDbContext context)
-    {
-        _context = context;
-    }
+//public class SuppliersMVCController : Controller
+//{
+//    private readonly AppDbContext _context;
 
-    // GET: Create
-    public IActionResult Create()
-    {
-        ViewBag.SupplierGroups = _context.SupplierGroups.ToList();
-        return View();
-    }
+//    public SuppliersMVCController(AppDbContext context)
+//    {
+//        _context = context;
+//    }
 
-    // POST: Create
-    [HttpPost]
-    public async Task<IActionResult> Create(Supplier model)
-    {
+//    // GET: Create
+//    public IActionResult Create()
+//    {
+//        ViewBag.SupplierGroups = _context.SupplierGroups.ToList();
+//        return View();
+//    }
 
-        model.CreatedAt = DateTime.Now;
+//    // POST: Create
+//    [HttpPost]
+//    public async Task<IActionResult> Create(Supplier model)
+//    {
 
-        model.CompanyID = 1;        
-        model.SupplierTypeID = 1;
+//        model.CreatedAt = DateTime.Now;
 
-        _context.Suppliers.Add(model);
-        await _context.SaveChangesAsync();
+//        model.CompanyID = 1;        
+//        model.SupplierTypeID = 1;
 
-        return RedirectToAction("Index");
-    }
+//        _context.Suppliers.Add(model);
+//        await _context.SaveChangesAsync();
 
-    // GET
-    public async Task<IActionResult> Edit(long id)
-    {
-        var data = await _context.Suppliers.FindAsync(id);
-        if (data == null) return NotFound();
-        ViewBag.SupplierGroups = _context.SupplierGroups.ToList();
-        return View(data);
-    }
+//        return RedirectToAction("Index");
+//    }
 
-    // POST
-    [HttpPost]
-    public async Task<IActionResult> Edit(long id, Supplier model)
-    {
+//    // GET
+//    public async Task<IActionResult> Edit(long id)
+//    {
+//        var data = await _context.Suppliers.FindAsync(id);
+//        if (data == null) return NotFound();
+//        ViewBag.SupplierGroups = _context.SupplierGroups.ToList();
+//        return View(data);
+//    }
 
-        var data = await _context.Suppliers.FindAsync(id);
-        if (data == null) return NotFound();
+//    // POST
+//    [HttpPost]
+//    public async Task<IActionResult> Edit(long id, Supplier model)
+//    {
 
-        data.SupplierName = model.SupplierName;
-        data.SupplierGroupID = model.SupplierGroupID;
-        data.Phone = model.Phone;
-        data.Email = model.Email;
+//        var data = await _context.Suppliers.FindAsync(id);
+//        if (data == null) return NotFound();
 
-        await _context.SaveChangesAsync();
+//        data.SupplierName = model.SupplierName;
+//        data.SupplierGroupID = model.SupplierGroupID;
+//        data.Phone = model.Phone;
+//        data.Email = model.Email;
 
-        return RedirectToAction("Index");
-    }
+//        await _context.SaveChangesAsync();
 
-    public async Task<IActionResult> Delete(long id)
-    {
-        var data = await _context.Suppliers.FindAsync(id);
-        if (data == null) return NotFound();
+//        return RedirectToAction("Index");
+//    }
 
-        _context.Suppliers.Remove(data);
-        await _context.SaveChangesAsync();
+//    public async Task<IActionResult> Delete(long id)
+//    {
+//        var data = await _context.Suppliers.FindAsync(id);
+//        if (data == null) return NotFound();
 
-        return RedirectToAction("Index");
-    }
-    public async Task<IActionResult> Index(string search)
-    {
-        var data = _context.Suppliers
-            .Include(x => x.SupplierGroup)
-            .AsQueryable();
+//        _context.Suppliers.Remove(data);
+//        await _context.SaveChangesAsync();
 
-        if (!string.IsNullOrEmpty(search))
-        {
-            data = data.Where(x =>
-                x.SupplierCode.Contains(search) ||
-                x.SupplierName.Contains(search));
-        }
+//        return RedirectToAction("Index");
+//    }
+//    public async Task<IActionResult> Index(string search)
+//    {
+//        var data = _context.Suppliers
+//            .Include(x => x.SupplierGroup)
+//            .AsQueryable();
 
-        ViewBag.Search = search;
+//        if (!string.IsNullOrEmpty(search))
+//        {
+//            data = data.Where(x =>
+//                x.SupplierCode.Contains(search) ||
+//                x.SupplierName.Contains(search));
+//        }
 
-        return View(await data.ToListAsync());
-    }
-}
+//        ViewBag.Search = search;
+
+//        return View(await data.ToListAsync());
+//    }
+//}

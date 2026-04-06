@@ -1,167 +1,207 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Infrastructure.Persistence;
-using PLPSOFT.ERP.Domain.Entities;
 using PLPSOFT.ERP.WebApp.Models; // Thêm để dùng ViewModel
 
 namespace PLPSOFT.ERP.WebApp.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductController : Controller
     {
         private readonly AppDbContext _context;
 
-        public ProductsController(AppDbContext context)
+        public ProductController(AppDbContext context)
         {
             _context = context;
         }
 
-        // 1. DANH SÁCH (Dùng ViewModel)
+        // Danh sách sản phẩm
         public async Task<IActionResult> Index(string searchString)
         {
+            ViewData["CurrentFilter"] = searchString;
+            // 1. Lấy dữ liệu từ database (kiểu Product)
             var query = _context.Products
+                .Include(p => p.Company)
                 .Include(p => p.Category)
-                .Include(p => p.Unit)
-                .Where(p => p.CompanyID == 1);
+                .Where(p => !p.IsDeleted)
+                .AsQueryable();
 
-            // 🔍 THÊM ĐOẠN NÀY
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(p =>
-                    p.ProductCode.Contains(searchString) ||
-                    p.ProductName.Contains(searchString)
-                );
+                searchString = searchString.Trim();
+                query = query.Where(p => p.ProductName.Contains(searchString)
+                                      || p.ProductCode.Contains(searchString));
             }
 
-            var products = await query
-                .Select(p => new ProductViewModel
-                {
-                    ProductID = p.ProductID,
-                    ProductCode = p.ProductCode,
-                    ProductName = p.ProductName,
-                    CategoryName = p.Category != null ? p.Category.CategoryName : "Chưa phân loại",
-                    UnitName = p.Unit != null ? p.Unit.UnitName : "Chưa có đơn vị",
-                    StandardPrice = p.StandardPrice
-                })
-                .ToListAsync();
+            var products = await query.ToListAsync();
+            // 2. Chuyển đổi sang List<ProductViewModel>
+            var productViewModels = products.Select(p => new ProductViewModel
+            {
+                ProductID = p.ProductId,
+                ProductCode = p.ProductCode,
+                ProductName = p.ProductName,
+                CostPrice = p.CostPrice,
+                StandardPrice = p.StandardPrice,
+                IsActive = p.IsActive,
+                // Gán object để View Index hiển thị được tên công ty/danh mục
+                Company = p.Company,
+                Category = p.Category
+            }).ToList();
 
-            // giữ lại text đã nhập
-            ViewBag.SearchString = searchString;
 
-            return View(products);
+            // 3. Trả về View với kiểu dữ liệu đã khớp (ProductViewModel)
+            return View(productViewModels);
         }
 
-        // Hàm bổ trợ load Dropdown - Đảm bảo tên ViewBag khớp hoàn toàn với View
-        private void PopulateDropdowns(long? selectedCategory = null, long? selectedUnit = null)
-        {
-            ViewBag.CategoryID = new SelectList(
-                _context.ProductCategories.ToList(), // ⚠️ thêm ToList()
-                "CategoryID",
-                "CategoryName",
-                selectedCategory
-            );
-
-            ViewBag.BaseUnitID = new SelectList(
-                _context.ProductUnits.ToList(), // ⚠️ thêm ToList()
-                "ProductUnitID",
-                "UnitName",
-                selectedUnit
-            );
-        }
-
-        // 2. THÊM MỚI (GET)
+        // GET: Thêm sản phẩm
         public IActionResult Create()
         {
-            // Gọi hàm này để nạp dữ liệu vào ViewBag
-            PopulateDropdowns();
-            return View();
+            var vm = new ProductViewModel
+            {
+                Companies = _context.Companies.Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName }),
+                Categories = _context.ProductCategories.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName }),
+                ProductTypes = _context.SystemTypeValues.Where(x => x.TypeId == 4).Select(x => new SelectListItem { Value = x.TypeValueId.ToString(), Text = x.ValueName }),
+                Units = _context.ProductUnits.Select(u => new SelectListItem { Value = u.UnitId.ToString(), Text = u.UnitName })
+            };
+            return View(vm);
         }
 
-
-
-        // 3. THÊM MỚI (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductViewModel model)
+        public async Task<IActionResult> Create(ProductViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 var product = new Product
                 {
-                    CompanyID = 1,
-                    ProductCode = model.ProductCode,
-                    ProductName = model.ProductName,
-                    CategoryID = model.CategoryID,
-                    BaseUnitID = model.BaseUnitID,
-                    StandardPrice = model.StandardPrice
+                    CompanyId = vm.CompanyID,
+                    ProductCode = vm.ProductCode,
+                    ProductName = vm.ProductName,
+                    CategoryId = vm.CategoryID,
+                    ProductTypeId = vm.ProductTypeID,
+                    BaseUnitId = vm.BaseUnitID,
+                    CostPrice = vm.CostPrice,
+                    StandardPrice = vm.StandardPrice,
+                    IsActive = true,
+                    CreatedAt = DateTime.Now
                 };
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Thêm sản phẩm thành công!";
                 return RedirectToAction(nameof(Index));
             }
-            PopulateDropdowns();
-            return View(model);
+            return View(vm);
         }
 
-        // 4. CHỈNH SỬA (GET)
-        public async Task<IActionResult> Edit(long? id)
+        // GET: Sửa sản phẩm
+        public async Task<IActionResult> Edit(long id)
         {
-            if (id == null) return NotFound();
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return NotFound();
 
-            var p = await _context.Products.FindAsync(id);
-            if (p == null) return NotFound();
-
-            var model = new ProductViewModel
+            var vm = new ProductViewModel
             {
-                ProductID = p.ProductID,
-                ProductCode = p.ProductCode,
-                ProductName = p.ProductName,
-                CategoryID = p.CategoryID,
-                BaseUnitID = p.BaseUnitID,
-                StandardPrice = p.StandardPrice
+                ProductID = product.ProductId,
+                CompanyID = product.CompanyId,
+                ProductCode = product.ProductCode,
+                ProductName = product.ProductName,
+                CategoryID = product.CategoryId,
+                ProductTypeID = product.ProductTypeId,
+                BaseUnitID = product.BaseUnitId,
+                CostPrice = product.CostPrice,
+                StandardPrice = product.StandardPrice,
+                IsActive = product.IsActive,
+
+                // QUAN TRỌNG: Phải khởi tạo các List này, nếu không View sẽ bị NullReferenceException
+                Companies = _context.Companies.Select(c => new SelectListItem
+                {
+                    Value = c.CompanyId.ToString(),
+                    Text = c.CompanyName
+                }).ToList(),
+                Categories = _context.ProductCategories.Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.CategoryName
+                }).ToList(),
+                ProductTypes = _context.SystemTypeValues.Where(v => v.TypeId == 4).Select(v => new SelectListItem
+                {
+                    Value = v.TypeValueId.ToString(),
+                    Text = v.ValueName
+                }).ToList(),
+                Units = _context.ProductUnits.Select(u => new SelectListItem
+                {
+                    Value = u.UnitId.ToString(),
+                    Text = u.UnitName
+                }).ToList()
             };
 
-            PopulateDropdowns(p.CategoryID, p.BaseUnitID);
-            return View(model);
+            return View(vm);
         }
 
-        // 5. CHỈNH SỬA (POST)
+        // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, ProductViewModel model)
+        public async Task<IActionResult> Edit(ProductViewModel vm)
         {
-            if (id != model.ProductID) return NotFound();
-
             if (ModelState.IsValid)
             {
-                var product = await _context.Products.FindAsync(id);
+                var product = await _context.Products.FindAsync(vm.ProductID);
                 if (product == null) return NotFound();
 
-                product.ProductName = model.ProductName;
-                product.ProductCode = model.ProductCode;
-                product.CategoryID = model.CategoryID;
-                product.BaseUnitID = model.BaseUnitID;
-                product.StandardPrice = model.StandardPrice;
+                product.CompanyId = vm.CompanyID;
+                product.ProductName = vm.ProductName;
+                product.CategoryId = vm.CategoryID;
+                product.ProductTypeId = vm.ProductTypeID;
+                product.BaseUnitId = vm.BaseUnitID;
+                product.CostPrice = vm.CostPrice;
+                product.StandardPrice = vm.StandardPrice;
+                product.IsActive = vm.IsActive;
 
                 _context.Update(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            PopulateDropdowns(model.CategoryID, model.BaseUnitID);
-            return View(model);
+
+            // NẾU VALIDATE THẤT BẠI: Bạn cũng phải nạp lại các List này trước khi return View(vm)
+            // Nếu thiếu đoạn này, khi nhấn "Lưu" mà bị lỗi nhập liệu, trang web sẽ văng lỗi NullReferenceException ngay.
+            vm.Companies = _context.Companies.Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName }).ToList();
+            vm.Categories = _context.ProductCategories.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName }).ToList();
+            vm.ProductTypes = _context.SystemTypeValues.Where(v => v.TypeId == 4).Select(v => new SelectListItem { Value = v.TypeValueId.ToString(), Text = v.ValueName }).ToList();
+            vm.Units = _context.ProductUnits.Select(u => new SelectListItem { Value = u.UnitId.ToString(), Text = u.UnitName }).ToList();
+
+            return View(vm);
         }
 
-        // 6. XÓA (Thực hiện nhanh)
+        // POST: Product/Delete/5
+        [HttpPost]
         public async Task<IActionResult> Delete(long id)
         {
             var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index));
+            if (product == null) return Json(new { success = false, message = "Không tìm thấy sản phẩm!" });
+
+            // Thay vì xóa vĩnh viễn, chỉ chuyển trạng thái
+            product.IsActive = false;
+
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Đã chuyển sản phẩm sang trạng thái 'Ngừng hoạt động'." });
         }
 
+        // POST: Product/Restore/5
+        [HttpPost]
+        public async Task<IActionResult> Restore(long id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return Json(new { success = false, message = "Không tìm thấy sản phẩm!" });
+
+            product.IsActive = true; // Phục hồi trạng thái
+
+            _context.Update(product);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Sản phẩm đã được kích hoạt trở lại." });
+        }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Infrastructure.Persistence;
+using PLPSOFT.ERP.WebApp.Models;
 
 
 public class ProductUnitsController : Controller
@@ -14,76 +15,126 @@ public class ProductUnitsController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchString)
     {
-        var data = await _context.ProductUnits.ToListAsync();
-        return View(data);
+        ViewData["CurrentFilter"] = searchString;
+        // Trả về thẳng Entity cho trang danh sách để nhanh gọn
+        var query = _context.ProductUnits.AsQueryable();
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            searchString = searchString.Trim();
+            query = query.Where(u => u.UnitName.Contains(searchString)
+                                  || u.UnitCode.Contains(searchString));
+        }
+        return View(await query.ToListAsync());
     }
 
     public IActionResult Create()
     {
-        PopulateUnitTypes(); 
-        return View();
+        var vm = new ProductUnitViewModel
+        {
+            // Lấy các giá trị 7, 8, 9 từ bảng SystemTypeValues dựa trên TypeID = 3
+            UnitTypeOptions = _context.SystemTypeValues
+            .Where(v => v.TypeId == 3)
+            .Select(v => new SelectListItem { Value = v.TypeValueId.ToString(), Text = v.ValueName })
+            .ToList()
+        };
+        return View(vm);
     }
 
     [HttpPost]
-    [HttpPost]
-    public async Task<IActionResult> Create(ProductUnit model)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(ProductUnitViewModel vm)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(model);
+            var unit = new ProductUnit
+            {
+                UnitCode = vm.UnitCode,
+                UnitName = vm.UnitName,
+                UnitTypeId = vm.UnitTypeID, // Gán giá trị 7, 8 hoặc 9 từ form
+                IsActive = vm.IsActive
+            };
+            _context.ProductUnits.Add(unit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        PopulateUnitTypes(model.UnitTypeID); // 🔥 giữ dropdown
-        return View(model);
+        // Nếu lỗi, nạp lại danh sách dropdown
+        vm.UnitTypeOptions = _context.SystemTypeValues.Where(v => v.TypeId == 3)
+            .Select(v => new SelectListItem { Value = v.TypeValueId.ToString(), Text = v.ValueName }).ToList();
+        return View(vm);
     }
 
     public async Task<IActionResult> Edit(long id)
     {
-        var data = await _context.ProductUnits.FindAsync(id);
-        if (data == null) return NotFound();
+        var unit = await _context.ProductUnits.FindAsync(id);
+        if (unit == null) return NotFound();
 
-        PopulateUnitTypes(data.UnitTypeID); // 🔥 QUAN TRỌNG
-
-        return View(data);
+        var vm = new ProductUnitViewModel
+        {
+            UnitID = unit.UnitId,
+            UnitCode = unit.UnitCode,
+            UnitName = unit.UnitName,
+            UnitTypeID = unit.UnitTypeId,
+            IsActive = unit.IsActive,
+            UnitTypeOptions = _context.SystemTypeValues.Where(v => v.TypeId == 3)
+                .Select(v => new SelectListItem { Value = v.TypeValueId.ToString(), Text = v.ValueName }).ToList()
+        };
+        return View(vm);
     }
 
     [HttpPost]
-    [HttpPost]
-    public async Task<IActionResult> Edit(ProductUnit model)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(ProductUnitViewModel vm)
     {
         if (ModelState.IsValid)
         {
-            _context.Update(model);
+            var unit = await _context.ProductUnits.FindAsync(vm.UnitID);
+            if (unit == null) return NotFound();
+
+            unit.UnitCode = vm.UnitCode;
+            unit.UnitName = vm.UnitName;
+            unit.UnitTypeId = vm.UnitTypeID;
+            unit.IsActive = vm.IsActive;
+
+            _context.Update(unit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        PopulateUnitTypes(model.UnitTypeID); 
-        return View(model);
+        return View(vm);
     }
 
+    // POST: ProductUnits/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(long id)
     {
-        var data = await _context.ProductUnits.FindAsync(id);
-        if (data != null)
-        {
-            _context.Remove(data);
-            await _context.SaveChangesAsync();
-        }
-        return RedirectToAction(nameof(Index));
+        var unit = await _context.ProductUnits.FindAsync(id);
+        if (unit == null) return Json(new { success = false, message = "Không tìm thấy đơn vị tính!" });
+
+        // Kiểm tra ràng buộc (Ví dụ: ĐVT đã có sản phẩm sử dụng thì tùy bạn có cho ngừng hay không)
+        unit.IsActive = false;
+
+        _context.Update(unit);
+        await _context.SaveChangesAsync();
+
+        return Json(new { success = true, message = "Đã chuyển đơn vị tính sang trạng thái 'Ngừng hoạt động'." });
     }
-    private void PopulateUnitTypes(object selected = null)
+
+    // POST: ProductUnits/Restore/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Restore(long id)
     {
-        ViewBag.UnitTypeID = new SelectList(
-            _context.SystemTypeValues
-                .Where(x => x.TypeID == 2 && x.IsActive == true), // 🔥 CHUẨN
-            "TypeValueID",
-            "ValueName",
-            selected
-        );
+        var unit = await _context.ProductUnits.FindAsync(id);
+        if (unit == null) return Json(new { success = false, message = "Không tìm thấy đơn vị tính!" });
+
+        unit.IsActive = true;
+
+        _context.Update(unit);
+        await _context.SaveChangesAsync();
+
+        return Json(new { success = true, message = "Đã phục hồi đơn vị tính thành công." });
     }
 }

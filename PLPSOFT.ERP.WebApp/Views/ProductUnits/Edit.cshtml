@@ -1,32 +1,93 @@
-﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.ProductUnit
+﻿@model PLPSOFT.ERP.WebApp.Models.ProductUnitViewModel
 
 @{
-    ViewData["Title"] = "Sửa đơn vị tính";
+    ViewData["Title"] = "Chỉnh sửa đơn vị tính";
 }
 
-<div class="container mt-4">
-    <h3>Sửa đơn vị tính</h3>
+<div class="container-fluid px-4">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
 
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="ProductUnitID" />
-        <div class="mb-3">
-            <label>Loại đơn vị</label>
-            <select asp-for="UnitTypeID" class="form-control" asp-items="ViewBag.UnitTypeID">
-                <option value="">-- Chọn loại đơn vị --</option>
-            </select>
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">Đơn vị tính</a></li>
+        <li class="breadcrumb-item active">@Model.UnitName</li>
+    </ol>
+
+    <div class="card shadow-sm">
+        <!-- HEADER -->
+        <div class="card-header bg-light">
+            <i class="fas fa-edit me-1"></i>
+            <span class="fw-bold">Thông tin đơn vị tính</span>
         </div>
 
-        <div class="mb-3">
-            <label>Mã đơn vị</label>
-            <input asp-for="UnitCode" class="form-control" />
-        </div>
+        <!-- BODY -->
+        <div class="card-body">
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="UnitID" />
 
-        <div class="mb-3">
-            <label>Tên đơn vị</label>
-            <input asp-for="UnitName" class="form-control" />
-        </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <button type="submit" class="btn btn-primary">Cập nhật</button>
-        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-    </form>
+                <div class="row">
+
+                    <!-- LEFT -->
+                    <div class="col-md-6">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Mã đơn vị</label>
+                            <input asp-for="UnitCode" class="form-control" />
+                            <span asp-validation-for="UnitCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tên đơn vị</label>
+                            <input asp-for="UnitName" class="form-control" />
+                            <span asp-validation-for="UnitName" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="col-md-6">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nhóm/Loại đơn vị</label>
+                            <select asp-for="UnitTypeID" class="form-select" asp-items="Model.UnitTypeOptions">
+                                <option value="">-- Chọn loại đơn vị --</option>
+                            </select>
+                            <span asp-validation-for="UnitTypeID" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 d-flex align-items-center">
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" asp-for="IsActive" />
+                                <label class="form-check-label fw-semibold">
+                                    Hoạt động
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Cập nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+using PLPSOFT.ERP.Infrastructure.Persistence;
+
 
 namespace PLPSOFT.ERP.Api.Controllers.v1
 {

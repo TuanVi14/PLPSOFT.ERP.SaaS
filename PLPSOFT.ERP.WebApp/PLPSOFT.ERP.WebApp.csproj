@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PLPSOFT.ERP.Application\PLPSOFT.ERP.Application.csproj" />
+    <ProjectReference Include="..\PLPSOFT.ERP.Domain\PLPSOFT.ERP.Domain.csproj" />
     <ProjectReference Include="..\PLPSOFT.ERP.Infrastructure\PLPSOFT.ERP.Infrastructure.csproj" />
     <ProjectReference Include="..\PLPSOFT.ERP.Shared\PLPSOFT.ERP.Shared.csproj" />
   </ItemGroup>

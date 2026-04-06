@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Infrastructure.Persistence;
@@ -11,95 +12,161 @@ public class ProductCategoriesController : Controller
     public ProductCategoriesController(AppDbContext context)
     {
         _context = context;
-
     }
 
-    // LIST
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchString)
     {
-        var categories = await _context.ProductCategories
-            .Where(c => c.CompanyID == 1)
-            .Select(c => new CategoryViewModel
-            {
-                CategoryID = c.CategoryID,
-                CategoryCode = c.CategoryCode,
-                CategoryName = c.CategoryName
-            })
-            .ToListAsync();
-
+        ViewData["CurrentFilter"] = searchString;
+        var query = _context.ProductCategories
+               .Include(p => p.Company)
+               .Include(p => p.Parent)
+               .AsQueryable();
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            searchString = searchString.Trim();
+            query = query.Where(p => p.CategoryName.Contains(searchString)
+                                  || p.CategoryCode.Contains(searchString));
+        }
+        var categories = await query.ToListAsync();
         return View(categories);
     }
 
-    // CREATE GET
     public IActionResult Create()
     {
-        return View();
-    }
-
-    // CREATE POST
-    [HttpPost]
-    public async Task<IActionResult> Create(ProductCategory model)
-    {
-        if (ModelState.IsValid)
+        var vm = new CategoryViewModel
         {
-            model.CompanyID = 1; // 🔥 THÊM DÒNG NÀY
-
-            _context.Add(model);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(model);
-    }
-
-    // EDIT GET
-    // GET
-    public async Task<IActionResult> Edit(long id)
-    {
-        var data = await _context.ProductCategories.FindAsync(id);
-        if (data == null) return NotFound();
-
-        var model = new CategoryViewModel
-        {
-            CategoryID = data.CategoryID,
-            CategoryCode = data.CategoryCode,
-            CategoryName = data.CategoryName
+            Companies = _context.Companies
+                .Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName }),
+            ParentCategories = _context.ProductCategories
+                .Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName })
         };
-
-        return View(model);
+        return View(vm);
     }
 
-    // POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(CategoryViewModel model)
+    public async Task<IActionResult> Create(CategoryViewModel vm)
     {
         if (ModelState.IsValid)
         {
-            var data = await _context.ProductCategories.FindAsync(model.CategoryID);
-            if (data == null) return NotFound();
-
-            data.CategoryCode = model.CategoryCode;
-            data.CategoryName = model.CategoryName;
-
-            _context.Update(data);
+            var category = new ProductCategory
+            {
+                CompanyId = vm.CompanyID,
+                ParentId = vm.ParentID,
+                CategoryCode = vm.CategoryCode,
+                CategoryName = vm.CategoryName,
+                IsActive = vm.IsActive
+            };
+            _context.Add(category);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
-        return View(model);
+
+        vm.Companies = _context.Companies
+            .Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName });
+        vm.ParentCategories = _context.ProductCategories
+            .Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName });
+        return View(vm);
     }
 
-    // DELETE
-    public async Task<IActionResult> Delete(long id)
+    public async Task<IActionResult> Edit(long id)
     {
-        var data = await _context.ProductCategories.FindAsync(id);
-        if (data != null)
+        var category = await _context.ProductCategories.FindAsync(id);
+        if (category == null) return NotFound();
+
+        var vm = new CategoryViewModel
         {
-            _context.Remove(data);
-            await _context.SaveChangesAsync();
-        }
-        return RedirectToAction(nameof(Index));
+            CategoryID = category.CategoryId,
+            CompanyID = category.CompanyId,
+            ParentID = category.ParentId,
+            CategoryCode = category.CategoryCode,
+            CategoryName = category.CategoryName,
+            IsActive = category.IsActive,
+            Companies = _context.Companies
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CompanyId.ToString(),
+                    Text = c.CompanyName,
+                    Selected = c.CompanyId == category.CompanyId
+                }),
+            ParentCategories = _context.ProductCategories
+                .Where(c => c.CategoryId != id)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.CategoryName,
+                    Selected = c.CategoryId == category.ParentId
+                })
+        };
+        return View(vm);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(CategoryViewModel vm)
+    {
+        if (ModelState.IsValid)
+        {
+            var category = await _context.ProductCategories.FindAsync(vm.CategoryID);
+            if (category == null) return NotFound();
 
+            category.CompanyId = vm.CompanyID;
+            category.ParentId = vm.ParentID;
+            category.CategoryCode = vm.CategoryCode;
+            category.CategoryName = vm.CategoryName;
+            category.IsActive = vm.IsActive;
+
+            _context.Update(category);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        return View(vm);
+    }
+
+    // POST: ProductCategories/Delete/13
+    [HttpPost]
+    [ValidateAntiForgeryToken] // Đảm bảo có dòng này để bảo mật
+    public async Task<IActionResult> Delete(long id) // LUÔN ĐẶT TÊN LÀ 'id'
+    {
+        var category = await _context.ProductCategories
+            .Include(c => c.InverseParent)
+            .FirstOrDefaultAsync(m => m.CategoryId == id);
+
+        if (category == null) return Json(new { success = false, message = "Không tìm thấy!" });
+
+        if (category.InverseParent.Any(c => c.IsActive))
+        {
+            return Json(new { success = false, message = "Danh mục này có danh mục con đang hoạt động, không thể ngừng dùng!" });
+        }
+
+        category.IsActive = false;
+        _context.Update(category);
+        await _context.SaveChangesAsync();
+
+        return Json(new { success = true, message = "Đã ngừng hoạt động danh mục." });
+    }
+
+    // POST: ProductCategories/Restore/13
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Restore(long id) // ĐẶT TÊN LÀ 'id'
+    {
+        var category = await _context.ProductCategories
+            .Include(c => c.Parent)
+            .FirstOrDefaultAsync(m => m.CategoryId == id);
+
+        if (category == null) return Json(new { success = false, message = "Không tìm thấy!" });
+
+        if (category.Parent != null && !category.Parent.IsActive)
+        {
+            return Json(new { success = false, message = $"Phải phục hồi danh mục cha [{category.Parent.CategoryName}] trước!" });
+        }
+
+        category.IsActive = true;
+        _context.Update(category);
+        await _context.SaveChangesAsync();
+
+        return Json(new { success = true, message = "Đã phục hồi danh mục." });
+    }
 }
+
