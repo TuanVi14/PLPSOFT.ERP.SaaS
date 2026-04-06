@@ -1,23 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace PLPSOFT.ERP.Domain.Entities.MasterData;
-
 public class CustomerAddress
 {
-    [Key]
-    public int Id { get; set; }
+    public long CustomerAddressID { get; set; }
+    public long CustomerID { get; set; }
+    public long CompanyID { get; set; }
 
-    [Required]
-    public string CustomerId { get; set; }
-
-    [Required]
-    [StringLength(255)]
-    public string AddressLine { get; set; }
-
-    public string Ward { get; set; }
-    public string District { get; set; }
-    public string City { get; set; }
+    public string AddressLine1 { get; set; }
+    public string? AddressLine2 { get; set; }
+    public string? City { get; set; }
+    public string? State { get; set; }
+    public string? PostalCode { get; set; }
+    public string? Country { get; set; }
 
     public bool IsDefault { get; set; }
+    public bool IsActive { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+
+    // Navigation
+    public Customer Customer { get; set; }
 }
