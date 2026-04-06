@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
+using System.ComponentModel.DataAnnotations;
 
 namespace PLPSOFT.ERP.WebApp.Models;
 
@@ -10,6 +11,7 @@ public class ProductViewModel
     // ========================
     // 🔹 THÔNG TIN CƠ BẢN
     // ========================
+    [Required(ErrorMessage = "Vui lòng chọn công ty")]
     public long CompanyID { get; set; }
     public string ProductCode { get; set; } = null!;
     public string ProductName { get; set; } = null!;

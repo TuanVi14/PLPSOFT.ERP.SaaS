@@ -24,18 +24,23 @@
 
         <!-- BODY -->
         <div class="card-body">
-            <form asp-action="Create">
+            <form asp-action="Create" method="get">
+                <form asp-action="Create" method="get">
+                    <select asp-for="CompanyID"
+                            class="form-select"
+                            asp-items="Model.Companies"
+                            onchange="this.form.submit()">
+                        <option value="">-- Chọn công ty --</option>
+                    </select>
+                </form>
+            </form>
+            
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="CompanyID" />
                 <div class="row">
 
                     <!-- LEFT -->
                     <div class="col-md-6">
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Công ty</label>
-                            <select asp-for="CompanyID" class="form-select" asp-items="Model.Companies">
-                                <option value="">-- Chọn công ty --</option>
-                            </select>
-                        </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Mã sản phẩm</label>

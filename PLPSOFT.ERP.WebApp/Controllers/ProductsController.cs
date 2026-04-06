@@ -56,10 +56,35 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         }
 
         // GET: Thêm sản phẩm
-        public IActionResult Create()
+        public IActionResult Create(long? companyId)
         {
-            var vm = new ProductViewModel();
+            var vm = new ProductViewModel
+            {
+                CompanyID = companyId ?? 0
+            };
+            if (vm.CompanyID == 0)
+            {
+                ModelState.AddModelError("CompanyID", "Vui lòng chọn công ty");
+            }
             LoadDropdowns(vm);
+            if (companyId.HasValue)
+            {
+                vm.Categories = _context.ProductCategories
+                    .Where(c => c.CompanyId == companyId)
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.CategoryId.ToString(),
+                        Text = c.CategoryName
+                    });
+
+                vm.TaxRates = _context.TaxRates
+                    .Where(t => t.CompanyId == companyId)
+                    .Select(t => new SelectListItem
+                    {
+                        Value = t.TaxRateId.ToString(),
+                        Text = t.TaxName
+                    });
+            }
             return View(vm);
         }
 
@@ -69,7 +94,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                LoadDropdowns(vm);
+                LoadDropdowns(vm); 
                 return View(vm);
             }
 
@@ -104,7 +129,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 IsBatchManaged = vm.IsBatchManaged,
                 ExpireDateRequired = vm.ExpireDateRequired,
 
-                IsActive = vm.IsActive,
+                IsActive = true,
                 CreatedAt = DateTime.Now
             };
 
@@ -116,7 +141,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         }
 
         // GET: Sửa sản phẩm
-        public async Task<IActionResult> Edit(long id)
+        public async Task<IActionResult> Edit(long id, long? companyId)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null) return NotFound();
@@ -124,7 +149,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             var vm = new ProductViewModel
             {
                 ProductID = product.ProductId,
-                CompanyID = product.CompanyId,
+                CompanyID = companyId ?? product.CompanyId,
                 ProductCode = product.ProductCode,
                 ProductName = product.ProductName,
                 CategoryID = product.CategoryId,
@@ -256,22 +281,42 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         private void LoadDropdowns(ProductViewModel vm)
         {
             vm.Companies = _context.Companies
-                .Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName });
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CompanyId.ToString(),
+                    Text = c.CompanyName
+                });
 
             vm.Categories = _context.ProductCategories
-                .Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName });
+                .Where(c => c.CompanyId == vm.CompanyID)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.CategoryName
+                });
 
             vm.ProductTypes = _context.SystemTypeValues
                 .Where(x => x.TypeId == 4)
-                .Select(x => new SelectListItem { Value = x.TypeValueId.ToString(), Text = x.ValueName });
+                .Select(x => new SelectListItem
+                {
+                    Value = x.TypeValueId.ToString(),
+                    Text = x.ValueName
+                });
 
             vm.Units = _context.ProductUnits
-                .Select(u => new SelectListItem { Value = u.UnitId.ToString(), Text = u.UnitName });
+                .Select(u => new SelectListItem
+                {
+                    Value = u.UnitId.ToString(),
+                    Text = u.UnitName
+                });
 
             vm.TaxRates = _context.TaxRates
-                .Select(t => new SelectListItem { Value = t.TaxRateId.ToString(), Text = t.TaxName });
-
-
+                .Where(t => vm.CompanyID == 0 || t.CompanyId == vm.CompanyID)
+                .Select(t => new SelectListItem
+                {
+                    Value = t.TaxRateId.ToString(),
+                    Text = t.TaxName
+                });
         }
     }
 }
