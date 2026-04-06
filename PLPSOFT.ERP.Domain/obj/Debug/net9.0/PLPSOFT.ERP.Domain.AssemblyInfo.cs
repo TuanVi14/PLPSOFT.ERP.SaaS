@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PLPSOFT.ERP.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd7f46d0d980c79128f7234ba4ff38ddcced6512")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71858894b69da46e59b1714255b2ad7decdd39c0")]
 [assembly: System.Reflection.AssemblyProductAttribute("PLPSOFT.ERP.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PLPSOFT.ERP.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

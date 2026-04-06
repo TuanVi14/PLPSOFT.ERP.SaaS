@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema; // Thêm thư viện này
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData;
 
@@ -8,26 +9,28 @@ public class CustomerAddress
     [Key]
     public long CustomerAddressID { get; set; }
 
-    // Alias để khớp với code Controller gọi .Id
+    [NotMapped] // EF sẽ bỏ qua cái này
     public long Id => CustomerAddressID;
 
     public long CustomerID { get; set; }
 
-    // Alias để khớp với code Controller gọi .CustomerId
+    [NotMapped] // EF sẽ bỏ qua cái này, không còn bị trùng cột nữa
     public long CustomerId { get => CustomerID; set => CustomerID = value; }
 
     public long CompanyID { get; set; }
 
     public string AddressLine1 { get; set; } = string.Empty;
 
-    // Alias để khớp với code Controller gọi .AddressLine
+    [NotMapped] // EF sẽ bỏ qua cái này
     public string AddressLine { get => AddressLine1; set => AddressLine1 = value; }
 
     public string? AddressLine2 { get; set; }
     public string? City { get; set; }
 
-    // Giả lập Ward và District để không lỗi Build (vì DB của ông dùng City/State)
+    [NotMapped] // EF sẽ bỏ qua cái này
     public string? Ward { get => City; set => City = value; }
+
+    [NotMapped] // EF sẽ bỏ qua cái này
     public string? District { get => State; set => State = value; }
 
     public string? State { get; set; }
@@ -36,11 +39,10 @@ public class CustomerAddress
 
     public bool IsDefault { get; set; }
     public bool IsActive { get; set; }
-    public bool IsDelete { get; set; } = false; // Thêm để xóa mềm
+    public bool IsDelete { get; set; } = false;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? UpdatedAt { get; set; }
 
-    // Navigation
     public virtual Customer? Customer { get; set; }
 }

@@ -92,10 +92,6 @@ namespace PLPSOFT.ERP.WebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CustomerAddressID"));
 
-                    b.Property<string>("AddressLine")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("AddressLine1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -118,12 +114,6 @@ namespace PLPSOFT.ERP.WebApp.Migrations
                     b.Property<long>("CustomerID")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -141,9 +131,6 @@ namespace PLPSOFT.ERP.WebApp.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Ward")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerAddressID");
 
