@@ -6,14 +6,20 @@
     <form asp-action="Create" method="post" class="card p-4 shadow-sm">
 
         <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Mã</label>
-                <input asp-for="SupplierCode" class="form-control" />
-            </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Tên</label>
                 <input asp-for="SupplierName" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Công ty</label>
+                <select asp-for="CompanyID" class="form-select">
+                    @foreach (var c in ViewBag.Companies)
+                    {
+                        <option value="@c.CompanyID">@c.CompanyName</option>
+                    }
+                </select>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -45,6 +51,14 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label">Số ngày thanh toán</label>
                 <input asp-for="PaymentTermDays" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Trạng thái</label>
+                <select asp-for="IsActive" class="form-select">
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
             </div>
         </div>
 

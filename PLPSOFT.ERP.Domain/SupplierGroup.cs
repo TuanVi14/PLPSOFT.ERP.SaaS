@@ -9,6 +9,5 @@ public class SupplierGroup
 
     public bool IsActive { get; set; }
 
-    // Navigation
     public List<Supplier> Suppliers { get; set; }
 }

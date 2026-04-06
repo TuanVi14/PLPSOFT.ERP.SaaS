@@ -59,7 +59,19 @@ public class SupplierGroupsMVCController : Controller
         var data = await _context.SupplierGroups.FindAsync(id);
         if (data == null) return NotFound();
 
-        _context.SupplierGroups.Remove(data);
+        data.IsActive = false;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index");
+    }
+    public async Task<IActionResult> Restore(long id)
+    {
+        var data = await _context.SupplierGroups.FindAsync(id);
+        if (data == null) return NotFound();
+
+        data.IsActive = true;
+
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Index");
@@ -72,8 +84,6 @@ public class SupplierGroupsMVCController : Controller
         {
             data = data.Where(x => x.GroupName.Contains(search));
         }
-
-        ViewBag.Search = search;
 
         return View(await data.ToListAsync());
     }

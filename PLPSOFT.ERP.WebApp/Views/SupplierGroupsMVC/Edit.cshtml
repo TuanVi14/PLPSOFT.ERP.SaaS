@@ -17,6 +17,13 @@
             <label class="form-label">Tên nhóm</label>
             <input asp-for="GroupName" class="form-control" />
         </div>
+        <div class="mb-3">
+            <label class="form-label">Trạng thái</label>
+            <select asp-for="IsActive" class="form-select">
+                <option value="true">Active</option>
+                <option value="false">Ngưng hoạt động</option>
+            </select>
+        </div>
 
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-success"> Lưu</button>

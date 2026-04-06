@@ -14,17 +14,16 @@ public class Supplier
     public string? Email { get; set; }
     public string? TaxCode { get; set; }
 
-    public int PaymentTermDays { get; set; }
-    public decimal CreditLimit { get; set; }
+    public int? PaymentTermDays { get; set; }
+    public decimal? CreditLimit { get; set; }
 
     public bool IsActive { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public bool IsDeleted { get; set; }   
 
-    
-    public DateTime? UpdatedAt { get; set; }
-    public bool IsDeleted { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; } 
+
     public string? ExtraData { get; set; }
 
-    // Navigation
-    public SupplierGroup SupplierGroup { get; set; }
+    public SupplierGroup? SupplierGroup { get; set; }
 }

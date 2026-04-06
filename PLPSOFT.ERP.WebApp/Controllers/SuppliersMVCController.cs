@@ -16,6 +16,7 @@ public class SuppliersMVCController : Controller
     public IActionResult Create()
     {
         ViewBag.SupplierGroups = _context.SupplierGroups.ToList();
+        ViewBag.Companies = _context.Companies.ToList();
         return View();
     }
 
@@ -23,11 +24,23 @@ public class SuppliersMVCController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(Supplier model)
     {
-
         model.CreatedAt = DateTime.Now;
 
-        model.CompanyID = 1;        
-        model.SupplierTypeID = 1;
+        // lấy công ty
+        var company = await _context.Companies
+            .FirstOrDefaultAsync(x => x.CompanyID == model.CompanyID);
+
+        // đếm số supplier trong công ty
+        var count = await _context.Suppliers
+            .Where(x => x.CompanyID == model.CompanyID)
+            .CountAsync() + 1;
+
+        // sinh mã
+        model.SupplierCode = $"NCC-{company.CompanyCode}-{count:D3}";
+
+        model.SupplierTypeID = 4;
+        model.IsActive = true;
+        model.IsDeleted = false;
 
         _context.Suppliers.Add(model);
         await _context.SaveChangesAsync();
@@ -67,11 +80,27 @@ public class SuppliersMVCController : Controller
         var data = await _context.Suppliers.FindAsync(id);
         if (data == null) return NotFound();
 
-        _context.Suppliers.Remove(data);
+        data.IsDeleted = true;
+        data.IsActive = false;
+
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Index");
     }
+
+    public async Task<IActionResult> Restore(long id)
+    {
+        var data = await _context.Suppliers.FindAsync(id);
+        if (data == null) return NotFound();
+
+        data.IsDeleted = false;
+        data.IsActive = true;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index");
+    }
+
     public async Task<IActionResult> Index(string search)
     {
         var data = _context.Suppliers
