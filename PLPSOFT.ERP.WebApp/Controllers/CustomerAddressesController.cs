@@ -5,33 +5,34 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+using PLPSOFT.ERP.WebApp.Data;
 
 namespace PLPSOFT.ERP.WebApp.Controllers
 {
     public class CustomerAddressesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly PLPSOFTERPWebAppContext _context;
 
-        public CustomerAddressesController(AppDbContext context)
+        public CustomerAddressesController(PLPSOFTERPWebAppContext context)
         {
             _context = context;
         }
 
-        // Chỉnh sửa Index để lọc theo customerId
         public async Task<IActionResult> Index(string customerId)
         {
             if (string.IsNullOrEmpty(customerId)) return NotFound();
 
+            long parsedCustomerId = long.Parse(customerId);
             ViewBag.CustomerId = customerId;
+
             var addresses = await _context.CustomerAddresses
-                .Where(a => a.CustomerId == customerId)
+                .Where(a => a.CustomerId == parsedCustomerId)
                 .ToListAsync();
 
             return View(addresses);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(long? id)
         {
             if (id == null) return NotFound();
 
@@ -43,10 +44,9 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return View(customerAddress);
         }
 
-        // Chỉnh sửa Create để nhận customerId từ màn hình trước
         public IActionResult Create(string customerId)
         {
-            return View(new CustomerAddress { CustomerId = customerId });
+            return View(new CustomerAddress { CustomerId = long.Parse(customerId) });
         }
 
         [HttpPost]
@@ -57,13 +57,12 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             {
                 _context.Add(customerAddress);
                 await _context.SaveChangesAsync();
-                // Quay về danh sách địa chỉ của đúng khách hàng đó
-                return RedirectToAction(nameof(Index), new { customerId = customerAddress.CustomerId });
+                return RedirectToAction(nameof(Index), new { customerId = customerAddress.CustomerId.ToString() });
             }
             return View(customerAddress);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(long? id)
         {
             if (id == null) return NotFound();
 
@@ -75,7 +74,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,AddressLine,Ward,District,City,IsDefault")] CustomerAddress customerAddress)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,CustomerId,AddressLine,Ward,District,City,IsDefault")] CustomerAddress customerAddress)
         {
             if (id != customerAddress.Id) return NotFound();
 
@@ -91,12 +90,12 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                     if (!CustomerAddressExists(customerAddress.Id)) return NotFound();
                     else throw;
                 }
-                return RedirectToAction(nameof(Index), new { customerId = customerAddress.CustomerId });
+                return RedirectToAction(nameof(Index), new { customerId = customerAddress.CustomerId.ToString() });
             }
             return View(customerAddress);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(long? id)
         {
             if (id == null) return NotFound();
 
@@ -110,10 +109,10 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var customerAddress = await _context.CustomerAddresses.FindAsync(id);
-            string customerId = customerAddress?.CustomerId;
+            string customerId = customerAddress?.CustomerId.ToString();
 
             if (customerAddress != null)
             {
@@ -124,7 +123,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return RedirectToAction(nameof(Index), new { customerId = customerId });
         }
 
-        private bool CustomerAddressExists(int id)
+        private bool CustomerAddressExists(long id)
         {
             return _context.CustomerAddresses.Any(e => e.Id == id);
         }

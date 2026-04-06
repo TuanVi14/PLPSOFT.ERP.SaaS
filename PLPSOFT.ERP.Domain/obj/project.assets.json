@@ -8,24 +8,31 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\acer\\.nuget\\packages\\": {}
+    "C:\\Users\\ANH THU\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
+      "projectUniqueName": "E:\\DEMOTT1\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
       "projectName": "PLPSOFT.ERP.Domain",
-      "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
-      "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\obj\\",
+      "projectPath": "E:\\DEMOTT1\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
+      "packagesPath": "C:\\Users\\ANH THU\\.nuget\\packages\\",
+      "outputPath": "E:\\DEMOTT1\\PLPSOFT.ERP.Domain\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ANH THU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

@@ -19,59 +19,70 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             _context = context;
         }
 
-        // GET: CustomerGroupProductPrices
+        // 1. SỬA INDEX: Chỉ lấy những dòng chưa bị xóa mềm (IsDelete == false)
         public async Task<IActionResult> Index()
         {
-            // Lấy danh sách giá theo nhóm khách hàng
-            return View(await _context.CustomerGroupProductPrice.ToListAsync());
+            var list = await _context.CustomerGroupProductPrice
+                .Where(x => x.IsDelete == false) // Lọc dữ liệu
+                .ToListAsync();
+            return View(list);
         }
 
-        // GET: CustomerGroupProductPrices/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null) return NotFound();
 
             var customerGroupProductPrice = await _context.CustomerGroupProductPrice
-                .FirstOrDefaultAsync(m => m.GroupPriceId == id);
+                .FirstOrDefaultAsync(m => m.GroupPriceId == id && m.IsDelete == false);
 
             if (customerGroupProductPrice == null) return NotFound();
 
             return View(customerGroupProductPrice);
         }
 
-        // GET: CustomerGroupProductPrices/Create
+        // 2. SỬA CREATE (GET): Đổ danh sách Tên để chọn lấy ID
         public IActionResult Create()
         {
+            // Giả sử bảng Nhóm KH là CustomerGroups và bảng Sản phẩm là Products
+            // Bạn hãy thay tên DbSet đúng với thực tế trong DbContext của bạn
+            ViewBag.CustomerGroupId = new SelectList(_context.Set<CustomerGroup>().Where(x => !x.IsDelete), "Id", "GroupName");
+            ViewBag.ProductId = new SelectList(_context.Set<Product>().Where(x => !x.IsDelete), "Id", "ProductName");
+
             return View();
         }
 
-        // POST: CustomerGroupProductPrices/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("GroupPriceId,CustomerGroupId,ProductId,Price,DiscountRate,EffectiveFrom,EffectiveTo,IsActive")] CustomerGroupProductPrice customerGroupProductPrice)
         {
             if (ModelState.IsValid)
             {
-                // Thêm mới vào database
+                customerGroupProductPrice.IsDelete = false; // Mặc định chưa xóa
                 _context.Add(customerGroupProductPrice);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // Nếu lỗi, phải đổ lại dữ liệu cho Dropdown
+            ViewBag.CustomerGroupId = new SelectList(_context.Set<CustomerGroup>().Where(x => !x.IsDelete), "Id", "GroupName", customerGroupProductPrice.CustomerGroupId);
+            ViewBag.ProductId = new SelectList(_context.Set<Product>().Where(x => !x.IsDelete), "Id", "ProductName", customerGroupProductPrice.ProductId);
             return View(customerGroupProductPrice);
         }
 
-        // GET: CustomerGroupProductPrices/Edit/5
+        // 3. SỬA EDIT (GET): Đổ dữ liệu vào Dropdown
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null) return NotFound();
 
             var customerGroupProductPrice = await _context.CustomerGroupProductPrice.FindAsync(id);
-            if (customerGroupProductPrice == null) return NotFound();
+            if (customerGroupProductPrice == null || customerGroupProductPrice.IsDelete == true) return NotFound();
+
+            ViewBag.CustomerGroupId = new SelectList(_context.Set<CustomerGroup>().Where(x => !x.IsDelete), "Id", "GroupName", customerGroupProductPrice.CustomerGroupId);
+            ViewBag.ProductId = new SelectList(_context.Set<Product>().Where(x => !x.IsDelete), "Id", "ProductName", customerGroupProductPrice.ProductId);
 
             return View(customerGroupProductPrice);
         }
 
-        // POST: CustomerGroupProductPrices/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("GroupPriceId,CustomerGroupId,ProductId,Price,DiscountRate,EffectiveFrom,EffectiveTo,IsActive")] CustomerGroupProductPrice customerGroupProductPrice)
@@ -82,7 +93,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             {
                 try
                 {
-                    // Cập nhật thông tin giá
                     _context.Update(customerGroupProductPrice);
                     await _context.SaveChangesAsync();
                 }
@@ -93,32 +103,23 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.CustomerGroupId = new SelectList(_context.Set<CustomerGroup>().Where(x => !x.IsDelete), "Id", "GroupName", customerGroupProductPrice.CustomerGroupId);
+            ViewBag.ProductId = new SelectList(_context.Set<Product>().Where(x => !x.IsDelete), "Id", "ProductName", customerGroupProductPrice.ProductId);
             return View(customerGroupProductPrice);
         }
 
-        // GET: CustomerGroupProductPrices/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null) return NotFound();
-
-            var customerGroupProductPrice = await _context.CustomerGroupProductPrice
-                .FirstOrDefaultAsync(m => m.GroupPriceId == id);
-
-            if (customerGroupProductPrice == null) return NotFound();
-
-            return View(customerGroupProductPrice);
-        }
-
-        // POST: CustomerGroupProductPrices/Delete/5
+        // 4. SỬA DELETE: Chuyển thành Xóa Mềm
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var customerGroupProductPrice = await _context.CustomerGroupProductPrice.FindAsync(id);
-            if (customerGroupProductPrice != null)
+            var item = await _context.CustomerGroupProductPrice.FindAsync(id);
+            if (item != null)
             {
-                // Xóa khỏi database
-                _context.CustomerGroupProductPrice.Remove(customerGroupProductPrice);
+                // KHÔNG dùng _context.Remove
+                item.IsDelete = true;  // Đánh dấu xóa
+                item.IsActive = false; // Ngừng hoạt động
+                _context.Update(item);
             }
 
             await _context.SaveChangesAsync();
@@ -127,8 +128,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
         private bool CustomerGroupProductPriceExists(long id)
         {
-            // Kiểm tra tồn tại theo ID
-            return _context.CustomerGroupProductPrice.Any(e => e.GroupPriceId == id);
+            return _context.CustomerGroupProductPrice.Any(e => e.GroupPriceId == id && e.IsDelete == false);
         }
     }
 }

@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PLPSOFT.ERP.Infrastructure.Persistence;
 using PLPSOFT.ERP.Domain.Entities;
-using PLPSOFT.ERP.WebApp.Models; // Thêm để dùng ViewModel
+using PLPSOFT.ERP.Domain.Entities.MasterData;
+using PLPSOFT.ERP.WebApp.Models;
+using PLPSOFT.ERP.WebApp.Data;
 
 namespace PLPSOFT.ERP.WebApp.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly PLPSOFTERPWebAppContext _context;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(PLPSOFTERPWebAppContext context)
         {
             _context = context;
         }
 
-        // 1. DANH SÁCH (Dùng ViewModel)
         public async Task<IActionResult> Index(string searchString)
         {
             var query = _context.Products
@@ -24,7 +24,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 .Include(p => p.Unit)
                 .Where(p => p.CompanyID == 1);
 
-            // 🔍 THÊM ĐOẠN NÀY
             if (!string.IsNullOrEmpty(searchString))
             {
                 query = query.Where(p =>
@@ -45,41 +44,34 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 })
                 .ToListAsync();
 
-            // giữ lại text đã nhập
             ViewBag.SearchString = searchString;
 
             return View(products);
         }
 
-        // Hàm bổ trợ load Dropdown - Đảm bảo tên ViewBag khớp hoàn toàn với View
         private void PopulateDropdowns(long? selectedCategory = null, long? selectedUnit = null)
         {
             ViewBag.CategoryID = new SelectList(
-                _context.ProductCategories.ToList(), // ⚠️ thêm ToList()
+                _context.ProductCategories.ToList(),
                 "CategoryID",
                 "CategoryName",
                 selectedCategory
             );
 
             ViewBag.BaseUnitID = new SelectList(
-                _context.ProductUnits.ToList(), // ⚠️ thêm ToList()
+                _context.Units.ToList(),
                 "ProductUnitID",
                 "UnitName",
                 selectedUnit
             );
         }
 
-        // 2. THÊM MỚI (GET)
         public IActionResult Create()
         {
-            // Gọi hàm này để nạp dữ liệu vào ViewBag
             PopulateDropdowns();
             return View();
         }
 
-
-
-        // 3. THÊM MỚI (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel model)
@@ -103,7 +95,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return View(model);
         }
 
-        // 4. CHỈNH SỬA (GET)
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null) return NotFound();
@@ -125,7 +116,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return View(model);
         }
 
-        // 5. CHỈNH SỬA (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, ProductViewModel model)
@@ -151,7 +141,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return View(model);
         }
 
-        // 6. XÓA (Thực hiện nhanh)
         public async Task<IActionResult> Delete(long id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -162,6 +151,5 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

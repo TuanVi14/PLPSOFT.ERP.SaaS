@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,39 +17,32 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             _context = context;
         }
 
-        // GET: ProductUnitMapping
+        // Load dropdown
+        private void LoadDropdowns(long? productId = null, long? unitId = null)
+        {
+            ViewBag.ProductId = new SelectList(_context.Products, "ProductID", "ProductName", productId);
+            ViewBag.UnitId = new SelectList(_context.Units, "ProductUnitID", "UnitName", unitId);
+        }
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.ProductUnitMapping.ToListAsync());
         }
 
-        // GET: ProductUnitMapping/Details/5
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var productUnitMapping = await _context.ProductUnitMapping
-                .FirstOrDefaultAsync(m => m.UnitMappingId == id);
-            if (productUnitMapping == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
+            var productUnitMapping = await _context.ProductUnitMapping.FirstOrDefaultAsync(m => m.UnitMappingId == id);
+            if (productUnitMapping == null) return NotFound();
             return View(productUnitMapping);
         }
 
-        // GET: ProductUnitMapping/Create
         public IActionResult Create()
         {
+            LoadDropdowns();
             return View();
         }
 
-        // POST: ProductUnitMapping/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UnitMappingId,ProductId,UnitId,ConversionRate,IsDefault")] ProductUnitMapping productUnitMapping)
@@ -62,36 +53,25 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            LoadDropdowns(productUnitMapping.ProductId, productUnitMapping.UnitId);
             return View(productUnitMapping);
         }
 
-        // GET: ProductUnitMapping/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
             var productUnitMapping = await _context.ProductUnitMapping.FindAsync(id);
-            if (productUnitMapping == null)
-            {
-                return NotFound();
-            }
+            if (productUnitMapping == null) return NotFound();
+
+            LoadDropdowns(productUnitMapping.ProductId, productUnitMapping.UnitId);
             return View(productUnitMapping);
         }
 
-        // POST: ProductUnitMapping/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("UnitMappingId,ProductId,UnitId,ConversionRate,IsDefault")] ProductUnitMapping productUnitMapping)
         {
-            if (id != productUnitMapping.UnitMappingId)
-            {
-                return NotFound();
-            }
+            if (id != productUnitMapping.UnitMappingId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -102,39 +82,23 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductUnitMappingExists(productUnitMapping.UnitMappingId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!ProductUnitMappingExists(productUnitMapping.UnitMappingId)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
+            LoadDropdowns(productUnitMapping.ProductId, productUnitMapping.UnitId);
             return View(productUnitMapping);
         }
 
-        // GET: ProductUnitMapping/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var productUnitMapping = await _context.ProductUnitMapping
-                .FirstOrDefaultAsync(m => m.UnitMappingId == id);
-            if (productUnitMapping == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
+            var productUnitMapping = await _context.ProductUnitMapping.FirstOrDefaultAsync(m => m.UnitMappingId == id);
+            if (productUnitMapping == null) return NotFound();
             return View(productUnitMapping);
         }
 
-        // POST: ProductUnitMapping/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
@@ -143,9 +107,8 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             if (productUnitMapping != null)
             {
                 _context.ProductUnitMapping.Remove(productUnitMapping);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

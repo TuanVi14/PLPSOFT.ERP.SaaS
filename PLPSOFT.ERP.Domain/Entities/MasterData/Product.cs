@@ -2,25 +2,38 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("Products")]
-public class Product
+namespace PLPSOFT.ERP.Domain.Entities.MasterData
 {
-    [Key]
-    public long ProductID { get; set; }
-    [Column("CompanyID")] // <--- ÉP KIỂU TƯỜNG MINH: Chỉ định chính xác tên cột trong DB
-    public long CompanyID { get; set; }
-    public string ProductCode { get; set; } = string.Empty;
-    public string ProductName { get; set; } = string.Empty;
-    public long? CategoryID { get; set; }
+    [Table("Products")]
+    public class Product
+    {
+        [Key]
+        public long ProductID { get; set; }
 
-    public long BaseUnitID { get; set; } // Khớp với cột trong ảnh DB
+        [Column("CompanyID")]
+        public long CompanyID { get; set; }
 
-    public decimal StandardPrice { get; set; }
+        public string ProductCode { get; set; } = string.Empty;
 
-    [ForeignKey("CategoryID")]
-    public virtual ProductCategory? Category { get; set; }
+        public string ProductName { get; set; } = string.Empty;
 
-    [ForeignKey("BaseUnitID")] // <--- Rất quan trọng để không sinh ra cột 'ProductUnitID' ảo
-    public virtual ProductUnit? Unit { get; set; }
-    public long? ProductTypeID { get; set; }
+        public long? CategoryID { get; set; }
+
+        public long BaseUnitID { get; set; }
+
+        public decimal StandardPrice { get; set; }
+
+        // THÊM DÒNG NÀY: Để logic Xóa mềm hoạt động và hết lỗi Build
+        public bool IsDelete { get; set; } = false;
+
+        public bool IsActive { get; set; } = true;
+
+        [ForeignKey("CategoryID")]
+        public virtual ProductCategory? Category { get; set; }
+
+        [ForeignKey("BaseUnitID")]
+        public virtual ProductUnit? Unit { get; set; }
+
+        public long? ProductTypeID { get; set; }
+    }
 }

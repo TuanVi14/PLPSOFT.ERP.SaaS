@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Infrastructure.Persistence;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using PLPSOFT.ERP.WebApp.Data;
 
 namespace PLPSOFT.ERP.WebApp.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly PLPSOFTERPWebAppContext _context;
 
-        public CustomersController(AppDbContext context)
+        public CustomersController(PLPSOFTERPWebAppContext context)
         {
             _context = context;
         }
@@ -30,14 +33,12 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return View(await data.ToListAsync());
         }
 
-        // GET: Create
         public IActionResult Create()
         {
             ViewBag.CustomerGroups = _context.CustomerGroups.ToList();
             return View();
         }
 
-        // POST: Create
         [HttpPost]
         public async Task<IActionResult> Create(Customer model)
         {
@@ -53,7 +54,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Edit
         public async Task<IActionResult> Edit(long id)
         {
             var data = await _context.Customers.FindAsync(id);
@@ -62,7 +62,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return View(data);
         }
 
-        // POST: Edit
         [HttpPost]
         public async Task<IActionResult> Edit(long id, Customer model)
         {
@@ -84,7 +83,6 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Delete (confirm)
         public async Task<IActionResult> Delete(long id)
         {
             var data = await _context.Customers

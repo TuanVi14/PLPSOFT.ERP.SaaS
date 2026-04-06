@@ -1669,6 +1669,12 @@
           }
         }
       },
+      "Microsoft.EntityFrameworkCore.Tools/9.0.12": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "9.0.12"
+        }
+      },
       "Microsoft.Extensions.Caching.Abstractions/9.0.14": {
         "type": "package",
         "dependencies": {
@@ -5678,6 +5684,31 @@
         "microsoft.entityframeworkcore.sqlserver.nuspec"
       ]
     },
+    "Microsoft.EntityFrameworkCore.Tools/9.0.12": {
+      "sha512": "uHKlzuBxZMqIR+ptApblWfFZ0JdZGl0B8oO9/qU8h8Ik7r0vquhmBD9bdRBWjf6/Kizb7LqpwTU6iEM7d8v6nQ==",
+      "type": "package",
+      "path": "microsoft.entityframeworkcore.tools/9.0.12",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "docs/PACKAGE.md",
+        "microsoft.entityframeworkcore.tools.9.0.12.nupkg.sha512",
+        "microsoft.entityframeworkcore.tools.nuspec",
+        "tools/EntityFrameworkCore.PS2.psd1",
+        "tools/EntityFrameworkCore.PS2.psm1",
+        "tools/EntityFrameworkCore.psd1",
+        "tools/EntityFrameworkCore.psm1",
+        "tools/about_EntityFrameworkCore.help.txt",
+        "tools/init.ps1",
+        "tools/net472/any/ef.exe",
+        "tools/net472/win-arm64/ef.exe",
+        "tools/net472/win-x86/ef.exe",
+        "tools/netcoreapp2.0/any/ef.dll",
+        "tools/netcoreapp2.0/any/ef.runtimeconfig.json"
+      ]
+    },
     "Microsoft.Extensions.Caching.Abstractions/9.0.14": {
       "sha512": "fnHxSqrDnPRTO/AbHR6N5mZOY9NmP14rx8aZiresGF27ypqH+J8ZEgXsiXbHVe8az2IGrZWP2a+uNUGBlzVlHQ==",
       "type": "package",
@@ -8243,6 +8274,7 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "Microsoft.EntityFrameworkCore.Design >= 9.0.14",
+      "Microsoft.EntityFrameworkCore.Tools >= 9.0.12",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 9.0.12",
       "PLPSOFT.ERP.Application >= 1.0.0",
       "PLPSOFT.ERP.Infrastructure >= 1.0.0",
@@ -8250,38 +8282,45 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\acer\\.nuget\\packages\\": {}
+    "C:\\Users\\ANH THU\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
+      "projectUniqueName": "E:\\DEMOTT1\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
       "projectName": "PLPSOFT.ERP.WebApp",
-      "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
-      "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\obj\\",
+      "projectPath": "E:\\DEMOTT1\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
+      "packagesPath": "C:\\Users\\ANH THU\\.nuget\\packages\\",
+      "outputPath": "E:\\DEMOTT1\\PLPSOFT.ERP.WebApp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ANH THU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
-              "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
+            "E:\\DEMOTT1\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
+              "projectPath": "E:\\DEMOTT1\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
             },
-            "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj"
+            "E:\\DEMOTT1\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj": {
+              "projectPath": "E:\\DEMOTT1\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj"
             },
-            "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
-              "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
+            "E:\\DEMOTT1\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
+              "projectPath": "E:\\DEMOTT1\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
             }
           }
         }
@@ -8307,6 +8346,12 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[9.0.14, )"
+          },
+          "Microsoft.EntityFrameworkCore.Tools": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[9.0.12, )"
           },
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",

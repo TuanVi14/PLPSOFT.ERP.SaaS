@@ -28,26 +28,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConversionRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDefault)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UnitMappingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UnitMappingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UnitMappingId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConversionRate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDefault)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UnitMappingId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.UnitMappingId">Details</a> |
+
+                    <form asp-action="Delete" asp-route-id="@item.UnitMappingId" method="post" style="display:inline;" onsubmit="return confirm('Xác nhận xóa bản ghi này?');">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" style="background:none; border:none; color:#0d6efd; text-decoration:underline; padding:0; cursor:pointer;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

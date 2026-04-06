@@ -1,71 +1,50 @@
 ﻿@model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.CustomerGroupProductPrice>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách giá theo nhóm";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Quản lý Giá Theo Nhóm Khách Hàng</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus"></i> Tạo Mới Giá
+        </a>
+    </p>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<table class="table table-hover table-bordered shadow-sm">
+    <thead class="thead-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerGroupId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiscountRate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EffectiveFrom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EffectiveTo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th></th>
+            <th>Nhóm KH (ID)</th>
+            <th>Sản Phẩm (ID)</th>
+            <th>Giá Bán</th>
+            <th>Chiết Khấu (%)</th>
+            <th>Từ Ngày</th>
+            <th>Đến Ngày</th>
+            <th class="text-center">Thao Tác</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerGroupId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiscountRate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EffectiveFrom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EffectiveTo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GroupPriceId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GroupPriceId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GroupPriceId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CustomerGroupId</td>
+                <td>@item.ProductId</td>
+                @* Sửa lỗi: decimal không có HasValue thì gọi ToString trực tiếp *@
+                <td>@item.Price.ToString("N0") VNĐ</td>
+                <td>@(item.DiscountRate.HasValue ? item.DiscountRate.Value.ToString("N1") : "0")%</td>
+                <td>@item.EffectiveFrom.ToString("dd/MM/yyyy")</td>
+                <td>@(item.EffectiveTo.HasValue ? item.EffectiveTo.Value.ToString("dd/MM/yyyy") : "---")</td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.GroupPriceId" class="btn btn-sm btn-warning">Sửa</a>
+                    <form asp-action="Delete" asp-route-id="@item.GroupPriceId" method="post" style="display:inline;"
+                          onsubmit="return confirm('Xác nhận xóa mềm?');">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

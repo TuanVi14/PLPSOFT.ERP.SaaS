@@ -16,7 +16,7 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
 
         public long ProductId { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; } // Bỏ dấu ? nếu muốn bắt buộc nhập giá
 
         public decimal? DiscountRate { get; set; }
 
@@ -25,5 +25,8 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public DateTime? EffectiveTo { get; set; }
 
         public bool IsActive { get; set; }
+
+        // QUAN TRỌNG: Thêm dòng này để thực hiện logic Xóa mềm của Leader
+        public bool IsDelete { get; set; } = false;
     }
 }
