@@ -1,0 +1,89 @@
+﻿@model PLPSOFT.ERP.WebApp.Models.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Thêm mới danh mục";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">Danh mục</a></li>
+        <li class="breadcrumb-item active">Thêm mới</li>
+    </ol>
+
+    <div class="card shadow-sm">
+        <!-- HEADER -->
+        <div class="card-header bg-light">
+            <i class="fas fa-sitemap me-1"></i>
+            <span class="fw-bold">Thông tin danh mục</span>
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body">
+            <form asp-action="Create">
+                <div class="row">
+
+                    <!-- LEFT -->
+                    <div class="col-md-6">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Công ty</label>
+                            <select asp-for="CompanyID" class="form-select" asp-items="Model.Companies">
+                                <option value="">-- Chọn công ty --</option>
+                            </select>
+                            <span asp-validation-for="CompanyID" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Danh mục cha</label>
+                            <select asp-for="ParentID" class="form-select" asp-items="Model.ParentCategories">
+                                <option value="">-- Cấp cao nhất --</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="col-md-6">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Mã danh mục</label>
+                            <input asp-for="CategoryCode" class="form-control" />
+                            <span asp-validation-for="CategoryCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tên danh mục</label>
+                            <input asp-for="CategoryName" class="form-control" />
+                            <span asp-validation-for="CategoryName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 d-flex align-items-center">
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" asp-for="IsActive" />
+                                <label class="form-check-label fw-semibold">
+                                    Hoạt động
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- FOOTER -->
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu danh mục
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

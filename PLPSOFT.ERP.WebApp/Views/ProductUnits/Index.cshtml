@@ -1,0 +1,155 @@
+﻿@model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.ProductUnit>
+
+@{
+    ViewData["Title"] = "Đơn vị tính";
+}
+
+<div class="container-fluid px-4">
+    @Html.AntiForgeryToken() @* Thêm dòng này để xử lý lỗi 400 *@
+
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Đơn vị tính</li>
+    </ol>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center bg-light">
+            <form asp-action="Index" method="get" class="d-flex align-items-center">
+                <div class="input-group input-group-sm" style="width: 300px;">
+                    <input type="text" name="searchString" class="form-control border-secondary"
+                           placeholder="Tìm tên hoặc mã đơn vị..."
+                           value="@ViewData["CurrentFilter"]" />
+            
+                    <button class="btn btn-secondary shadow-sm" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary shadow-sm" title="Làm mới">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
+                    }
+                </div>
+            </form>
+            <div>
+                <i class="fas fa-balance-scale me-1"></i>
+                <span class="fw-bold">Danh sách đơn vị tính</span>
+            </div>
+            <a asp-action="Create" class="btn btn-primary btn-sm shadow-sm">
+                <i class="fas fa-plus-circle"></i> Thêm đơn vị mới
+            </a>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle border">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center" style="width: 120px;">Mã</th>
+                            <th>Tên đơn vị</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="text-center" style="width: 150px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            @* Thêm logic làm mờ dòng nếu ngừng hoạt động *@
+                            <tr class="@(item.IsActive ? "" : "opacity-50")">
+                                <td class="text-center fw-bold text-primary">@item.UnitCode</td>
+                                <td>@item.UnitName</td>
+
+                                <td class="text-center">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success rounded-pill">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary rounded-pill">Ngừng</span>
+                                    }
+                                </td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        @if (item.IsActive)
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.UnitId"
+                                                   class="btn btn-outline-warning btn-sm" title="Sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+
+                                            <button type="button"
+                                                    class="btn btn-outline-danger btn-sm"
+                                                    onclick="confirmDelete(@item.UnitId)" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            @* Nút phục hồi cho đơn vị đã bị xóa mềm *@
+                                            <button type="button" class="btn btn-outline-info btn-sm"
+                                                    onclick="restoreUnit(@item.UnitId)" title="Phục hồi">
+                                                <i class="fas fa-undo"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm Xóa mềm (Ngừng dùng)
+        function confirmDelete(id) {
+            if (confirm("Xác nhận ngừng sử dụng đơn vị này?")) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.post('@Url.Action("Delete", "ProductUnits")', { id: id, __RequestVerificationToken: token }, function (data) {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert("Lỗi: " + (data.message || "Không thể thực hiện thao tác"));
+                    }
+                }).fail(function() {
+                    alert("Lỗi 400: Kiểm tra lại tham số 'id' trong Controller.");
+                });
+            }
+        }
+
+        // Hàm Phục hồi (Kích hoạt lại)
+        function restoreUnit(id) {
+            if (confirm("Bạn muốn phục hồi đơn vị này về trạng thái hoạt động?")) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.post('@Url.Action("Restore", "ProductUnits")', { id: id, __RequestVerificationToken: token }, function (data) {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert("Lỗi: " + (data.message || "Không thể phục hồi"));
+                    }
+                }).fail(function() {
+                    alert("Lỗi hệ thống khi phục hồi.");
+                });
+            }
+        }
+    </script>
+}
+
+<style>
+    /* CSS làm mờ dòng không hoạt động */
+    .opacity-50 {
+        opacity: 0.5;
+        background-color: rgba(0,0,0,0.02) !important;
+    }
+</style>

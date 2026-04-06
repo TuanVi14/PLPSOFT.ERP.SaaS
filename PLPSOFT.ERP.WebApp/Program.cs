@@ -19,7 +19,16 @@ builder.Services.AddDbContext<PLPSOFT.ERP.Sales.SaaS.V2026.Data.AppDbContext>(op
     options.UseSqlServer(connectionString));
 
 builder.Services.AddControllersWithViews();
+<<<<<<< HEAD
+// Lấy chuỗi kết nối từ appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Đăng ký AppDbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+=======
 builder.Services.AddAuthorization();
+>>>>>>> main
 
 var app = builder.Build();
 
