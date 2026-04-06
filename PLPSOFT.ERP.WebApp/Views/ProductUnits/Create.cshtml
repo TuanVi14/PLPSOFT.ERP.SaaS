@@ -1,0 +1,30 @@
+﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.ProductUnit
+
+@{
+    ViewData["Title"] = "Thêm đơn vị tính";
+}
+
+<div class="container mt-4">
+    <h3>Thêm đơn vị tính</h3>
+
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label>Loại đơn vị</label>
+            <select asp-for="UnitTypeID" class="form-control" asp-items="ViewBag.UnitTypeID">
+                <option value="">-- Chọn loại đơn vị --</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Mã đơn vị</label>
+            <input asp-for="UnitCode" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Tên đơn vị</label>
+            <input asp-for="UnitName" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Lưu</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
