@@ -20,9 +20,7 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence
         public DbSet<ProductPrice> ProductPrices { get; set; }
         public DbSet<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; }
         public DbSet<ProductUnitMapping> ProductUnitMappings { get; set; }
-        public DbSet<Branch> Branches { get; set; }
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Product> Products { get; set; }
+
 
         // 🔥 Apply Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
