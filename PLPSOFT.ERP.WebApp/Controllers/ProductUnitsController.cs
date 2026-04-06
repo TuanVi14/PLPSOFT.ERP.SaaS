@@ -19,7 +19,7 @@ public class ProductUnitsController : Controller
     {
         ViewData["CurrentFilter"] = searchString;
         // Trả về thẳng Entity cho trang danh sách để nhanh gọn
-        var query = _context.ProductUnits.AsQueryable();
+        var query = _context.ProductUnits.Include(u => u.UnitType).AsQueryable();
         if (!string.IsNullOrEmpty(searchString))
         {
             searchString = searchString.Trim();

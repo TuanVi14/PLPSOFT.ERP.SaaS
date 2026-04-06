@@ -1,7 +1,7 @@
 ﻿using PLPSOFT.ERP.Domain.Entities.MasterData;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+namespace PLPSOFT.ERP.Domain.Entities.MasterData;
 public partial class Product
 {
     public long ProductId { get; set; }

@@ -94,20 +94,21 @@
                                         @if (item.IsActive)
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.CategoryId"
-                                                   class="btn btn-outline-warning btn-sm" title="Sửa">
-                                                <i class="fas fa-edit"></i>
+                                                   class="btn btn-outline-warning btn-sm">
+                                                <i class="fas fa-edit me-1"></i> Sửa
                                             </a>
+
                                             <button type="button" class="btn btn-outline-danger btn-sm"
-                                                    onclick="confirmDelete(@item.CategoryId)" title="Xóa">
-                                                <i class="fas fa-trash"></i>
+                                                    onclick="confirmDelete(@item.CategoryId)">
+                                                <i class="fas fa-trash me-1"></i> Xóa
                                             </button>
                                         }
                                         else
                                         {
                                             @* Nút phục hồi cho danh mục đã bị ẩn *@
                                             <button type="button" class="btn btn-outline-info btn-sm"
-                                                    onclick="restoreCategory(@item.CategoryId)" title="Phục hồi">
-                                                <i class="fas fa-undo"></i>
+                                                    onclick="restoreCategory(@item.CategoryId)">
+                                                <i class="fas fa-undo"></i> Phục hồi
                                             </button>
                                         }
                                     </div>
