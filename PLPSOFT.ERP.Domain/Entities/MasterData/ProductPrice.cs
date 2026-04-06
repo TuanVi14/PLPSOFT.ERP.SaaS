@@ -21,5 +21,9 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public decimal Price { get; set; }
 
         public DateTime? EffectiveTo { get; set; }
+
+        public Product? Product { get; set; }
+        public Branch? Branch { get; set; }
+        public Company? Company { get; set; }
     }
 }

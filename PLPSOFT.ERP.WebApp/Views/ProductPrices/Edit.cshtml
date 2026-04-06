@@ -13,36 +13,61 @@
 
                 <div class="row">
 
+                    <!-- Product -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="ProductId" class="form-label">Mã sản phẩm</label>
-                        <input asp-for="ProductId" class="form-control" placeholder="Nhập ProductId" />
+                        <label class="form-label">Sản phẩm</label>
+                        <select asp-for="ProductId" class="form-select">
+                            <option value="">-- Chọn sản phẩm --</option>
+                            @foreach (var item in ViewBag.Products)
+                            {
+                                <option value="@item.ProductId">@item.ProductName</option>
+                            }
+                        </select>
                     </div>
 
+                    <!-- Branch -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="BranchId" class="form-label">Mã chi nhánh</label>
-                        <input asp-for="BranchId" class="form-control" placeholder="Nhập BranchId" />
+                        <label class="form-label">Chi nhánh</label>
+                        <select asp-for="BranchId" class="form-select">
+                            <option value="">-- Chọn chi nhánh --</option>
+                            @foreach (var item in ViewBag.Branches)
+                            {
+                                <option value="@item.BranchId">@item.BranchName</option>
+                            }
+                        </select>
                     </div>
 
+                    <!-- Company -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="CompanyId" class="form-label">Mã công ty</label>
-                        <input asp-for="CompanyId" class="form-control" placeholder="Nhập CompanyId" />
+                        <label class="form-label">Công ty</label>
+                        <select asp-for="CompanyId" class="form-select">
+                            <option value="">-- Chọn công ty --</option>
+                            @foreach (var item in ViewBag.Companies)
+                            {
+                                <option value="@item.CompanyId">@item.CompanyName</option>
+                            }
+                        </select>
                     </div>
 
+                    <!-- Price -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="Price" class="form-label">Giá</label>
+                        <label class="form-label">Giá</label>
                         <input asp-for="Price"
                                id="priceInput"
                                class="form-control"
-                               placeholder="Nhập giá " />
+                               value="@Model.Price.ToString("N0").Replace(",", ".")"
+                               placeholder="Nhập giá" />
                     </div>
 
+                    <!-- Effective From -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="EffectiveFrom" class="form-label">Hiệu lực từ</label>
+                        <label class="form-label">Hiệu lực từ</label>
                         <input asp-for="EffectiveFrom" class="form-control" type="date" />
                     </div>
 
+                    <!-- Effective To -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="EffectiveTo" class="form-label">Hiệu lực đến</label>
+                        <label class="form-label">Hiệu lực đến</label>
                         <input asp-for="EffectiveTo" class="form-control" type="date" />
                     </div>
 
@@ -64,18 +89,24 @@
     <script>
         const priceInput = document.getElementById("priceInput");
 
-        function formatNumber(value) {
+        function formatVND(value) {
             if (!value) return "";
-            return value.replace(/\D/g, "")
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            // bỏ ký tự không phải số
+            value = value.replace(/\D/g, "");
+
+            // format dạng 50.000
+            return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
+        // khi nhập
         priceInput.addEventListener("input", function (e) {
-            e.target.value = formatNumber(e.target.value);
+            e.target.value = formatVND(e.target.value);
         });
 
+        // trước khi submit → bỏ dấu .
         document.querySelector("form").addEventListener("submit", function () {
-            priceInput.value = priceInput.value.replace(/,/g, "");
+            priceInput.value = priceInput.value.replace(/\./g, "");
         });
     </script>
 }

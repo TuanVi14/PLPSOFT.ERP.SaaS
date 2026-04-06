@@ -25,5 +25,7 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public bool IsActive { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public Company? Company { get; set; }
     }
 }

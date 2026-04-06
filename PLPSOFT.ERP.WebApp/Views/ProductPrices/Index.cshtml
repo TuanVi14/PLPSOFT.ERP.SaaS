@@ -2,7 +2,6 @@
 
 <div class="container mt-4">
 
-    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold">Danh sách bảng giá sản phẩm</h3>
         <a asp-action="Create" class="btn btn-primary">
@@ -10,135 +9,141 @@
         </a>
     </div>
 
-    <!-- Search -->
-    <div class="mb-3">
+    <form method="get" asp-action="Index" class="mb-3">
         <div class="input-group">
-            <span class="input-group-text">
-                <i class="bi bi-search"></i>
-            </span>
-            <input type="text" id="searchInput" class="form-control"
-                   placeholder="Tìm theo mã sản phẩm, chi nhánh, công ty..." />
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Tìm theo sản phẩm, chi nhánh, công ty, giá..."
+                   value="@Context.Request.Query["keyword"]" />
+
+            <button type="submit" class="btn btn-primary">
+                Tìm
+            </button>
         </div>
-    </div>
+    </form>
 
-    <!-- Table -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle" id="priceTable">
-                    <thead class="table-dark text-center">
-                        <tr>
-                            <th>Mã sản phẩm</th>
-                            <th>Mã chi nhánh</th>
-                            <th>Mã công ty</th>
-                            <th>Giá</th>
-                            <th>Hiệu lực từ</th>
-                            <th>Hiệu lực đến</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark text-center align-middle">
+            <tr>
+                <th class="py-2">Sản phẩm</th>
+                <th class="py-2">Chi nhánh</th>
+                <th class="py-2">Công ty</th>
+                <th class="py-2">Giá</th>
+                <th class="py-2">Hiệu lực từ</th>
+                <th class="py-2">Hiệu lực đến</th>
+                <th class="py-2">Trạng thái</th>
+                <th class="py-2">Thao tác</th>
+            </tr>
+        </thead>
 
-                    <tbody>
-                        @foreach (var item in Model)
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@(item.EffectiveTo == null ? "" : "table-secondary text-muted opacity-75")">
+
+                    <td>@item.Product?.ProductName</td>
+                    <td>@item.Branch?.BranchName</td>
+                    <td>@item.Company?.CompanyName</td>
+
+                    <td class="text-end fw-semibold text-success">
+                        @item.Price.ToString("N0")
+                    </td>
+
+                    <td>
+                        @item.EffectiveFrom.ToString("dd/MM/yyyy")
+                    </td>
+
+                    <td>
+                        @(item.EffectiveTo.HasValue
+                                            ? item.EffectiveTo.Value.ToString("dd/MM/yyyy")
+                                            : "-")
+                </td>
+
+                    <td class="text-center">
+                    @if (item.EffectiveTo == null)
                         {
-                            <tr>
-                                <td>@item.ProductId</td>
-                                <td>@item.BranchId</td>
-                                <td>@item.CompanyId</td>
+                            <span class="badge bg-success">Đang hoạt động</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Đã xóa</span>
+                        }
+                    </td>
 
-                                <td class="text-end fw-semibold text-success">
-                                    @item.Price.ToString("N0")
-                                </td>
+                    <td class="text-center">
+                        @if (item.EffectiveTo == null)
+                        {
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.PriceId"
+                                   class="btn btn-sm btn-warning px-3 py-1">
+                                    Sửa
+                                </a>
 
-                                <td>
-                                    @item.EffectiveFrom.ToString("dd/MM/yyyy")
-                                </td>
+                                <button type="button"
+                                        class="btn btn-sm btn-danger px-3 py-1"
+                                        onclick="deletePrice(@item.PriceId)">
+                                    Xóa
+                                </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <button type="button"
+                                    class="btn btn-sm btn-success px-3 py-1"
+                                    onclick="restorePrice(@item.PriceId)">
+                                Khôi phục
+                            </button>
+                        }
+                    </td>
 
-                                <td>
-                                    <span class="@(item.EffectiveTo.HasValue ? "" : "text-muted")">
-                                        @(item.EffectiveTo.HasValue
-                                                                            ? item.EffectiveTo.Value.ToString("dd/MM/yyyy")
-                                                                            : "Không giới hạn")
-                                </span>
-                            </td>
-
-                                <td class="text-center">
-                                    <a asp-action="Edit"
-                                       asp-route-id="@item.PriceId"
-                                       class="btn btn-sm btn-warning">
-                                        Sửa
-                                    </a>
-                                </td>
-                            </tr>
-                                                }
-                    </tbody>
-
-                </table>
-            </div>
-        </div>
-    </div>
-
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+<script>
+    function deletePrice(id) {
+        if (!confirm("Bạn có chắc muốn xóa không?")) return;
 
-    <script>
-        const searchInput = document.getElementById("searchInput");
-        const rows = document.querySelectorAll("#priceTable tbody tr");
-
-        let debounceTimer;
-
-        searchInput.addEventListener("input", function () {
-            clearTimeout(debounceTimer);
-
-            debounceTimer = setTimeout(() => {
-                const filter = searchInput.value.toLowerCase().replace(/,/g, "");
-
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll("td");
-
-                    let rowText = "";
-
-                    // Gom toàn bộ text trong row + bỏ dấu phẩy (quan trọng cho giá)
-                    cells.forEach(cell => {
-                        rowText += cell.innerText.replace(/,/g, "") + " ";
-                    });
-
-                    rowText = rowText.toLowerCase();
-
-                    if (rowText.includes(filter)) {
-                        row.style.display = "";
-                        highlightText(row, filter);
-                    } else {
-                        row.style.display = "none";
-                        removeHighlight(row);
-                    }
-                });
-
-            }, 300);
+        fetch('/ProductPrices/Delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Xóa thành công");
+                location.reload();
+            } else {
+                alert("Xóa thất bại");
+            }
         });
+    }
 
-        // Highlight
-        function highlightText(row, keyword) {
-            removeHighlight(row);
+    function restorePrice(id) {
+        if (!confirm("Bạn có muốn khôi phục không?")) return;
 
-            if (!keyword) return;
-
-            const cells = row.querySelectorAll("td");
-
-            cells.forEach(cell => {
-                const regex = new RegExp(`(${keyword})`, "gi");
-                cell.innerHTML = cell.innerHTML.replace(regex, "<mark>$1</mark>");
-            });
-        }
-
-        // Remove highlight
-        function removeHighlight(row) {
-            const marks = row.querySelectorAll("mark");
-            marks.forEach(mark => {
-                mark.replaceWith(mark.textContent);
-            });
-        }
-    </script>
-}
+        fetch('/ProductPrices/Restore', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Khôi phục thành công");
+                location.reload();
+            } else {
+                alert("Khôi phục thất bại");
+            }
+        });
+    }
+</script>

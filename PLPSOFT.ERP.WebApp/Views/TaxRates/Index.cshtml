@@ -8,15 +8,19 @@
         </a>
     </div>
 
-    <div class="mb-3">
+    <form method="get" asp-action="Index" class="mb-3">
         <div class="input-group">
-            <span class="input-group-text">
-                <i class="bi bi-search"></i>
-            </span>
-            <input type="text" id="searchInput" class="form-control"
-                   placeholder="Tìm theo mã hoặc tên thuế..." />
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Tìm theo mã, tên, công ty..."
+                   value="@Context.Request.Query["keyword"]" />
+
+            <button type="submit" class="btn btn-primary">
+                Tìm
+            </button>
         </div>
-    </div>
+    </form>
 
     <div class="card shadow-sm">
         <div class="card-body">
@@ -26,19 +30,27 @@
                         <tr>
                             <th>Mã thuế</th>
                             <th>Tên thuế</th>
+                            <th>Công ty</th>
                             <th>Thuế suất (%)</th>
                             <th>Hiệu lực từ</th>
                             <th>Hiệu lực đến</th>
                             <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
+                            <tr class="@(item.IsActive ? "" : "table-secondary text-muted opacity-75")">
+
                                 <td>@item.TaxCode</td>
                                 <td>@item.TaxName</td>
+
+                                <td>
+                                    @item.Company?.CompanyName
+                                </td>
 
                                 <td class="text-end fw-semibold text-success">
                                     @item.Rate.ToString("N2")
@@ -61,76 +73,88 @@
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary">Ngưng</span>
+                                        <span class="badge bg-danger">Đã xóa</span>
                                     }
                                 </td>
 
-                                <td class="text-center">
+                                <td>
+                                    @item.CreatedAt.ToString("dd/MM/yyyy")
+                                </td>
+
+                            <td class="text-center">
+                                @if (item.IsActive)
+                                {
                                     <a asp-action="Edit"
                                        asp-route-id="@item.TaxRateId"
-                                       class="btn btn-sm btn-warning">
+                                       class="btn btn-sm btn-warning me-1 px-2 py-1">
                                         Sửa
                                     </a>
-                                </td>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger px-2 py-1"
+                                            onclick="confirmDelete(@item.TaxRateId)">
+                                        Xóa
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button"
+                                            class="btn btn-sm btn-success px-2 py-1"
+                                            onclick="restoreTax(@item.TaxRateId)">
+                                        Khôi phục
+                                    </button>
+                                }
+                            </td>
                             </tr>
                         }
                     </tbody>
+
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+<script>
+    function confirmDelete(id) {
+        if (!confirm("Bạn có chắc muốn xóa không?")) return;
 
-    <script>
-        const searchInput = document.getElementById("searchInput");
-        const rows = document.querySelectorAll("tbody tr");
-
-        let debounceTimer;
-
-        searchInput.addEventListener("input", function () {
-            clearTimeout(debounceTimer);
-
-            debounceTimer = setTimeout(() => {
-                const filter = searchInput.value.toLowerCase();
-
-                rows.forEach(row => {
-                    const text = row.innerText.toLowerCase();
-
-                    if (text.includes(filter)) {
-                        row.style.display = "";
-                        highlightText(row, filter);
-                    } else {
-                        row.style.display = "none";
-                        removeHighlight(row);
-                    }
-                });
-
-            }, 300); // debounce 300ms
+        fetch('/TaxRates/Delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Xóa thành công");
+                location.reload();
+            } else {
+                alert("Xóa thất bại");
+            }
         });
+    }
 
-        // Highlight chữ tìm kiếm
-        function highlightText(row, keyword) {
-            removeHighlight(row);
+    function restoreTax(id) {
+        if (!confirm("Bạn có muốn khôi phục dữ liệu này không?")) return;
 
-            if (!keyword) return;
-
-            const cells = row.querySelectorAll("td");
-
-            cells.forEach(cell => {
-                const regex = new RegExp(`(${keyword})`, "gi");
-                cell.innerHTML = cell.innerHTML.replace(regex, "<mark>$1</mark>");
-            });
-        }
-
-        // Xóa highlight cũ
-        function removeHighlight(row) {
-            const marks = row.querySelectorAll("mark");
-            marks.forEach(mark => {
-                mark.replaceWith(mark.textContent);
-            });
-        }
-    </script>
-}
+        fetch('/TaxRates/Restore', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Khôi phục thành công");
+                location.reload();
+            } else {
+                alert("Khôi phục thất bại");
+            }
+        });
+    }
+</script>
