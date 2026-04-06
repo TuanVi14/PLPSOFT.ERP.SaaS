@@ -22,6 +22,8 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         // ================= LIST =================
         public async Task<IActionResult> Index(string keyword)
         {
+            var now = DateTime.Now;
+
             var query = _context.ProductPrices
                 .Include(x => x.Product)
                 .Include(x => x.Branch)
@@ -39,22 +41,18 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 query = query.Where(x =>
                     x.Price.ToString().Contains(keywordLower) ||
 
-                    x.ProductId.ToString().Contains(keywordLower) ||
-                    x.BranchId.ToString().Contains(keywordLower) ||
-                    x.CompanyId.ToString().Contains(keywordLower) ||
-
-                    (isDate && x.EffectiveFrom.Date == parsedDate.Date) ||
-                    (isDate && x.EffectiveTo.HasValue && x.EffectiveTo.Value.Date == parsedDate.Date) ||
-
                     (x.Product != null && x.Product.ProductName.Contains(keyword)) ||
                     (x.Branch != null && x.Branch.BranchName.Contains(keyword)) ||
-                    (x.Company != null && x.Company.CompanyName.Contains(keyword))
+                    (x.Company != null && x.Company.CompanyName.Contains(keyword)) ||
+
+                    (isDate && x.EffectiveFrom.Date == parsedDate.Date) ||
+                    (isDate && x.EffectiveTo.HasValue && x.EffectiveTo.Value.Date == parsedDate.Date)
                 );
             }
 
-            // ✅ Active lên trên, deleted xuống dưới
+            // ✅ FIX: sort để deleted xuống dưới
             query = query
-                .OrderBy(x => x.EffectiveTo.HasValue)
+                .OrderBy(x => x.EffectiveTo.HasValue && x.EffectiveTo <= now)
                 .ThenByDescending(x => x.EffectiveFrom);
 
             var data = await query.ToListAsync();
@@ -109,11 +107,21 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             if (entity == null)
                 return NotFound();
 
+            // ===== UPDATE BASIC FIELDS =====
             entity.ProductId = model.ProductId;
             entity.BranchId = model.BranchId;
             entity.CompanyId = model.CompanyId;
             entity.Price = model.Price;
             entity.EffectiveFrom = model.EffectiveFrom;
+
+   
+            var now = DateTime.Now;
+
+     
+            if (!(entity.EffectiveTo.HasValue && entity.EffectiveTo.Value <= now))
+            {
+                entity.EffectiveTo = model.EffectiveTo;
+            }
 
             await _context.SaveChangesAsync();
 
@@ -143,7 +151,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             if (entity == null)
                 return Json(new { success = false });
 
-            entity.EffectiveTo = null;
+            entity.EffectiveTo = null; // restore
 
             await _context.SaveChangesAsync();
 

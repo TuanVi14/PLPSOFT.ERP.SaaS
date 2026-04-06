@@ -19,20 +19,29 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         {
             var query = _context.TaxRates
                 .Include(x => x.Company)
-                .OrderByDescending(x => x.IsActive)   
-                .ThenByDescending(x => x.CreatedAt)  
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
+                keyword = keyword.Trim();
+
                 query = query.Where(x =>
                     x.TaxCode.Contains(keyword) ||
                     x.TaxName.Contains(keyword) ||
-                    (x.Company != null && x.Company.CompanyName.Contains(keyword))
+                    x.Rate.ToString().Contains(keyword) ||
+                    x.CompanyId.ToString().Contains(keyword) ||
+                    (x.Company != null && x.Company.CompanyName.Contains(keyword)) ||
+                    x.EffectiveFrom.ToString().Contains(keyword) ||
+                    (x.EffectiveTo.HasValue && x.EffectiveTo.Value.ToString().Contains(keyword)) ||
+                    x.CreatedAt.ToString().Contains(keyword)
                 );
             }
 
-            var data = await query.ToListAsync();
+            var data = await query
+                .OrderByDescending(x => x.IsActive)
+                .ThenByDescending(x => x.CreatedAt)
+                .ToListAsync();
+
             return View(data);
         }
 
