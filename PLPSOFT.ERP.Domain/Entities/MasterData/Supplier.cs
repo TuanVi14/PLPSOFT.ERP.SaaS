@@ -1,4 +1,4 @@
-﻿namespace PLPSOFT.ERP.Sales.SaaS.V2026.Models;
+﻿namespace PLPSOFT.ERP.Domain.Entities.MasterData;
 public class Supplier
 {
     public long SupplierID { get; set; }
@@ -18,10 +18,10 @@ public class Supplier
     public decimal? CreditLimit { get; set; }
 
     public bool IsActive { get; set; }
-    public bool IsDeleted { get; set; }   
+    public bool IsDeleted { get; set; }
 
     public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; } 
+    public DateTime? UpdatedAt { get; set; }
 
     public string? ExtraData { get; set; }
 

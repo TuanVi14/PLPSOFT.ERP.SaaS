@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace PLPSOFT.ERP.Sales.SaaS.V2026.Models
+namespace PLPSOFT.ERP.Domain.Entities.MasterData
 {
     public class Company
     {
-        
+
         public long CompanyID { get; set; }
 
         public long CountryId { get; set; }
