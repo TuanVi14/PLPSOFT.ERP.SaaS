@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData
 {
-    public class TaxRate
+    public partial class TaxRate
     {
         public long TaxRateId { get; set; }
 
         public long CompanyId { get; set; }
 
-        public string TaxCode { get; set; } = string.Empty;
+        public string TaxCode { get; set; } = null!;
 
-        public string TaxName { get; set; } = string.Empty;
+        public string TaxName { get; set; } = null!;
 
         public decimal Rate { get; set; }
 
@@ -25,5 +25,9 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public bool IsActive { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public virtual Company Company { get; set; } = null!;
+
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

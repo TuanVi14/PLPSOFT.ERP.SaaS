@@ -1,0 +1,181 @@
+﻿@model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.ProductCategory>
+
+@{
+    ViewData["Title"] = "Danh mục Sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+    @Html.AntiForgeryToken()
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh mục</li>
+    </ol>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center bg-light">
+            <form asp-action="Index" method="get" class="d-flex align-items-center">
+                <div class="input-group input-group-sm" style="width: 300px;">
+                    <input type="text" name="searchString" class="form-control border-secondary"
+                           placeholder="Tìm tên hoặc mã danh mục..."
+                           value="@ViewData["CurrentFilter"]" />
+            
+                    <button class="btn btn-secondary shadow-sm" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary shadow-sm" title="Xóa tìm kiếm">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
+                    }
+                </div>
+            </form>
+            <div>
+                <i class="fas fa-sitemap me-1"></i>
+                <span class="fw-bold">Cấu trúc phân loại hàng hóa</span>
+            </div>
+            <a asp-action="Create" class="btn btn-primary btn-sm shadow-sm">
+                <i class="fas fa-plus-circle"></i> Thêm danh mục mới
+            </a>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle border">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center" style="width: 120px;">Mã</th>
+                            <th>Tên danh mục</th>
+                            <th>Thuộc Công ty</th>
+                            <th>Danh mục cha</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="text-center" style="width: 150px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            @* Thêm class opacity-50 nếu danh mục ngừng hoạt động *@
+                            <tr class="@(item.IsActive ? "" : "opacity-50")">
+                                <td class="text-center fw-bold text-primary">@item.CategoryCode</td>
+                                <td>@item.CategoryName</td>
+                                <td>
+                                    <span class="badge bg-light text-dark border">
+                                        <i class="fas fa-building me-1"></i>@item.Company?.ShortName
+                                    </span>
+                                </td>
+                                <td>
+                                    @if (item.Parent != null)
+                                    {
+                                        <span class="text-muted">
+                                            <i class="fas fa-level-up-alt fa-rotate-90 me-1"></i>@item.Parent.CategoryName
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted italic">---</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success rounded-pill">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary rounded-pill">Ngừng</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        @if (item.IsActive)
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.CategoryId"
+                                                   class="btn btn-outline-warning btn-sm">
+                                                <i class="fas fa-edit me-1"></i> Sửa
+                                            </a>
+
+                                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    onclick="confirmDelete(@item.CategoryId)">
+                                                <i class="fas fa-trash me-1"></i> Xóa
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            @* Nút phục hồi cho danh mục đã bị ẩn *@
+                                            <button type="button" class="btn btn-outline-info btn-sm"
+                                                    onclick="restoreCategory(@item.CategoryId)">
+                                                <i class="fas fa-undo"></i> Phục hồi
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm Xóa mềm (Ngừng dùng)
+                function confirmDelete(id) {
+            if (confirm("Xác nhận ngừng dùng danh mục này?")) {
+                // Lấy token bảo mật từ trang (ASP.NET tự sinh ra một input ẩn tên __RequestVerificationToken)
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: '@Url.Action("Delete", "ProductCategories")/' + id,
+                    type: 'POST',
+                    data: {
+                        __RequestVerificationToken: token // Gửi token này lên để tránh lỗi 400
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Lỗi 400: Kiểm tra lại tên tham số 'id' trong Controller.");
+                    }
+                });
+            }
+        }
+
+        // Hàm Phục hồi (Kích hoạt lại)
+                function restoreCategory(id) {
+            if (confirm("Kích hoạt lại danh mục này?")) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("Restore", "ProductCategories")/' + id,
+                    type: 'POST',
+                    data: { __RequestVerificationToken: token },
+                    success: function (data) {
+                        if (data.success){
+                            alert(data.message);
+                            location.reload();
+                        }
+                        else alert(data.message);
+                    }
+                });
+            }
+        }
+    </script>
+}
+
+<style>
+    /* CSS hỗ trợ hiệu ứng làm mờ cho Admin Dashboard */
+    .opacity-50 {
+        opacity: 0.5;
+        background-color: rgba(0,0,0,0.02) !important;
+    }
+</style>

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData
 {
-    public class CustomerGroupProductPrice
+    public partial class CustomerGroupProductPrice
     {
-        [Key]
         public long GroupPriceId { get; set; }
 
         public long CustomerGroupId { get; set; }
@@ -25,5 +23,9 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public DateTime? EffectiveTo { get; set; }
 
         public bool IsActive { get; set; }
+
+        public virtual CustomerGroup CustomerGroup { get; set; } = null!;
+
+        public virtual Product Product { get; set; } = null!;
     }
 }
