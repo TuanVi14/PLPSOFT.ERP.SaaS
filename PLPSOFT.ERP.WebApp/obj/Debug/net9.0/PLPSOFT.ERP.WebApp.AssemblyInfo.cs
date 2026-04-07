@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PLPSOFT.ERP.WebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff4aa280c8ac7d94a5b99b92b5c0988fec2e96d1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+370c3989edafa706130371fc2f8b34b35a7f05b0")]
 [assembly: System.Reflection.AssemblyProductAttribute("PLPSOFT.ERP.WebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PLPSOFT.ERP.WebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
