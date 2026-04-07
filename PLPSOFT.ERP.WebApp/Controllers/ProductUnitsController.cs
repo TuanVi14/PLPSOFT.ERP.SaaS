@@ -19,7 +19,7 @@ public class ProductUnitsController : Controller
     {
         ViewData["CurrentFilter"] = searchString;
         // Trả về thẳng Entity cho trang danh sách để nhanh gọn
-        var query = _context.ProductUnits.AsQueryable();
+        var query = _context.ProductUnits.Include(u => u.UnitType).AsQueryable();
         if (!string.IsNullOrEmpty(searchString))
         {
             searchString = searchString.Trim();
@@ -53,7 +53,7 @@ public class ProductUnitsController : Controller
                 UnitCode = vm.UnitCode,
                 UnitName = vm.UnitName,
                 UnitTypeId = vm.UnitTypeID, // Gán giá trị 7, 8 hoặc 9 từ form
-                IsActive = vm.IsActive
+                IsActive = vm.IsActive,
             };
             _context.ProductUnits.Add(unit);
             await _context.SaveChangesAsync();

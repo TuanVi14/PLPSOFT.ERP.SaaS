@@ -1,151 +1,159 @@
-﻿@model IEnumerable<PLPSOFT.ERP.WebApp.Models.ProductViewModel>
+﻿    @model IEnumerable<PLPSOFT.ERP.WebApp.Models.ProductViewModel>
 
-@{
-    ViewData["Title"] = "Danh sách Sản phẩm";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    @{
+        ViewData["Title"] = "Danh sách Sản phẩm";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-<div class="container-fluid px-4">
-    <h1 class="mt-4">@ViewData["Title"]</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Sản phẩm</li>
-    </ol>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">@ViewData["Title"]</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Sản phẩm</li>
+        </ol>
 
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center bg-light">
-            <form asp-action="Index" method="get" class="d-flex align-items-center">
-                <div class="input-group input-group-sm" style="width: 300px;">
-                    <input type="text" name="searchString" class="form-control border-secondary"
-                           placeholder="Tìm tên hoặc mã sản phẩm..."
-                           value="@ViewData["CurrentFilter"]" />
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center bg-light">
+                <form asp-action="Index" method="get" class="d-flex align-items-center">
+                    <div class="input-group input-group-sm" style="width: 300px;">
+                        <input type="text" name="searchString" class="form-control border-secondary"
+                               placeholder="Tìm tên hoặc mã sản phẩm..."
+                               value="@ViewData["CurrentFilter"]" />    
             
-                    <button class="btn btn-secondary shadow-sm" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
+                        <button class="btn btn-secondary shadow-sm" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
 
-                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
-                    {
-                        <a asp-action="Index" class="btn btn-outline-secondary shadow-sm" title="Làm mới">
-                            <i class="fas fa-sync-alt"></i>
-                        </a>
-                    }
-                </div>
-            </form>
-            <div>
-                <i class="fas fa-boxes me-1"></i>
-                <span class="fw-bold">Quản lý kho hàng</span>
-            </div>
-
-            <a asp-action="Create" class="btn btn-primary btn-sm shadow-sm">
-                <i class="fas fa-plus-circle"></i> Thêm sản phẩm mới
-            </a>
-        </div>
-        
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped align-middle border">
-                    <thead class="table-dark">
-                        <tr>
-                            <th class="text-center">Mã SP</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Công ty</th>
-                            <th>Danh mục</th>
-                            <th class="text-end">Giá vốn</th>
-                            <th class="text-end">Giá bán</th>
-                            <th class="text-center">Trạng thái</th>
-                            <th class="text-center" style="width: 150px;">Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
+                        @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
                         {
-                            @* Thêm logic làm mờ dòng nếu ngừng hoạt động *@
-                            <tr class="@(item.IsActive ? "" : "opacity-50")">
-                                <td class="text-center fw-bold text-primary">@item.ProductCode</td>
-                                <td>@item.ProductName</td>
-                                <td><small class="text-muted">@item.Company?.ShortName</small></td>
-                                <td><span class="badge bg-info text-dark">@item.Category?.CategoryName</span></td>
-                                <td class="text-end">@item.CostPrice.ToString("N0")</td>
-                                <td class="text-end fw-bold">@item.StandardPrice.ToString("N0")</td>
-                                <td class="text-center">
-                                    @if (item.IsActive)
-                                    {
-                                        <span class="badge bg-success"><i class="fas fa-check-circle"></i> Hoạt động</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary"><i class="fas fa-times-circle"></i> Ngừng</span>
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group" role="group">
+                            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm" title="Làm mới">
+                                <i class="fas fa-sync-alt"></i>
+                            </a>
+                        }
+                    </div>
+                </form>
+                <div>
+                    <i class="fas fa-boxes me-1"></i>
+                    <span class="fw-bold">Quản lý kho hàng</span>
+                </div>
+
+                <a asp-action="Create" class="btn btn-primary btn-sm shadow-sm">
+                    <i class="fas fa-plus-circle"></i> Thêm sản phẩm mới
+                </a>
+            </div>
+        
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle border">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">Mã SP</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Công ty</th>
+                                <th>Danh mục</th>
+                                <th class="text-end">Giá vốn</th>
+                                <th class="text-end">Giá bán</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center" style="width: 150px;">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                @* Thêm logic làm mờ dòng nếu ngừng hoạt động *@
+                                <tr class="@(item.IsActive ? "" : "opacity-50")">
+                                    <td class="text-center fw-bold text-primary">@item.ProductCode</td>
+                                    <td>@item.ProductName</td>
+                                    <td><small class="text-muted">@item.Company?.ShortName</small></td>
+                                    <td><span class="badge bg-info text-dark">@item.Category?.CategoryName</span></td>
+                                    <td class="text-end">@item.CostPrice.ToString("N0")</td>
+                                    <td class="text-end fw-bold">@item.StandardPrice.ToString("N0")</td>
+                                    <td class="text-center">
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-success"><i class="fas fa-check-circle"></i> Hoạt động</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary"><i class="fas fa-times-circle"></i> Ngừng</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-1 flex-wrap">
+
+                                        <!-- Chi tiết -->
+                                        <a asp-action="Details" asp-route-id="@item.ProductID"
+                                           class="btn btn-outline-info btn-sm">
+                                            <i class="fas fa-eye"></i> Chi tiết
+                                        </a>
+
                                         @if (item.IsActive)
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.ProductID"
-                                                   class="btn btn-outline-warning btn-sm" title="Chỉnh sửa">
-                                                <i class="fas fa-edit"></i>
+                                               class="btn btn-outline-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Sửa
                                             </a>
-                                            <button type="button" class="btn btn-outline-danger btn-sm"
-                                                    onclick="confirmDelete(@item.ProductID)" title="Xóa">
-                                                <i class="fas fa-trash"></i>
+
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                    onclick="confirmDelete(@item.ProductID)">
+                                                <i class="fas fa-trash"></i> Ngừng
                                             </button>
                                         }
                                         else
                                         {
-                                            @* Nút phục hồi cho sản phẩm đã bị xóa mềm *@
-                                            <button type="button" class="btn btn-outline-info btn-sm"
-                                                    onclick="restoreProduct(@item.ProductID)" title="Phục hồi">
-                                                <i class="fas fa-undo"></i>
+                                            <button class="btn btn-outline-success btn-sm"
+                                                    onclick="restoreProduct(@item.ProductID)">
+                                                <i class="fas fa-undo"></i> Khôi phục
                                             </button>
                                         }
+
                                     </div>
                                 </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    <script>
-        // Hàm Xóa mềm (Ngừng hoạt động)
-        function confirmDelete(id) {
-            if (confirm("Bạn có chắc chắn muốn ngừng kinh doanh sản phẩm này?")) {
-                $.post('@Url.Action("Delete", "Product")/' + id, function (data) {
-                    if (data.success) {
-                        alert(data.message);
-                        location.reload();
-                    } else {
-                        alert("Lỗi: " + (data.message || "Không thể thực hiện thao tác này"));
-                    }
-                });
+    @section Scripts {
+        <script>
+            // Hàm Xóa mềm (Ngừng hoạt động)
+            function confirmDelete(id) {
+                if (confirm("Bạn có chắc chắn muốn ngừng kinh doanh sản phẩm này?")) {
+                    $.post('@Url.Action("Delete", "Product")/' + id, function (data) {
+                        if (data.success) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert("Lỗi: " + (data.message || "Không thể thực hiện thao tác này"));
+                        }
+                    });
+                }
             }
-        }
 
-        // Hàm Phục hồi (Kích hoạt lại)
-        function restoreProduct(id) {
-            if (confirm("Bạn có chắc chắn muốn kích hoạt lại sản phẩm này?")) {
-                $.post('@Url.Action("Restore", "Product")/' + id, function (data) {
-                    if (data.success) {
-                        alert(data.message);
-                        location.reload();
-                    } else {
-                        alert("Lỗi: " + (data.message || "Không thể phục hồi"));
-                    }
-                });
+            // Hàm Phục hồi (Kích hoạt lại)
+            function restoreProduct(id) {
+                if (confirm("Bạn có chắc chắn muốn kích hoạt lại sản phẩm này?")) {
+                    $.post('@Url.Action("Restore", "Product")/' + id, function (data) {
+                        if (data.success) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert("Lỗi: " + (data.message || "Không thể phục hồi"));
+                        }
+                    });
+                }
             }
-        }
-    </script>
-}
-
-@* Thêm CSS bổ sung để hỗ trợ class opacity *@
-<style>
-    .opacity-50 {
-        opacity: 0.5;
-        background-color: rgba(0,0,0,0.02);
+        </script>
     }
-</style>
+
+    @* Thêm CSS bổ sung để hỗ trợ class opacity *@
+    <style>
+        .opacity-50 {
+            opacity: 0.5;
+            background-color: rgba(0,0,0,0.02);
+        }
+    </style>

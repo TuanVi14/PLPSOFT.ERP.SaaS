@@ -50,6 +50,7 @@
                         <tr>
                             <th class="text-center" style="width: 120px;">Mã</th>
                             <th>Tên đơn vị</th>
+                            <th>Loại đơn vị</th>
                             <th class="text-center">Trạng thái</th>
                             <th class="text-center" style="width: 150px;">Thao tác</th>
                         </tr>
@@ -61,6 +62,11 @@
                             <tr class="@(item.IsActive ? "" : "opacity-50")">
                                 <td class="text-center fw-bold text-primary">@item.UnitCode</td>
                                 <td>@item.UnitName</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">
+                                        @item.UnitType?.ValueName
+                                    </span>
+                                </td>
 
                                 <td class="text-center">
                                     @if (item.IsActive)
@@ -78,22 +84,22 @@
                                         @if (item.IsActive)
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.UnitId"
-                                                   class="btn btn-outline-warning btn-sm" title="Sửa">
-                                                <i class="fas fa-edit"></i>
+                                                   class="btn btn-outline-warning btn-sm">
+                                                <i class="fas fa-edit me-1"></i> Sửa
                                             </a>
 
                                             <button type="button"
                                                     class="btn btn-outline-danger btn-sm"
-                                                    onclick="confirmDelete(@item.UnitId)" title="Xóa">
-                                                <i class="fas fa-trash"></i>
+                                                    onclick="confirmDelete(@item.UnitId)">
+                                                <i class="fas fa-trash me-1"></i> Xóa
                                             </button>
                                         }
                                         else
                                         {
                                             @* Nút phục hồi cho đơn vị đã bị xóa mềm *@
                                             <button type="button" class="btn btn-outline-info btn-sm"
-                                                    onclick="restoreUnit(@item.UnitId)" title="Phục hồi">
-                                                <i class="fas fa-undo"></i>
+                                                    onclick="restoreUnit(@item.UnitId)">
+                                                <i class="fas fa-undo me-1"></i> Phục hồi
                                             </button>
                                         }
                                     </div>

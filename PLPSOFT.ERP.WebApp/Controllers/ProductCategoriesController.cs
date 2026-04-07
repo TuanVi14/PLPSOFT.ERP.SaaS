@@ -55,7 +55,7 @@ public class ProductCategoriesController : Controller
                 ParentId = vm.ParentID,
                 CategoryCode = vm.CategoryCode,
                 CategoryName = vm.CategoryName,
-                IsActive = vm.IsActive
+                IsActive = vm.IsActive,
             };
             _context.Add(category);
             await _context.SaveChangesAsync();

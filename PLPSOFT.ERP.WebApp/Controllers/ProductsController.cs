@@ -46,7 +46,8 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 IsActive = p.IsActive,
                 // Gán object để View Index hiển thị được tên công ty/danh mục
                 Company = p.Company,
-                Category = p.Category
+                Category = p.Category,
+
             }).ToList();
 
 
@@ -55,15 +56,35 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         }
 
         // GET: Thêm sản phẩm
-        public IActionResult Create()
+        public IActionResult Create(long? companyId)
         {
             var vm = new ProductViewModel
             {
-                Companies = _context.Companies.Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName }),
-                Categories = _context.ProductCategories.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName }),
-                ProductTypes = _context.SystemTypeValues.Where(x => x.TypeId == 4).Select(x => new SelectListItem { Value = x.TypeValueId.ToString(), Text = x.ValueName }),
-                Units = _context.ProductUnits.Select(u => new SelectListItem { Value = u.UnitId.ToString(), Text = u.UnitName })
+                CompanyID = companyId ?? 0
             };
+            if (vm.CompanyID == 0)
+            {
+                ModelState.AddModelError("CompanyID", "Vui lòng chọn công ty");
+            }
+            LoadDropdowns(vm);
+            if (companyId.HasValue)
+            {
+                vm.Categories = _context.ProductCategories
+                    .Where(c => c.CompanyId == companyId)
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.CategoryId.ToString(),
+                        Text = c.CategoryName
+                    });
+
+                vm.TaxRates = _context.TaxRates
+                    .Where(t => t.CompanyId == companyId)
+                    .Select(t => new SelectListItem
+                    {
+                        Value = t.TaxRateId.ToString(),
+                        Text = t.TaxName
+                    });
+            }
             return View(vm);
         }
 
@@ -71,31 +92,56 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel vm)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var product = new Product
-                {
-                    CompanyId = vm.CompanyID,
-                    ProductCode = vm.ProductCode,
-                    ProductName = vm.ProductName,
-                    CategoryId = vm.CategoryID,
-                    ProductTypeId = vm.ProductTypeID,
-                    BaseUnitId = vm.BaseUnitID,
-                    CostPrice = vm.CostPrice,
-                    StandardPrice = vm.StandardPrice,
-                    IsActive = true,
-                    CreatedAt = DateTime.Now
-                };
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Thêm sản phẩm thành công!";
-                return RedirectToAction(nameof(Index));
+                LoadDropdowns(vm); 
+                return View(vm);
             }
-            return View(vm);
+
+            var product = new Product
+            {
+                CompanyId = vm.CompanyID,
+                ProductCode = vm.ProductCode,
+                ProductName = vm.ProductName,
+                CategoryId = vm.CategoryID,
+                ProductTypeId = vm.ProductTypeID,
+                BaseUnitId = vm.BaseUnitID,
+
+                // 🔥 NEW
+                Sku = vm.Sku,
+                Barcode = vm.Barcode,
+                Brand = vm.Brand,
+                Origin = vm.Origin,
+
+                CostPrice = vm.CostPrice,
+                StandardPrice = vm.StandardPrice,
+                DefaultTaxRateId = vm.DefaultTaxRateID,
+
+                TrackInventory = vm.TrackInventory,
+                AllowBackorder = vm.AllowBackorder,
+                Weight = vm.Weight,
+                Volume = vm.Volume,
+                MinStock = vm.MinStock,
+                MaxStock = vm.MaxStock,
+
+                WarrantyMonths = vm.WarrantyMonths,
+                IsSerialized = vm.IsSerialized,
+                IsBatchManaged = vm.IsBatchManaged,
+                ExpireDateRequired = vm.ExpireDateRequired,
+
+                IsActive = true,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Thêm sản phẩm thành công!";
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Sửa sản phẩm
-        public async Task<IActionResult> Edit(long id)
+        public async Task<IActionResult> Edit(long id, long? companyId)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null) return NotFound();
@@ -103,39 +149,39 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             var vm = new ProductViewModel
             {
                 ProductID = product.ProductId,
-                CompanyID = product.CompanyId,
+                CompanyID = companyId ?? product.CompanyId,
                 ProductCode = product.ProductCode,
                 ProductName = product.ProductName,
                 CategoryID = product.CategoryId,
                 ProductTypeID = product.ProductTypeId,
                 BaseUnitID = product.BaseUnitId,
+
+                // 🔥 NEW
+                Sku = product.Sku,
+                Barcode = product.Barcode,
+                Brand = product.Brand,
+                Origin = product.Origin,
+
                 CostPrice = product.CostPrice,
                 StandardPrice = product.StandardPrice,
-                IsActive = product.IsActive,
+                DefaultTaxRateID = product.DefaultTaxRateId,
 
-                // QUAN TRỌNG: Phải khởi tạo các List này, nếu không View sẽ bị NullReferenceException
-                Companies = _context.Companies.Select(c => new SelectListItem
-                {
-                    Value = c.CompanyId.ToString(),
-                    Text = c.CompanyName
-                }).ToList(),
-                Categories = _context.ProductCategories.Select(c => new SelectListItem
-                {
-                    Value = c.CategoryId.ToString(),
-                    Text = c.CategoryName
-                }).ToList(),
-                ProductTypes = _context.SystemTypeValues.Where(v => v.TypeId == 4).Select(v => new SelectListItem
-                {
-                    Value = v.TypeValueId.ToString(),
-                    Text = v.ValueName
-                }).ToList(),
-                Units = _context.ProductUnits.Select(u => new SelectListItem
-                {
-                    Value = u.UnitId.ToString(),
-                    Text = u.UnitName
-                }).ToList()
+                TrackInventory = product.TrackInventory,
+                AllowBackorder = product.AllowBackorder,
+                Weight = product.Weight,
+                Volume = product.Volume,
+                MinStock = product.MinStock,
+                MaxStock = product.MaxStock,
+
+                WarrantyMonths = product.WarrantyMonths,
+                IsSerialized = product.IsSerialized,
+                IsBatchManaged = product.IsBatchManaged,
+                ExpireDateRequired = product.ExpireDateRequired,
+
+                IsActive = product.IsActive
             };
 
+            LoadDropdowns(vm);
             return View(vm);
         }
 
@@ -144,33 +190,49 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductViewModel vm)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var product = await _context.Products.FindAsync(vm.ProductID);
-                if (product == null) return NotFound();
-
-                product.CompanyId = vm.CompanyID;
-                product.ProductName = vm.ProductName;
-                product.CategoryId = vm.CategoryID;
-                product.ProductTypeId = vm.ProductTypeID;
-                product.BaseUnitId = vm.BaseUnitID;
-                product.CostPrice = vm.CostPrice;
-                product.StandardPrice = vm.StandardPrice;
-                product.IsActive = vm.IsActive;
-
-                _context.Update(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                LoadDropdowns(vm);
+                return View(vm);
             }
 
-            // NẾU VALIDATE THẤT BẠI: Bạn cũng phải nạp lại các List này trước khi return View(vm)
-            // Nếu thiếu đoạn này, khi nhấn "Lưu" mà bị lỗi nhập liệu, trang web sẽ văng lỗi NullReferenceException ngay.
-            vm.Companies = _context.Companies.Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName }).ToList();
-            vm.Categories = _context.ProductCategories.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName }).ToList();
-            vm.ProductTypes = _context.SystemTypeValues.Where(v => v.TypeId == 4).Select(v => new SelectListItem { Value = v.TypeValueId.ToString(), Text = v.ValueName }).ToList();
-            vm.Units = _context.ProductUnits.Select(u => new SelectListItem { Value = u.UnitId.ToString(), Text = u.UnitName }).ToList();
+            var product = await _context.Products.FindAsync(vm.ProductID);
+            if (product == null) return NotFound();
 
-            return View(vm);
+            product.CompanyId = vm.CompanyID;
+            product.ProductName = vm.ProductName;
+            product.CategoryId = vm.CategoryID;
+            product.ProductTypeId = vm.ProductTypeID;
+            product.BaseUnitId = vm.BaseUnitID;
+
+            // 🔥 NEW
+            product.Sku = vm.Sku;
+            product.Barcode = vm.Barcode;
+            product.Brand = vm.Brand;
+            product.Origin = vm.Origin;
+
+            product.CostPrice = vm.CostPrice;
+            product.StandardPrice = vm.StandardPrice;
+            product.DefaultTaxRateId = vm.DefaultTaxRateID;
+
+            product.TrackInventory = vm.TrackInventory;
+            product.AllowBackorder = vm.AllowBackorder;
+            product.Weight = vm.Weight;
+            product.Volume = vm.Volume;
+            product.MinStock = vm.MinStock;
+            product.MaxStock = vm.MaxStock;
+
+            product.WarrantyMonths = vm.WarrantyMonths;
+            product.IsSerialized = vm.IsSerialized;
+            product.IsBatchManaged = vm.IsBatchManaged;
+            product.ExpireDateRequired = vm.ExpireDateRequired;
+
+            product.IsActive = vm.IsActive;
+            product.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Product/Delete/5
@@ -202,6 +264,59 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             await _context.SaveChangesAsync();
 
             return Json(new { success = true, message = "Sản phẩm đã được kích hoạt trở lại." });
+        }
+        public async Task<IActionResult> Details(long id)
+        {
+            var product = await _context.Products
+                .Include(p => p.Company)
+                .Include(p => p.Category)
+                .Include(p => p.BaseUnit)
+                .Include(p => p.DefaultTaxRate)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
+
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
+        private void LoadDropdowns(ProductViewModel vm)
+        {
+            vm.Companies = _context.Companies
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CompanyId.ToString(),
+                    Text = c.CompanyName
+                });
+
+            vm.Categories = _context.ProductCategories
+                .Where(c => c.CompanyId == vm.CompanyID)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CategoryId.ToString(),
+                    Text = c.CategoryName
+                });
+
+            vm.ProductTypes = _context.SystemTypeValues
+                .Where(x => x.TypeId == 4)
+                .Select(x => new SelectListItem
+                {
+                    Value = x.TypeValueId.ToString(),
+                    Text = x.ValueName
+                });
+
+            vm.Units = _context.ProductUnits
+                .Select(u => new SelectListItem
+                {
+                    Value = u.UnitId.ToString(),
+                    Text = u.UnitName
+                });
+
+            vm.TaxRates = _context.TaxRates
+                .Where(t => vm.CompanyID == 0 || t.CompanyId == vm.CompanyID)
+                .Select(t => new SelectListItem
+                {
+                    Value = t.TaxRateId.ToString(),
+                    Text = t.TaxName
+                });
         }
     }
 }
