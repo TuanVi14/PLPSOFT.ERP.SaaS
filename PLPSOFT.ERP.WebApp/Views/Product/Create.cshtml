@@ -25,14 +25,12 @@
         <!-- BODY -->
         <div class="card-body">
             <form asp-action="Create" method="get">
-                <form asp-action="Create" method="get">
                     <select asp-for="CompanyID"
                             class="form-select"
                             asp-items="Model.Companies"
                             onchange="this.form.submit()">
                         <option value="">-- Chọn công ty --</option>
                     </select>
-                </form>
             </form>
             
             <form asp-action="Create" method="post">
