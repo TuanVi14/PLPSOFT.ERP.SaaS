@@ -62,29 +62,8 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             {
                 CompanyID = companyId ?? 0
             };
-            if (vm.CompanyID == 0)
-            {
-                ModelState.AddModelError("CompanyID", "Vui lòng chọn công ty");
-            }
-            LoadDropdowns(vm);
-            if (companyId.HasValue)
-            {
-                vm.Categories = _context.ProductCategories
-                    .Where(c => c.CompanyId == companyId)
-                    .Select(c => new SelectListItem
-                    {
-                        Value = c.CategoryId.ToString(),
-                        Text = c.CategoryName
-                    });
 
-                vm.TaxRates = _context.TaxRates
-                    .Where(t => t.CompanyId == companyId)
-                    .Select(t => new SelectListItem
-                    {
-                        Value = t.TaxRateId.ToString(),
-                        Text = t.TaxName
-                    });
-            }
+            LoadDropdowns(vm);
             return View(vm);
         }
 
@@ -92,6 +71,10 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel vm)
         {
+            if (vm.CompanyID == 0)
+            {
+                ModelState.AddModelError("CompanyID", "Vui lòng chọn công ty");
+            }
             if (!ModelState.IsValid)
             {
                 LoadDropdowns(vm); 
