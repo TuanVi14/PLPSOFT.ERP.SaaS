@@ -12,6 +12,7 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public string GroupCode { get; set; } = string.Empty;
     public string GroupName { get; set; } = string.Empty;
 =======
@@ -25,6 +26,12 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
     public List<Customer> Customers { get; set; } = new();
 }
 =======
+=======
+        public long CompanyId { get; set; }
+
+        public string GroupCode { get; set; } = null!;
+
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
 =======
         public long CompanyId { get; set; }
 
@@ -45,6 +52,9 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
     }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
 >>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
 =======
 >>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77

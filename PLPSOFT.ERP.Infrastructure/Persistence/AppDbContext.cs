@@ -21,53 +21,19 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence
         }
 
         // 🔥 DbSet
-        public virtual DbSet<Branch> Branches { get; set; }
+        public DbSet<TaxRate> TaxRates { get; set; }
+        public DbSet<ProductPrice> ProductPrices { get; set; }
+        public DbSet<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; }
+        public DbSet<ProductUnitMapping> ProductUnitMappings { get; set; }
 
-        public virtual DbSet<Company> Companies { get; set; }
 
-        public virtual DbSet<Customer> Customers { get; set; }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductUnit> ProductUnits { get; set; }
-        public IEnumerable ProductTypes { get; set; } = System.Linq.Enumerable.Empty<object>();
-=======
-=======
->>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
-        public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public IEnumerable ProductTypes { get; set; }
 
-        public virtual DbSet<CustomerGroup> CustomerGroups { get; set; }
-
-        public virtual DbSet<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; }
-
-        public virtual DbSet<Product> Products { get; set; }
-
-        public virtual DbSet<ProductCategory> ProductCategories { get; set; }
-
-        public virtual DbSet<ProductPrice> ProductPrices { get; set; }
-
-        public virtual DbSet<ProductUnit> ProductUnits { get; set; }
-
-        public virtual DbSet<ProductUnitMapping> ProductUnitMappings { get; set; }
-
-        public virtual DbSet<Supplier> Suppliers { get; set; }
-
-        public virtual DbSet<SupplierGroup> SupplierGroups { get; set; }
-
-        public virtual DbSet<SystemType> SystemTypes { get; set; }
-
-        public virtual DbSet<SystemTypeValue> SystemTypeValues { get; set; }
-
-        public virtual DbSet<TaxRate> TaxRates { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
-<<<<<<< HEAD
->>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
-=======
->>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
-
+        // 🔥 Apply Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Branch>(entity =>
