@@ -10,10 +10,34 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
     {
         public long CustomerGroupId { get; set; }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    public string GroupCode { get; set; } = string.Empty;
+    public string GroupName { get; set; } = string.Empty;
+=======
+        public long CompanyId { get; set; }
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+
+        public string GroupCode { get; set; } = null!;
+
+<<<<<<< HEAD
+    // Navigation
+    public List<Customer> Customers { get; set; } = new();
+}
+=======
+=======
         public long CompanyId { get; set; }
 
         public string GroupCode { get; set; } = null!;
 
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
+        public long CompanyId { get; set; }
+
+        public string GroupCode { get; set; } = null!;
+
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
         public string GroupName { get; set; } = null!;
 
         public string? Description { get; set; }
@@ -27,3 +51,10 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
     }
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77

@@ -23,7 +23,26 @@ Thumbs.db
 
 # Database
 *.mdf
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+*.ldf**/bin/
+**/obj/
+=======
 *.ldf
 
 # ASP.NET
 appsettings.Development.json
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
+*.ldf
+
+# ASP.NET
+appsettings.Development.json
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
+*.ldf
+
+# ASP.NET
+appsettings.Development.json
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
