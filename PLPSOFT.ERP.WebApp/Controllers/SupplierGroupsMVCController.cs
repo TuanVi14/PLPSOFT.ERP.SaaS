@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+using PLPSOFT.ERP.Domain.Entities.MasterData;
 
 public class SupplierGroupsMVCController : Controller
 {
@@ -15,14 +15,27 @@ public class SupplierGroupsMVCController : Controller
     // CREATE
     public IActionResult Create()
     {
+        ViewBag.Companies = _context.Companies.ToList();
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(SupplierGroup model)
     {
-        model.CompanyID = 1;
+        model.CompanyID = model.CompanyID;
         model.IsActive = true;
+
+        // lấy company
+        var company = await _context.Companies
+            .FirstOrDefaultAsync(x => x.CompanyID == model.CompanyID);
+
+        // đếm số group
+        var count = await _context.SupplierGroups
+            .Where(x => x.CompanyID == model.CompanyID)
+            .CountAsync() + 1;
+
+        // sinh mã
+        model.GroupCode = $"GRP-{company.CompanyCode}-{count:D3}";
 
         _context.SupplierGroups.Add(model);
         await _context.SaveChangesAsync();

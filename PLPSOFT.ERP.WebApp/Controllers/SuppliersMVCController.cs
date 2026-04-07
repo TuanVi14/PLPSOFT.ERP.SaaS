@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+using PLPSOFT.ERP.Domain.Entities.MasterData;
 
 public class SuppliersMVCController : Controller
 {
@@ -15,8 +15,8 @@ public class SuppliersMVCController : Controller
     // GET: Create
     public IActionResult Create()
     {
-        ViewBag.SupplierGroups = _context.SupplierGroups.ToList();
         ViewBag.Companies = _context.Companies.ToList();
+        ViewBag.SupplierGroups = new List<SupplierGroup>();
         return View();
     }
 
@@ -48,6 +48,18 @@ public class SuppliersMVCController : Controller
         return RedirectToAction("Index");
     }
 
+    public JsonResult GetSupplierGroupsByCompany(long companyId)
+    {
+        var groups = _context.SupplierGroups
+            .Where(x => x.CompanyID == companyId && x.IsActive)
+            .Select(x => new {
+                x.SupplierGroupID,
+                x.GroupName
+            }).ToList();
+
+        return Json(groups);
+    }
+
     // GET
     public async Task<IActionResult> Edit(long id)
     {
@@ -69,6 +81,7 @@ public class SuppliersMVCController : Controller
         data.SupplierGroupID = model.SupplierGroupID;
         data.Phone = model.Phone;
         data.Email = model.Email;
+        data.TaxCode = model.TaxCode;
 
         await _context.SaveChangesAsync();
 

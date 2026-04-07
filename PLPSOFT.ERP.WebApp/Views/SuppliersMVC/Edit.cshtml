@@ -1,4 +1,4 @@
-﻿@model Supplier
+﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.Supplier
 
 <div class="container mt-4">
     <h2 class="mb-4"> Sửa nhà cung cấp</h2>
@@ -16,6 +16,11 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label">Tên</label>
                 <input asp-for="SupplierName" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Mã số thuế</label>
+                <input asp-for="TaxCode" class="form-control" />
             </div>
 
             <div class="col-md-6 mb-3">

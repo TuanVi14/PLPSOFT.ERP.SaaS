@@ -1,17 +1,21 @@
-﻿@model SupplierGroup
+﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.SupplierGroup
 
 <div class="container mt-4">
     <h2 class="mb-3">Thêm nhóm</h2>
 
     <form asp-action="Create" method="post">
         <div class="mb-3">
-            <label class="form-label">Mã</label>
-            <input asp-for="GroupCode" class="form-control" />
-        </div>
-
-        <div class="mb-3">
             <label class="form-label">Tên</label>
             <input asp-for="GroupName" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Công ty</label>
+            <select asp-for="CompanyID" class="form-select">
+                @foreach (var item in ViewBag.Companies)
+                {
+                    <option value="@item.CompanyID">@item.CompanyName</option>
+                }
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Trạng thái</label>
