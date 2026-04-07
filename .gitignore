@@ -14,4 +14,5 @@ Release/
 
 # Database (nếu có)
 *.mdf
-*.ldf
+*.ldf**/bin/
+**/obj/
