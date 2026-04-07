@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData
 {
-        public class CustomerGroupProductPrice
+    public partial class CustomerGroupProductPrice
     {
         public long GroupPriceId { get; set; }
 
@@ -23,5 +23,9 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public DateTime? EffectiveTo { get; set; }
 
         public bool IsActive { get; set; }
+
+        public virtual CustomerGroup CustomerGroup { get; set; } = null!;
+
+        public virtual Product Product { get; set; } = null!;
     }
 }

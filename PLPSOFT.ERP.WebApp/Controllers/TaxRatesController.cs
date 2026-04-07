@@ -17,8 +17,9 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         // ================= INDEX =================
         public async Task<IActionResult> Index(string keyword)
         {
+
             var query = _context.TaxRates
-                .Include(x => x.Company)
+                .Include(x => x.Company) 
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -28,13 +29,14 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 query = query.Where(x =>
                     x.TaxCode.Contains(keyword) ||
                     x.TaxName.Contains(keyword) ||
-                    x.Rate.ToString().Contains(keyword) ||
-                    x.CompanyId.ToString().Contains(keyword) ||
-                    (x.Company != null && x.Company.CompanyName.Contains(keyword)) ||
-                    x.EffectiveFrom.ToString().Contains(keyword) ||
-                    (x.EffectiveTo.HasValue && x.EffectiveTo.Value.ToString().Contains(keyword)) ||
-                    x.CreatedAt.ToString().Contains(keyword)
+                    x.Company.CompanyName.Contains(keyword)
                 );
+
+                // search số riêng
+                if (decimal.TryParse(keyword, out var rate))
+                {
+                    query = query.Where(x => x.Rate == rate);
+                }
             }
 
             var data = await query
@@ -58,6 +60,10 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TaxRate model)
         {
+            if (model.CompanyId <= 0)
+            {
+                ModelState.AddModelError("CompanyId", "Phải chọn công ty");
+            }
             if (!ModelState.IsValid)
             {
                 ViewBag.Companies = _context.Companies

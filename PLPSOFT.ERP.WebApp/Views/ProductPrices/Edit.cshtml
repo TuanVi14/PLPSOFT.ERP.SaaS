@@ -8,34 +8,10 @@
 
         <div class="card-body">
             <form asp-action="Edit" method="post">
-
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
                 <input type="hidden" asp-for="PriceId" />
 
                 <div class="row">
-
-                    <!-- Product -->
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Sản phẩm</label>
-                        <select asp-for="ProductId" class="form-select">
-                            <option value="">-- Chọn sản phẩm --</option>
-                            @foreach (var item in ViewBag.Products)
-                            {
-                                <option value="@item.ProductId">@item.ProductName</option>
-                            }
-                        </select>
-                    </div>
-
-                    <!-- Branch -->
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Chi nhánh</label>
-                        <select asp-for="BranchId" class="form-select">
-                            <option value="">-- Chọn chi nhánh --</option>
-                            @foreach (var item in ViewBag.Branches)
-                            {
-                                <option value="@item.BranchId">@item.BranchName</option>
-                            }
-                        </select>
-                    </div>
 
                     <!-- Company -->
                     <div class="col-md-6 mb-3">
@@ -47,6 +23,35 @@
                                 <option value="@item.CompanyId">@item.CompanyName</option>
                             }
                         </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    
+
+                    <!-- Branch -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Chi nhánh</label>
+                        <select asp-for="BranchId" class="form-select">
+                            <option value="">-- Chọn chi nhánh --</option>
+                            @foreach (var item in ViewBag.Branches)
+                            {
+                                <option value="@item.BranchId">@item.BranchName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+
+                    <!-- Product -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Sản phẩm</label>
+                        <select asp-for="ProductId" class="form-select">
+                            <option value="">-- Chọn sản phẩm --</option>
+                            @foreach (var item in ViewBag.Products)
+                            {
+                                <option value="@item.ProductId">@item.ProductName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <!-- Price -->
@@ -57,18 +62,21 @@
                                class="form-control"
                                value="@Model.Price.ToString("N0").Replace(",", ".")"
                                placeholder="Nhập giá" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <!-- Effective From -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Hiệu lực từ</label>
                         <input asp-for="EffectiveFrom" class="form-control" type="date" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <!-- Effective To -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Hiệu lực đến</label>
                         <input asp-for="EffectiveTo" class="form-control" type="date" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                 </div>

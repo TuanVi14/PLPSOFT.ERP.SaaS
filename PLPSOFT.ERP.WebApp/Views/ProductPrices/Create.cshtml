@@ -8,21 +8,24 @@
 
         <div class="card-body">
             <form asp-action="Create" method="post">
-
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
                 <div class="row">
 
-                    <!-- ✅ Product -->
+                    <!-- ✅ Company -->
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Sản phẩm</label>
-                        <select asp-for="ProductId" class="form-select">
-                            <option value="">-- Chọn sản phẩm --</option>
-                            @foreach (var p in ViewBag.Products)
+                        <label class="form-label">Công ty</label>
+                        <select asp-for="CompanyId" class="form-select"
+                                onchange="window.location.href='?companyId=' + this.value">
+                            <option value="0">-- Chọn công ty --</option>
+                            @foreach (var c in ViewBag.Companies)
                             {
-                                <option value="@p.ProductId">
-                                    @p.ProductName
+                                <option value="@c.CompanyId"
+                                        selected="@(c.CompanyId == Model.CompanyId ? "selected" : null)">
+                                    @c.CompanyName
                                 </option>
                             }
                         </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <!-- ✅ Branch -->
@@ -37,20 +40,24 @@
                                 </option>
                             }
                         </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
-                    <!-- ✅ Company -->
+                    
+
+                    <!-- ✅ Product -->
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Công ty</label>
-                        <select asp-for="CompanyId" class="form-select">
-                            <option value="">-- Chọn công ty --</option>
-                            @foreach (var c in ViewBag.Companies)
+                        <label class="form-label">Sản phẩm</label>
+                        <select asp-for="ProductId" class="form-select">
+                            <option value="">-- Chọn sản phẩm --</option>
+                            @foreach (var p in ViewBag.Products)
                             {
-                                <option value="@c.CompanyId">
-                                    @c.CompanyName
+                                <option value="@p.ProductId">
+                                    @p.ProductName
                                 </option>
                             }
                         </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <!-- ✅ Price -->
@@ -60,17 +67,20 @@
                                id="priceInput"
                                class="form-control"
                                placeholder="Nhập giá" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <!-- ✅ Date -->
                     <div class="col-md-6 mb-3">
                         <label asp-for="EffectiveFrom" class="form-label">Hiệu lực từ</label>
                         <input asp-for="EffectiveFrom" class="form-control" type="date" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label asp-for="EffectiveTo" class="form-label">Hiệu lực đến</label>
                         <input asp-for="EffectiveTo" class="form-control" type="date" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                 </div>

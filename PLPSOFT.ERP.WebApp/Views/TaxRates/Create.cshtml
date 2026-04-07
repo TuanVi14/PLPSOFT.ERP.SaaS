@@ -28,7 +28,7 @@
                     <div class="col-md-6 mb-3">
                         <label asp-for="CompanyId" class="form-label">Công ty</label>
                         <select asp-for="CompanyId" class="form-control">
-                            <option value="">-- Chọn công ty --</option>
+                            <option value="0">-- Chọn công ty --</option>
                             @foreach (var item in ViewBag.Companies)
                             {
                                 <option value="@item.CompanyId">
@@ -36,6 +36,8 @@
                                 </option>
                             }
                         </select>
+
+                        <span asp-validation-for="CompanyId" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6 mb-3">

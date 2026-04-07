@@ -2,6 +2,7 @@
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PLPSOFT.ERP.WebApp.Controllers
 {
@@ -39,7 +40,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 bool isDate = DateTime.TryParse(keyword, out parsedDate);
 
                 query = query.Where(x =>
-                    x.Price.ToString().Contains(keywordLower) ||
+                    x.Price.ToString().Contains(keyword) ||
 
                     (x.Product != null && x.Product.ProductName.Contains(keyword)) ||
                     (x.Branch != null && x.Branch.BranchName.Contains(keyword)) ||
@@ -60,23 +61,93 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         }
 
         // ================= CREATE =================
-        public IActionResult Create()
+        public IActionResult Create(long? companyId)
         {
-            LoadDropdowns();
-            return View();
+            var model = new ProductPrice
+            {
+                CompanyId = companyId ?? 0,
+                EffectiveFrom = DateTime.Now
+            };
+
+
+            LoadDropdowns(model.CompanyId);
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ProductPrice model)
         {
+            if (model.CompanyId == 0)
+            {
+                ModelState.AddModelError("", "Vui lòng chọn công ty");
+            }
+
+            if (model.EffectiveTo.HasValue && model.EffectiveTo < model.EffectiveFrom)
+            {
+                ModelState.AddModelError("", "EffectiveTo phải lớn hơn EffectiveFrom");
+            }
+
+            var branch = await _context.Branches
+                .FirstOrDefaultAsync(x => x.BranchId == model.BranchId);
+
+            if (branch == null || branch.CompanyId != model.CompanyId)
+            {
+                ModelState.AddModelError("", "Chi nhánh không thuộc công ty!");
+            }
+
+            var product = await _context.Products
+                .FirstOrDefaultAsync(x => x.ProductId == model.ProductId);
+
+            if (product == null || product.CompanyId != model.CompanyId)
+            {
+                ModelState.AddModelError("", "Sản phẩm không thuộc công ty!");
+            }
+
             if (!ModelState.IsValid)
             {
-                LoadDropdowns();
+                LoadDropdowns(model.CompanyId);
                 return View(model);
             }
 
-            _context.ProductPrices.Add(model);
-            await _context.SaveChangesAsync();
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                if (IsOverlapping(model))
+                {
+                    ModelState.AddModelError("", "Khoảng thời gian bị trùng!");
+                    LoadDropdowns(model.CompanyId);
+                    return View(model);
+                }
+
+                var oldPrices = await _context.ProductPrices
+                    .Where(x =>
+                        x.ProductId == model.ProductId &&
+                        x.BranchId == model.BranchId &&
+                        x.CompanyId == model.CompanyId &&
+                        x.EffectiveTo == null)
+                    .ToListAsync();
+
+                foreach (var old in oldPrices)
+                {
+                    var newTo = model.EffectiveFrom.AddSeconds(-1);
+
+                    if (newTo < old.EffectiveFrom)
+                        newTo = old.EffectiveFrom;
+
+                    old.EffectiveTo = newTo;
+                }
+
+                _context.ProductPrices.Add(model);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -88,17 +159,48 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
             if (data == null)
                 return NotFound();
+            var vm = new ProductPrice
+            {
+                PriceId = data.PriceId,
+                ProductId = data.ProductId,
+                BranchId = data.BranchId,
+                CompanyId = data.CompanyId,
+                EffectiveTo = data.EffectiveTo,
+                EffectiveFrom = data.EffectiveFrom,
+                Price = data.Price,
 
-            LoadDropdowns();
+            };
+            LoadDropdowns(data.CompanyId);
             return View(data);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(ProductPrice model)
         {
+            if (model.EffectiveTo.HasValue && model.EffectiveTo < model.EffectiveFrom)
+            {
+                ModelState.AddModelError("", "EffectiveTo phải lớn hơn EffectiveFrom");
+            }
+
+            var branch = await _context.Branches
+                .FirstOrDefaultAsync(x => x.BranchId == model.BranchId);
+
+            if (branch == null || branch.CompanyId != model.CompanyId)
+            {
+                ModelState.AddModelError("", "Chi nhánh không thuộc công ty!");
+            }
+
+            var product = await _context.Products
+                .FirstOrDefaultAsync(x => x.ProductId == model.ProductId);
+
+            if (product == null || product.CompanyId != model.CompanyId)
+            {
+                ModelState.AddModelError("", "Sản phẩm không thuộc công ty!");
+            }
+
             if (!ModelState.IsValid)
             {
-                LoadDropdowns();
+                LoadDropdowns(model.CompanyId);
                 return View(model);
             }
 
@@ -107,23 +209,62 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             if (entity == null)
                 return NotFound();
 
-            // ===== UPDATE BASIC FIELDS =====
-            entity.ProductId = model.ProductId;
-            entity.BranchId = model.BranchId;
-            entity.CompanyId = model.CompanyId;
-            entity.Price = model.Price;
-            entity.EffectiveFrom = model.EffectiveFrom;
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-   
-            var now = DateTime.Now;
-
-     
-            if (!(entity.EffectiveTo.HasValue && entity.EffectiveTo.Value <= now))
+            try
             {
+                entity.ProductId = model.ProductId;
+                entity.BranchId = model.BranchId;
+                entity.CompanyId = model.CompanyId;
+                entity.Price = model.Price;
+                entity.EffectiveFrom = model.EffectiveFrom;
                 entity.EffectiveTo = model.EffectiveTo;
-            }
 
-            await _context.SaveChangesAsync();
+                if (IsOverlapping(entity))
+                {
+                    ModelState.AddModelError("", "Khoảng thời gian bị trùng!");
+                    LoadDropdowns(model.CompanyId);
+                    return View(model);
+                }
+
+                var now = DateTime.Now;
+
+                if (entity.EffectiveTo.HasValue && entity.EffectiveTo <= now)
+                {
+                    ModelState.AddModelError("", "Không thể sửa bản ghi đã hết hiệu lực!");
+                    LoadDropdowns(model.CompanyId);
+                    return View(model);
+                }
+
+                var otherPrices = await _context.ProductPrices
+                    .Where(x =>
+                        x.PriceId != entity.PriceId &&
+                        x.ProductId == entity.ProductId &&
+                        x.BranchId == entity.BranchId &&
+                        x.CompanyId == entity.CompanyId)
+                    .ToListAsync();
+
+                foreach (var item in otherPrices)
+                {
+                    if (item.EffectiveTo == null)
+                    {
+                        var newTo = entity.EffectiveFrom.AddSeconds(-1);
+
+                        if (newTo < item.EffectiveFrom)
+                            newTo = item.EffectiveFrom;
+
+                        item.EffectiveTo = newTo;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -159,11 +300,37 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         }
 
         // ================= HELPER =================
-        private void LoadDropdowns()
+        private void LoadDropdowns(long? companyId = null)
         {
-            ViewBag.Products = _context.Products.ToList();
-            ViewBag.Branches = _context.Branches.ToList();
             ViewBag.Companies = _context.Companies.ToList();
+
+            if (companyId.HasValue && companyId != 0)
+            {
+                ViewBag.Branches = _context.Branches
+                    .Where(x => x.CompanyId == companyId).ToList();
+
+                ViewBag.Products = _context.Products
+                    .Where(x => x.CompanyId == companyId).ToList();
+            }
+            else
+            {
+                ViewBag.Branches = new List<Branch>();
+                ViewBag.Products = new List<Product>();
+            }
+        }
+
+        private bool IsOverlapping(ProductPrice model)
+        {
+            return _context.ProductPrices.Any(x =>
+                x.PriceId != model.PriceId &&
+                x.ProductId == model.ProductId &&
+                x.BranchId == model.BranchId &&
+                x.CompanyId == model.CompanyId &&
+
+                // overlap logic
+                (model.EffectiveTo == null || x.EffectiveFrom <= model.EffectiveTo) &&
+                (x.EffectiveTo == null || model.EffectiveFrom <= x.EffectiveTo)
+            );
         }
     }
 }
