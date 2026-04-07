@@ -5,12 +5,16 @@ public class CustomerAddress
     public long CustomerID { get; set; }
     public long CompanyID { get; set; }
 
-    public string AddressLine1 { get; set; }
+    public string AddressLine1 { get; set; } = string.Empty;
     public string? AddressLine2 { get; set; }
     public string? City { get; set; }
     public string? State { get; set; }
     public string? PostalCode { get; set; }
     public string? Country { get; set; }
+
+    // Coordinates
+    public decimal? Latitude { get; set; }
+    public decimal? Longitude { get; set; }
 
     public bool IsDefault { get; set; }
     public bool IsActive { get; set; }
@@ -19,5 +23,5 @@ public class CustomerAddress
     public DateTime? UpdatedAt { get; set; }
 
     // Navigation
-    public Customer Customer { get; set; }
+    public Customer? Customer { get; set; }
 }

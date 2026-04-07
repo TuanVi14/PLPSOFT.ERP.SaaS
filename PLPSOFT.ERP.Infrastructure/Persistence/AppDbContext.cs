@@ -28,7 +28,7 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductUnit> ProductUnits { get; set; }
-        public IEnumerable ProductTypes { get; set; }
+        public IEnumerable ProductTypes { get; set; } = System.Linq.Enumerable.Empty<object>();
 
         // 🔥 Apply Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)

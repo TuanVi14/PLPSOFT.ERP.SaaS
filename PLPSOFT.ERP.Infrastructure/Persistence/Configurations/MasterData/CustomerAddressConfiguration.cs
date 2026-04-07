@@ -32,6 +32,14 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
             builder.Property(x => x.Country)
                    .HasMaxLength(100);
 
+            builder.Property(x => x.Latitude)
+                   .HasColumnType("decimal(9,6)")
+                   .IsRequired(false);
+
+            builder.Property(x => x.Longitude)
+                   .HasColumnType("decimal(9,6)")
+                   .IsRequired(false);
+
             builder.Property(x => x.IsDefault)
                    .HasDefaultValue(false);
 
