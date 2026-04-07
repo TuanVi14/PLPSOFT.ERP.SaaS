@@ -22,6 +22,7 @@
             <tr>
                 <th>Mã</th>
                 <th>Tên</th>
+                <th>Công ty</th>
                 <th>Trạng thái</th>
                 <th style="width:150px">Hành động</th>
             </tr>
@@ -33,6 +34,7 @@
                 <tr>
                     <td>@item.GroupCode</td>
                     <td>@item.GroupName</td>
+                    <td>@item.Company.CompanyName</td>
                     <!-- TRẠNG THÁI -->
                     <td>
                         @if (item.IsActive)

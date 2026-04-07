@@ -24,11 +24,12 @@
         <thead class="table-dark text-center">
             <tr>
                 <th>Mã</th>
-                <th>Tên</th>
-                <th>Nhóm</th>
+                <th>Tên NCC</th>
+                <th>Loại NCC</th>
+                <th>Nhóm NCC</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>Tín dụng</th>
+                <th>Giới hạn tín dụng</th>
                 <th>Thanh toán</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
@@ -41,6 +42,7 @@
                 <tr>
                     <td class="text-nowrap">@item.SupplierCode</td>
                     <td>@item.SupplierName</td>
+                    <td>@item.SupplierType.ValueName</td>
                     <td>@item.SupplierGroup?.GroupName</td>
                     <td class="text-nowrap">@item.Phone</td>
                     <td>@item.Email</td>

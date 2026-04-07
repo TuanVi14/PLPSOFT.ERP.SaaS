@@ -4,7 +4,16 @@
     <h2 class="mb-4"> Thêm nhà cung cấp</h2>
 
     <form asp-action="Create" method="post" class="card p-4 shadow-sm">
-
+        <div class="col">
+            <label class="form-label">Công ty</label>
+            <select id="companyDropdown" asp-for="CompanyId" class="form-select" required>
+                <option value="">-- Chọn công ty --</option>
+                @foreach (var item in ViewBag.Companies)
+                {
+                    <option value="@item.CompanyId">@item.CompanyName</option>
+                }
+            </select>
+        </div>
         <div class="row">
 
             <div class="col-md-6 mb-3">
@@ -18,12 +27,12 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label class="form-label">Công ty</label>
-                <select id="companyDropdown" asp-for="CompanyID" class="form-select" required>
-                    <option value="">-- Chọn công ty --</option>
-                    @foreach (var item in ViewBag.Companies)
+                <label class="form-label">Loại nhóm</label>
+                <select id="supplierTypeDropdown" asp-for="SupplierTypeId" class="form-select" required>
+                    <option value="">-- Chọn loại nhà cung cấp --</option>
+                    @foreach (var item in ViewBag.SupplietType)
                     {
-                        <option value="@item.CompanyId">@item.CompanyName</option>
+                        <option value="@item.TypeValueId">@item.ValueName</option>
                     }
                 </select>
             </div>
@@ -54,14 +63,6 @@
                 <label class="form-label">Số ngày thanh toán</label>
                 <input asp-for="PaymentTermDays" class="form-control" />
             </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Trạng thái</label>
-                <select asp-for="IsActive" class="form-select">
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
-                </select>
-            </div>
         </div>
 
         <div class="d-flex gap-2">
@@ -81,7 +82,7 @@
                     groupDropdown.innerHTML = '<option value="">-- Chọn nhóm --</option>';
 
                     data.forEach(item => {
-                        groupDropdown.innerHTML += `<option value="${item.supplierGroupID}">${item.groupName}</option>`;
+                        groupDropdown.innerHTML += `<option value="${item.supplierGroupId}">${item.groupName}</option>`;
                     });
                 });
         });
