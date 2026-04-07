@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Infrastructure.Persistence;
 
@@ -15,8 +16,9 @@ public class SuppliersMVCController : Controller
     // GET: Create
     public IActionResult Create()
     {
-        ViewBag.SupplierGroups = _context.SupplierGroups.ToList();
+        
         ViewBag.Companies = _context.Companies.ToList();
+        ViewBag.SupplierGroups = new List<SupplierGroup>();
         return View();
     }
 
@@ -48,6 +50,18 @@ public class SuppliersMVCController : Controller
         return RedirectToAction("Index");
     }
 
+    public JsonResult GetSupplierGroupsByCompany(long companyId)
+    {
+        var groups = _context.SupplierGroups
+            .Where(x => x.CompanyId == companyId && x.IsActive)
+            .Select(x => new {
+                x.SupplierGroupId,
+                x.GroupName
+            }).ToList();
+
+        return Json(groups);
+    }
+
     // GET
     public async Task<IActionResult> Edit(long id)
     {
@@ -69,6 +83,7 @@ public class SuppliersMVCController : Controller
         data.SupplierGroupId = model.SupplierGroupId;
         data.Phone = model.Phone;
         data.Email = model.Email;
+        data.TaxCode = model.TaxCode;
 
         await _context.SaveChangesAsync();
 

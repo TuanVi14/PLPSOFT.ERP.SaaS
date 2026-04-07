@@ -13,23 +13,25 @@
             </div>
 
             <div class="col-md-6 mb-3">
+                <label class="form-label">Mã số thuế</label>
+                <input asp-for="TaxCode" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
                 <label class="form-label">Công ty</label>
-                <select asp-for="CompanyId" class="form-select">
-                    @foreach (var c in ViewBag.Companies)
+                <select id="companyDropdown" asp-for="CompanyID" class="form-select" required>
+                    <option value="">-- Chọn công ty --</option>
+                    @foreach (var item in ViewBag.Companies)
                     {
-                        <option value="@c.CompanyId">@c.CompanyName</option>
+                        <option value="@item.CompanyId">@item.CompanyName</option>
                     }
                 </select>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label class="form-label">Nhóm</label>
-                <select asp-for="SupplierGroupId" class="form-select">
+                <label class="form-label">Nhóm nhà cung cấp</label>
+                <select id="groupDropdown" asp-for="SupplierGroupId" class="form-select">
                     <option value="">-- Chọn nhóm --</option>
-                    @foreach (var item in ViewBag.SupplierGroups)
-                    {
-                        <option value="@item.SupplierGroupId">@item.GroupName</option>
-                    }
                 </select>
             </div>
 
@@ -68,4 +70,20 @@
         </div>
 
     </form>
+    <script>
+        document.getElementById("companyDropdown").addEventListener("change", function () {
+            var companyId = this.value;
+
+            fetch('/SuppliersMVC/GetSupplierGroupsByCompany?companyId=' + companyId)
+                .then(response => response.json())
+                .then(data => {
+                    var groupDropdown = document.getElementById("groupDropdown");
+                    groupDropdown.innerHTML = '<option value="">-- Chọn nhóm --</option>';
+
+                    data.forEach(item => {
+                        groupDropdown.innerHTML += `<option value="${item.supplierGroupID}">${item.groupName}</option>`;
+                    });
+                });
+        });
+    </script>
 </div>

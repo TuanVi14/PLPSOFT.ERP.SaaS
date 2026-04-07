@@ -15,14 +15,27 @@ public class SupplierGroupsMVCController : Controller
     // CREATE
     public IActionResult Create()
     {
+        ViewBag.Companies = _context.Companies.ToList();
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(SupplierGroup model)
     {
-        model.CompanyId = 1;
+        model.CompanyId = model.CompanyId;
         model.IsActive = true;
+
+        // lấy company
+        var company = await _context.Companies
+            .FirstOrDefaultAsync(x => x.CompanyId == model.CompanyId);
+
+        // đếm số group
+        var count = await _context.SupplierGroups
+            .Where(x => x.CompanyId == model.CompanyId)
+            .CountAsync() + 1;
+
+        // sinh mã
+        model.GroupCode = $"GRP-{company.CompanyCode}-{count:D3}";
 
         _context.SupplierGroups.Add(model);
         await _context.SaveChangesAsync();
