@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PLPSOFT.ERP.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+047113555fe91231e90ce9bf43ab61c3201c485f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff4aa280c8ac7d94a5b99b92b5c0988fec2e96d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("PLPSOFT.ERP.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PLPSOFT.ERP.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
