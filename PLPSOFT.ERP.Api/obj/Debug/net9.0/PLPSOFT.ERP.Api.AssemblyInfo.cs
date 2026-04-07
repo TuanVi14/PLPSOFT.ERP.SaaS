@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PLPSOFT.ERP.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+370c3989edafa706130371fc2f8b34b35a7f05b0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9db89cb61fca1e830096697acf8f9909b8b762bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("PLPSOFT.ERP.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PLPSOFT.ERP.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
