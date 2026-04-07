@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 using PLPSOFT.ERP.Domain.Entities.MasterData;
 using PLPSOFT.ERP.Infrastructure.Persistence;
 
@@ -18,6 +17,9 @@ public class SuppliersMVCController : Controller
     {
         
         ViewBag.Companies = _context.Companies.ToList();
+        ViewBag.SupplietType = _context.SystemTypeValues
+            .Where(x => x.TypeId == 2) // 👈 rất quan trọng
+            .ToList();
         ViewBag.SupplierGroups = new List<SupplierGroup>();
         return View();
     }
@@ -30,17 +32,17 @@ public class SuppliersMVCController : Controller
 
         // lấy công ty
         var company = await _context.Companies
-            .FirstOrDefaultAsync(x => x.CompanyId == model.CompanyID);
+            .FirstOrDefaultAsync(x => x.CompanyId == model.CompanyId);
 
         // đếm số supplier trong công ty
         var count = await _context.Suppliers
-            .Where(x => x.CompanyID == model.CompanyID)
+            .Where(x => x.CompanyId == model.CompanyId)
             .CountAsync() + 1;
 
         // sinh mã
         model.SupplierCode = $"NCC-{company.CompanyCode}-{count:D3}";
 
-        model.SupplierTypeId = 4;
+        
         model.IsActive = true;
         model.IsDeleted = false;
 
@@ -120,6 +122,7 @@ public class SuppliersMVCController : Controller
     {
         var data = _context.Suppliers
             .Include(x => x.SupplierGroup)
+            .Include(x => x.SupplierType)
             .AsQueryable();
 
         if (!string.IsNullOrEmpty(search))

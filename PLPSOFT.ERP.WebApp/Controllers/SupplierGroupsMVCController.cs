@@ -46,6 +46,7 @@ public class SupplierGroupsMVCController : Controller
     // EDIT
     public async Task<IActionResult> Edit(long id)
     {
+        ViewBag.Companies = _context.Companies.ToList();
         var data = await _context.SupplierGroups.FindAsync(id);
         if (data == null) return NotFound();
 
@@ -57,7 +58,7 @@ public class SupplierGroupsMVCController : Controller
     {
         var data = await _context.SupplierGroups.FindAsync(id);
         if (data == null) return NotFound();
-
+        data.CompanyId = model.CompanyId;
         data.GroupName = model.GroupName;
         data.GroupCode = model.GroupCode;
 
@@ -91,7 +92,9 @@ public class SupplierGroupsMVCController : Controller
     }
     public async Task<IActionResult> Index(string search)
     {
-        var data = _context.SupplierGroups.AsQueryable();
+        var data = _context.SupplierGroups
+            .Include(x => x.Company)
+            .AsQueryable();
 
         if (!string.IsNullOrEmpty(search))
         {
