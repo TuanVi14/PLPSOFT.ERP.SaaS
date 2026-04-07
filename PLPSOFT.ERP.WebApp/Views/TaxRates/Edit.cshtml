@@ -1,0 +1,73 @@
+﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.TaxRate
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Cập nhật thuế suất</h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="TaxRateId" />
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TaxCode" class="form-label">Mã thuế</label>
+                        <input asp-for="TaxCode" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TaxName" class="form-label">Tên thuế</label>
+                        <input asp-for="TaxName" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Rate" class="form-label">Thuế suất (%)</label>
+                        <input asp-for="Rate" class="form-control" type="number" step="0.01" />
+                    </div>
+
+                    <!-- ✅ Dropdown Company -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CompanyId" class="form-label">Công ty</label>
+                        <select asp-for="CompanyId" class="form-control"
+                                asp-items="@(new SelectList(ViewBag.Companies, "CompanyId", "CompanyName"))">
+                            <option value="">-- Chọn công ty --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EffectiveFrom" class="form-label">Hiệu lực từ</label>
+                        <input asp-for="EffectiveFrom" class="form-control" type="date" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EffectiveTo" class="form-label">Hiệu lực đến</label>
+                        <input asp-for="EffectiveTo" class="form-control" type="date" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <span class="badge bg-success">Đang hoạt động</span>
+                    </div>
+
+                    <!-- ❌ CreatedAt nên disable -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Ngày tạo</label>
+                        <input asp-for="CreatedAt" class="form-control" type="datetime-local" readonly />
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a asp-action="Index" class="btn btn-secondary me-2">Quay lại</a>
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

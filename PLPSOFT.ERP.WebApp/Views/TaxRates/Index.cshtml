@@ -1,0 +1,160 @@
+﻿@model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.TaxRate>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold">Danh sách thuế suất</h3>
+        <a asp-action="Create" class="btn btn-primary">
+            + Thêm mới
+        </a>
+    </div>
+
+    <form method="get" asp-action="Index" class="mb-3">
+        <div class="input-group">
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Tìm theo mã, tên, công ty..."
+                   value="@Context.Request.Query["keyword"]" />
+
+            <button type="submit" class="btn btn-primary">
+                Tìm
+            </button>
+        </div>
+    </form>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle" id="taxTable">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Mã thuế</th>
+                            <th>Tên thuế</th>
+                            <th>Công ty</th>
+                            <th>Thuế suất (%)</th>
+                            <th>Hiệu lực từ</th>
+                            <th>Hiệu lực đến</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="@(item.IsActive ? "" : "table-secondary text-muted opacity-75")">
+
+                                <td>@item.TaxCode</td>
+                                <td>@item.TaxName</td>
+
+                                <td>
+                                    @item.Company?.CompanyName
+                                </td>
+
+                                <td class="text-end fw-semibold text-success">
+                                    @item.Rate.ToString("N2")
+                                </td>
+
+                                <td>
+                                    @item.EffectiveFrom.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    @(item.EffectiveTo.HasValue
+                                                                    ? item.EffectiveTo.Value.ToString("dd/MM/yyyy")
+                                                                    : "-")
+                            </td>
+
+                                <td class="text-center">
+                                @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success">Đang hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Ngưng hoạt động</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @item.CreatedAt.ToString("dd/MM/yyyy")
+                                </td>
+
+                            <td class="text-center">
+                                @if (item.IsActive)
+                                {
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.TaxRateId"
+                                       class="btn btn-sm btn-warning me-1 px-2 py-1">
+                                        Sửa
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger px-2 py-1"
+                                            onclick="confirmDelete(@item.TaxRateId)">
+                                        Xóa
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button"
+                                            class="btn btn-sm btn-success px-2 py-1"
+                                            onclick="restoreTax(@item.TaxRateId)">
+                                        Khôi phục
+                                    </button>
+                                }
+                            </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(id) {
+        if (!confirm("Bạn có chắc muốn xóa không?")) return;
+
+        fetch('/TaxRates/Delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Xóa thành công");
+                location.reload();
+            } else {
+                alert("Xóa thất bại");
+            }
+        });
+    }
+
+    function restoreTax(id) {
+        if (!confirm("Bạn có muốn khôi phục dữ liệu này không?")) return;
+
+        fetch('/TaxRates/Restore', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Khôi phục thành công");
+                location.reload();
+            } else {
+                alert("Khôi phục thất bại");
+            }
+        });
+    }
+</script>

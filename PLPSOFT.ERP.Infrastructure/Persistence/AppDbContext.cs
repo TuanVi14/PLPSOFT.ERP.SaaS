@@ -54,8 +54,27 @@ public partial class AppDbContext : DbContext
     {
         modelBuilder.Entity<Branch>(entity =>
         {
-            entity.Property(e => e.BranchId).HasColumnName("BranchID");
-            entity.Property(e => e.BranchName).HasMaxLength(255);
+            entity.ToTable("Branches");
+
+            entity.HasKey(e => e.BranchId);
+
+            entity.Property(e => e.BranchId)
+                .HasColumnName("BranchID");
+
+            entity.Property(e => e.BranchName)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            entity.Property(e => e.CompanyId)
+                .HasColumnName("CompanyID")
+                .IsRequired();
+
+            // 🔥 QUAN TRỌNG NHẤT
+            entity.HasOne(d => d.Company)
+                .WithMany(p => p.Branches)
+                .HasForeignKey(d => d.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull) // hoặc Restrict
+                .HasConstraintName("FK_Branches_Companies");
         });
 
         modelBuilder.Entity<Company>(entity =>

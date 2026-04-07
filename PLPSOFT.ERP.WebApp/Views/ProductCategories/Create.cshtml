@@ -29,7 +29,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Công ty</label>
-                            <select name="companyId" class="form-select"
+                            <select asp-for="CompanyID" class="form-select"
                                     onchange="window.location.href='?companyId=' + this.value">
                                 <option value="0">-- Chọn công ty --</option>
                                 @foreach (var c in Model.Companies)

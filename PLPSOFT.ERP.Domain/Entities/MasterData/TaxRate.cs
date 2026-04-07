@@ -26,7 +26,7 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
 
         public DateTime CreatedAt { get; set; }
 
-        public virtual Company Company { get; set; } = null!;
+        public virtual Company? Company { get; set; } = null!;
 
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }

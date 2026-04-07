@@ -180,7 +180,7 @@ public class ProductCategoriesController : Controller
             });
 
         vm.ParentCategories = _context.ProductCategories
-            .Where(c => c.CompanyId == vm.CompanyID && c.ParentId==null)
+            .Where(c => vm.CompanyID != 0 && c.CompanyId == vm.CompanyID && c.ParentId==null)
             .Select(c => new SelectListItem
             {
                 Value = c.CategoryId.ToString(),
