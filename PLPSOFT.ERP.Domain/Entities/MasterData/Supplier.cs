@@ -2,6 +2,8 @@
 
 public partial class Supplier
 {
+    public long CompanyID;
+
     public long SupplierId { get; set; }
 
     public long CompanyId { get; set; }
