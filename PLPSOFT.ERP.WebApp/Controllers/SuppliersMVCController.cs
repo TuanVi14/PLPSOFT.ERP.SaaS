@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+using PLPSOFT.ERP.Infrastructure.Persistence;
 
 public class SuppliersMVCController : Controller
 {
@@ -28,7 +28,7 @@ public class SuppliersMVCController : Controller
 
         // lấy công ty
         var company = await _context.Companies
-            .FirstOrDefaultAsync(x => x.CompanyID == model.CompanyID);
+            .FirstOrDefaultAsync(x => x.CompanyId == model.CompanyID);
 
         // đếm số supplier trong công ty
         var count = await _context.Suppliers
@@ -38,7 +38,7 @@ public class SuppliersMVCController : Controller
         // sinh mã
         model.SupplierCode = $"NCC-{company.CompanyCode}-{count:D3}";
 
-        model.SupplierTypeID = 4;
+        model.SupplierTypeId = 4;
         model.IsActive = true;
         model.IsDeleted = false;
 
@@ -66,7 +66,7 @@ public class SuppliersMVCController : Controller
         if (data == null) return NotFound();
 
         data.SupplierName = model.SupplierName;
-        data.SupplierGroupID = model.SupplierGroupID;
+        data.SupplierGroupId = model.SupplierGroupId;
         data.Phone = model.Phone;
         data.Email = model.Email;
 

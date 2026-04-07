@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+using PLPSOFT.ERP.Infrastructure.Persistence;
 
 public class SupplierGroupsMVCController : Controller
 {
@@ -21,7 +21,7 @@ public class SupplierGroupsMVCController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(SupplierGroup model)
     {
-        model.CompanyID = 1;
+        model.CompanyId = 1;
         model.IsActive = true;
 
         _context.SupplierGroups.Add(model);

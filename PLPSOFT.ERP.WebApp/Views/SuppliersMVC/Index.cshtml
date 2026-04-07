@@ -1,4 +1,4 @@
-﻿@model List<Supplier>
+﻿@model List<PLPSOFT.ERP.Domain.Entities.MasterData.Supplier>
 
 <div class="container mt-4">
     <h2 class="mb-4">Danh sách nhà cung cấp</h2>
@@ -65,14 +65,14 @@
                     <td>
                         <div class="d-grid gap-1">
                             <a class="btn btn-sm btn-warning"
-                               href="/SuppliersMVC/Edit/@item.SupplierID">
+                               href="/SuppliersMVC/Edit/@item.SupplierId">
                                 Sửa
                             </a>
 
                             @if (!item.IsDeleted)
                             {
                                 <a class="btn btn-sm btn-danger"
-                                   href="/SuppliersMVC/Delete/@item.SupplierID"
+                                   href="/SuppliersMVC/Delete/@item.SupplierId"
                                    onclick="return confirm('Bạn có chắc muốn xóa?')">
                                     Xóa
                                 </a>
@@ -80,7 +80,7 @@
                             else
                             {
                                 <a class="btn btn-sm btn-success"
-                                   href="/SuppliersMVC/Restore/@item.SupplierID">
+                                   href="/SuppliersMVC/Restore/@item.SupplierId">
                                     Khôi phục
                                 </a>
                             }

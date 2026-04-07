@@ -1,4 +1,4 @@
-﻿@model List<SupplierGroup>
+﻿@model List<PLPSOFT.ERP.Domain.Entities.MasterData.SupplierGroup>
 
 <div class="container mt-4">
     <h2 class="mb-3">Danh sách nhóm nhà cung cấp</h2>
@@ -47,14 +47,14 @@
 
                     <!--  HÀNH ĐỘNG -->
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.SupplierGroupID"
+                        <a asp-action="Edit" asp-route-id="@item.SupplierGroupId"
                            class="btn btn-warning btn-sm">Sửa</a>
 
                         @if (item.IsActive)
                         {
                             <!-- Xóa -->
                             <a asp-action="Delete"
-                               asp-route-id="@item.SupplierGroupID"
+                               asp-route-id="@item.SupplierGroupId"
                                class="btn btn-danger btn-sm"
                                onclick="return confirm('Bạn có chắc muốn xóa?')">
                                 Xóa
@@ -64,7 +64,7 @@
                         {
                             <!-- Khôi phục -->
                             <a asp-action="Restore"
-                               asp-route-id="@item.SupplierGroupID"
+                               asp-route-id="@item.SupplierGroupId"
                                class="btn btn-success btn-sm">
                                 Khôi phục
                             </a>

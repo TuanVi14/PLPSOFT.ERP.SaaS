@@ -8,40 +8,79 @@
 
         <div class="card-body">
             <form asp-action="Create" method="post">
-
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
                 <div class="row">
 
+                    <!-- ✅ Company -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="ProductId" class="form-label">Mã sản phẩm</label>
-                        <input asp-for="ProductId" class="form-control" placeholder="Nhập ProductId" />
+                        <label class="form-label">Công ty</label>
+                        <select asp-for="CompanyId" class="form-select"
+                                onchange="window.location.href='?companyId=' + this.value">
+                            <option value="0">-- Chọn công ty --</option>
+                            @foreach (var c in ViewBag.Companies)
+                            {
+                                <option value="@c.CompanyId"
+                                        selected="@(c.CompanyId == Model.CompanyId ? "selected" : null)">
+                                    @c.CompanyName
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
+                    <!-- ✅ Branch -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="BranchId" class="form-label">Mã chi nhánh</label>
-                        <input asp-for="BranchId" class="form-control" placeholder="Nhập BranchId" />
+                        <label class="form-label">Chi nhánh</label>
+                        <select asp-for="BranchId" class="form-select">
+                            <option value="">-- Chọn chi nhánh --</option>
+                            @foreach (var b in ViewBag.Branches)
+                            {
+                                <option value="@b.BranchId">
+                                    @b.BranchName
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
+                    
+
+                    <!-- ✅ Product -->
                     <div class="col-md-6 mb-3">
-                        <label asp-for="CompanyId" class="form-label">Mã công ty</label>
-                        <input asp-for="CompanyId" class="form-control" placeholder="Nhập CompanyId" />
+                        <label class="form-label">Sản phẩm</label>
+                        <select asp-for="ProductId" class="form-select">
+                            <option value="">-- Chọn sản phẩm --</option>
+                            @foreach (var p in ViewBag.Products)
+                            {
+                                <option value="@p.ProductId">
+                                    @p.ProductName
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
+                    <!-- ✅ Price -->
                     <div class="col-md-6 mb-3">
                         <label asp-for="Price" class="form-label">Giá</label>
                         <input asp-for="Price"
                                id="priceInput"
                                class="form-control"
                                placeholder="Nhập giá" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
+                    <!-- ✅ Date -->
                     <div class="col-md-6 mb-3">
                         <label asp-for="EffectiveFrom" class="form-label">Hiệu lực từ</label>
                         <input asp-for="EffectiveFrom" class="form-control" type="date" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label asp-for="EffectiveTo" class="form-label">Hiệu lực đến</label>
                         <input asp-for="EffectiveTo" class="form-control" type="date" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -61,18 +100,24 @@
     <script>
         const priceInput = document.getElementById("priceInput");
 
-        function formatNumber(value) {
+        function formatVND(value) {
             if (!value) return "";
-            return value.replace(/\D/g, "")
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            // bỏ ký tự không phải số
+            value = value.replace(/\D/g, "");
+
+            // format dạng 50.000
+            return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
+        // khi nhập
         priceInput.addEventListener("input", function (e) {
-            e.target.value = formatNumber(e.target.value);
+            e.target.value = formatVND(e.target.value);
         });
 
+        // trước khi submit → bỏ dấu .
         document.querySelector("form").addEventListener("submit", function () {
-            priceInput.value = priceInput.value.replace(/,/g, "");
+            priceInput.value = priceInput.value.replace(/\./g, "");
         });
     </script>
 }

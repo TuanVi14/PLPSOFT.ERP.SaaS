@@ -1,4 +1,4 @@
-﻿@model Supplier
+﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.Supplier
 
 <div class="container mt-4">
     <h2 class="mb-4"> Thêm nhà cung cấp</h2>
@@ -14,21 +14,21 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Công ty</label>
-                <select asp-for="CompanyID" class="form-select">
+                <select asp-for="CompanyId" class="form-select">
                     @foreach (var c in ViewBag.Companies)
                     {
-                        <option value="@c.CompanyID">@c.CompanyName</option>
+                        <option value="@c.CompanyId">@c.CompanyName</option>
                     }
                 </select>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Nhóm</label>
-                <select asp-for="SupplierGroupID" class="form-select">
+                <select asp-for="SupplierGroupId" class="form-select">
                     <option value="">-- Chọn nhóm --</option>
                     @foreach (var item in ViewBag.SupplierGroups)
                     {
-                        <option value="@item.SupplierGroupID">@item.GroupName</option>
+                        <option value="@item.SupplierGroupId">@item.GroupName</option>
                     }
                 </select>
             </div>
