@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+<<<<<<< HEAD
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData
 {
@@ -37,6 +38,21 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
     public Customer? Customer { get; set; }
 }
 =======
+=======
+
+namespace PLPSOFT.ERP.Domain.Entities.MasterData
+{
+    public partial class CustomerAddress
+    {
+        public long AddressId { get; set; }
+
+        public long CustomerId { get; set; }
+
+        public string ReceiverName { get; set; } = null!;
+
+        public string? Phone { get; set; }
+
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
         public string? Province { get; set; }
 
         public string? District { get; set; }
@@ -64,4 +80,7 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public virtual Customer Customer { get; set; } = null!;
     }
 }
+<<<<<<< HEAD
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
 >>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77

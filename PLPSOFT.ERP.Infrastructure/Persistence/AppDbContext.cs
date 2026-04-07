@@ -28,11 +28,14 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence
         public virtual DbSet<Customer> Customers { get; set; }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductUnit> ProductUnits { get; set; }
         public IEnumerable ProductTypes { get; set; } = System.Linq.Enumerable.Empty<object>();
 =======
+=======
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
         public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
 
         public virtual DbSet<CustomerGroup> CustomerGroups { get; set; }
@@ -60,6 +63,9 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence
         public virtual DbSet<TaxRate> TaxRates { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+<<<<<<< HEAD
+>>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
+=======
 >>>>>>> f4d4dcc04a18270395633e0584ae01094247ca77
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
