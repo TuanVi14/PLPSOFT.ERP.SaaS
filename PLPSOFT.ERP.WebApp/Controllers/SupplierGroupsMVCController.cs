@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.Sales.SaaS.V2026.Data;
+using PLPSOFT.ERP.Infrastructure.Persistence;
 
 public class SupplierGroupsMVCController : Controller
 {
@@ -15,14 +15,27 @@ public class SupplierGroupsMVCController : Controller
     // CREATE
     public IActionResult Create()
     {
+        ViewBag.Companies = _context.Companies.ToList();
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(SupplierGroup model)
     {
-        model.CompanyID = 1;
+        model.CompanyId = model.CompanyId;
         model.IsActive = true;
+
+        // lấy company
+        var company = await _context.Companies
+            .FirstOrDefaultAsync(x => x.CompanyId == model.CompanyId);
+
+        // đếm số group
+        var count = await _context.SupplierGroups
+            .Where(x => x.CompanyId == model.CompanyId)
+            .CountAsync() + 1;
+
+        // sinh mã
+        model.GroupCode = $"GRP-{company.CompanyCode}-{count:D3}";
 
         _context.SupplierGroups.Add(model);
         await _context.SaveChangesAsync();
@@ -33,6 +46,7 @@ public class SupplierGroupsMVCController : Controller
     // EDIT
     public async Task<IActionResult> Edit(long id)
     {
+        ViewBag.Companies = _context.Companies.ToList();
         var data = await _context.SupplierGroups.FindAsync(id);
         if (data == null) return NotFound();
 
@@ -44,7 +58,7 @@ public class SupplierGroupsMVCController : Controller
     {
         var data = await _context.SupplierGroups.FindAsync(id);
         if (data == null) return NotFound();
-
+        data.CompanyId = model.CompanyId;
         data.GroupName = model.GroupName;
         data.GroupCode = model.GroupCode;
 
@@ -59,21 +73,33 @@ public class SupplierGroupsMVCController : Controller
         var data = await _context.SupplierGroups.FindAsync(id);
         if (data == null) return NotFound();
 
-        _context.SupplierGroups.Remove(data);
+        data.IsActive = false;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index");
+    }
+    public async Task<IActionResult> Restore(long id)
+    {
+        var data = await _context.SupplierGroups.FindAsync(id);
+        if (data == null) return NotFound();
+
+        data.IsActive = true;
+
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Index");
     }
     public async Task<IActionResult> Index(string search)
     {
-        var data = _context.SupplierGroups.AsQueryable();
+        var data = _context.SupplierGroups
+            .Include(x => x.Company)
+            .AsQueryable();
 
         if (!string.IsNullOrEmpty(search))
         {
             data = data.Where(x => x.GroupName.Contains(search));
         }
-
-        ViewBag.Search = search;
 
         return View(await data.ToListAsync());
     }

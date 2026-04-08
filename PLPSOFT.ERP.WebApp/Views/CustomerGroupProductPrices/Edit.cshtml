@@ -1,69 +1,33 @@
-﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerGroupProductPrice
-
+﻿@model PLPSOFT.ERP.WebApp.Models.CustomerGroupProductPriceFormViewModel
 @{
-    ViewData["Title"] = "Chỉnh sửa giá theo nhóm";
+    ViewData["Title"] = "Sửa giá nhóm khách hàng";
 }
 
-<h1>Chỉnh Sửa</h1>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Giá nhóm</a></li>
+        <li class="breadcrumb-item active">Chỉnh sửa #@Model.GroupPriceID</li>
+    </ol>
+</nav>
 
-<h4>Cập nhật giá cho Nhóm Khách Hàng và Sản Phẩm</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <input type="hidden" asp-for="GroupPriceId" />
-
-            <div class="form-group">
-                <label class="control-label">Nhóm Khách Hàng</label>
-                <select asp-for="CustomerGroupId" class="form-control" asp-items="ViewBag.CustomerGroupId">
-                    <option value="">-- Chọn Nhóm Khách Hàng --</option>
-                </select>
-                <span asp-validation-for="CustomerGroupId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">Sản Phẩm</label>
-                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId">
-                    <option value="">-- Chọn Sản Phẩm --</option>
-                </select>
-                <span asp-validation-for="ProductId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Price" class="control-label">Giá Bán</label>
-                <input asp-for="Price" class="form-control" type="number" step="0.01" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="DiscountRate" class="control-label">Tỷ Lệ Chiết Khấu (%)</label>
-                <input asp-for="DiscountRate" class="form-control" type="number" step="0.1" />
-                <span asp-validation-for="DiscountRate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="EffectiveFrom" class="control-label">Ngày Hiệu Lực</label>
-                <input asp-for="EffectiveFrom" class="form-control" type="date" />
-                <span asp-validation-for="EffectiveFrom" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="EffectiveTo" class="control-label">Ngày Hết Hạn</label>
-                <input asp-for="EffectiveTo" class="form-control" type="date" />
-                <span asp-validation-for="EffectiveTo" class="text-danger"></span>
-            </div>
-
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-
-            <div class="form-group mt-3">
-                <input type="submit" value="Cập Nhật" class="btn btn-success" />
-                <a asp-action="Index" class="btn btn-secondary">Hủy bỏ</a>
+<div class="card shadow-sm" style="max-width: 860px;">
+    <div class="card-header bg-warning text-dark">
+        <i class="bi bi-pencil-square me-2"></i> Chỉnh sửa giá nhóm #@Model.GroupPriceID
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" asp-route-id="@Model.GroupPriceID" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="GroupPriceID" type="hidden" />
+            <partial name="_Form" model="@Model" />
+            <hr />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-save me-1"></i> Cập nhật
+                </button>
+                <a asp-action="Details" asp-route-id="@Model.GroupPriceID" class="btn btn-outline-info">
+                    Xem chi tiết
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
             </div>
         </form>
     </div>

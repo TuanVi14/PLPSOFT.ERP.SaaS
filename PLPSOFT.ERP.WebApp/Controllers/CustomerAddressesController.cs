@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PLPSOFT.ERP.Domain.Entities.MasterData;
-using PLPSOFT.ERP.WebApp.Data;
+using PLPSOFT.ERP.Infrastructure.Persistence;
 
 namespace PLPSOFT.ERP.WebApp.Controllers
 {
     public class CustomerAddressesController : Controller
     {
-        private readonly PLPSOFTERPWebAppContext _context;
+        private readonly AppDbContext _context;
 
-        public CustomerAddressesController(PLPSOFTERPWebAppContext context)
+        public CustomerAddressesController(AppDbContext context)
         {
             _context = context;
         }
@@ -37,7 +37,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             if (id == null) return NotFound();
 
             var customerAddress = await _context.CustomerAddresses
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.AddressId == id);
 
             if (customerAddress == null) return NotFound();
 
@@ -76,7 +76,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Id,CustomerId,AddressLine,Ward,District,City,IsDefault")] CustomerAddress customerAddress)
         {
-            if (id != customerAddress.Id) return NotFound();
+            if (id != customerAddress.AddressId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerAddressExists(customerAddress.Id)) return NotFound();
+                    if (!CustomerAddressExists(customerAddress.AddressId)) return NotFound();
                     else throw;
                 }
                 return RedirectToAction(nameof(Index), new { customerId = customerAddress.CustomerId.ToString() });
@@ -100,7 +100,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             if (id == null) return NotFound();
 
             var customerAddress = await _context.CustomerAddresses
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.AddressId == id);
 
             if (customerAddress == null) return NotFound();
 
@@ -125,7 +125,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
         private bool CustomerAddressExists(long id)
         {
-            return _context.CustomerAddresses.Any(e => e.Id == id);
+            return _context.CustomerAddresses.Any(e => e.AddressId == id);
         }
     }
 }

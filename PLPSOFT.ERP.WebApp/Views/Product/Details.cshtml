@@ -1,0 +1,85 @@
+﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.Product
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Chi tiết sản phẩm</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light fw-bold">
+            <i class="fas fa-info-circle"></i> Thông tin sản phẩm
+        </div>
+
+        <div class="card-body">
+
+            <!-- THÔNG TIN CƠ BẢN -->
+            <h5 class="text-primary">Thông tin cơ bản</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Mã:</strong> @Model.ProductCode</p>
+                    <p><strong>Tên:</strong> @Model.ProductName</p>
+                    <p><strong>SKU:</strong> @Model.Sku</p>
+                    <p><strong>Barcode:</strong> @Model.Barcode</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Công ty:</strong> @Model.Company?.CompanyName</p>
+                    <p><strong>Danh mục:</strong> @Model.Category?.CategoryName</p>
+                    <p><strong>Đơn vị:</strong> @Model.BaseUnit?.UnitName</p>
+                    <p><strong>Thuế:</strong> @Model.DefaultTaxRate?.TaxName</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- GIÁ -->
+            <h5 class="text-primary">Giá & Kinh doanh</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Giá vốn:</strong> @Model.CostPrice</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Giá bán:</strong> @Model.StandardPrice</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- KHO -->
+            <h5 class="text-primary">Kho & Vận hành</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <p><strong>Theo dõi tồn:</strong> @(Model.TrackInventory ? "Có" : "Không")</p>
+                    <p><strong>Cho phép âm kho:</strong> @(Model.AllowBackorder ? "Có" : "Không")</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Min Stock:</strong> @Model.MinStock</p>
+                    <p><strong>Max Stock:</strong> @Model.MaxStock</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Weight:</strong> @Model.Weight</p>
+                    <p><strong>Volume:</strong> @Model.Volume</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- KỸ THUẬT -->
+            <h5 class="text-primary">Kỹ thuật & Bảo hành</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Serial:</strong> @(Model.IsSerialized ? "Có" : "Không")</p>
+                    <p><strong>Lô:</strong> @(Model.IsBatchManaged ? "Có" : "Không")</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Hạn sử dụng:</strong> @(Model.ExpireDateRequired ? "Có" : "Không")</p>
+                    <p><strong>Bảo hành:</strong> @Model.WarrantyMonths tháng</p>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

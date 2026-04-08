@@ -1,14 +1,18 @@
 ﻿namespace PLPSOFT.ERP.Domain.Entities.MasterData;
-public class SupplierGroup
-{
-    public long SupplierGroupID { get; set; }
-    public long CompanyID { get; set; }
 
-    public string GroupCode { get; set; }
-    public string GroupName { get; set; }
+public partial class SupplierGroup
+{
+    public long SupplierGroupId { get; set; }
+
+    public long CompanyId { get; set; }
+
+    public string GroupCode { get; set; } = null!;
+
+    public string GroupName { get; set; } = null!;
 
     public bool IsActive { get; set; }
 
-    // Navigation
-    public List<Supplier> Suppliers { get; set; }
+    public virtual Company Company { get; set; } = null!;
+
+    public virtual ICollection<Supplier> Suppliers { get; set; } = new List<Supplier>();
 }

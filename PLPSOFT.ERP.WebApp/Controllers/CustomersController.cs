@@ -4,15 +4,15 @@ using PLPSOFT.ERP.Domain.Entities.MasterData;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using PLPSOFT.ERP.WebApp.Data;
+using PLPSOFT.ERP.Infrastructure.Persistence;
 
 namespace PLPSOFT.ERP.WebApp.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly PLPSOFTERPWebAppContext _context;
+        private readonly AppDbContext _context;
 
-        public CustomersController(PLPSOFTERPWebAppContext context)
+        public CustomersController(AppDbContext context)
         {
             _context = context;
         }
@@ -46,7 +46,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 return View(model);
 
             model.CreatedAt = DateTime.Now;
-            model.CompanyID = 1;
+            model.CompanyId = 1;
 
             _context.Customers.Add(model);
             await _context.SaveChangesAsync();
@@ -70,7 +70,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
             data.CustomerName = model.CustomerName;
             data.CustomerCode = model.CustomerCode;
-            data.CustomerGroupID = model.CustomerGroupID;
+            data.CustomerGroupId = model.CustomerGroupId;
             data.Phone = model.Phone;
             data.Email = model.Email;
             data.CreditLimit = model.CreditLimit;
@@ -87,7 +87,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
         {
             var data = await _context.Customers
                 .Include(x => x.CustomerGroup)
-                .FirstOrDefaultAsync(x => x.CustomerID == id);
+                .FirstOrDefaultAsync(x => x.CustomerId == id);
             if (data == null) return NotFound();
             return View(data);
         }

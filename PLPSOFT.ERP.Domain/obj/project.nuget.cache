@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hXXdO6ZFKGs=",
+  "dgSpecHash": "V0ykBa7UBcg=",
   "success": true,
-  "projectFilePath": "E:\\DEMOTT1\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\ANH THU\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.14\\microsoft.netcore.app.ref.9.0.14.nupkg.sha512",
-    "C:\\Users\\ANH THU\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.14\\microsoft.windowsdesktop.app.ref.9.0.14.nupkg.sha512",
-    "C:\\Users\\ANH THU\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.14\\microsoft.aspnetcore.app.ref.9.0.14.nupkg.sha512"
-  ],
+  "projectFilePath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

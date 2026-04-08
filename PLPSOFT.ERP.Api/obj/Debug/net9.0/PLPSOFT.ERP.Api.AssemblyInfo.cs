@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PLPSOFT.ERP.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71858894b69da46e59b1714255b2ad7decdd39c0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e38c5453e28039b38728c2d922c6716ed8d42598")]
 [assembly: System.Reflection.AssemblyProductAttribute("PLPSOFT.ERP.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PLPSOFT.ERP.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

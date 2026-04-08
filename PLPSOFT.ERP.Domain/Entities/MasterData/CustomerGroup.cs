@@ -1,19 +1,28 @@
-﻿namespace PLPSOFT.ERP.Domain.Entities.MasterData;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class CustomerGroup
+namespace PLPSOFT.ERP.Domain.Entities.MasterData;
+
+public partial class CustomerGroup
 {
-    // Giữ nguyên các ID cũ của bạn
-    public long CustomerGroupID { get; set; }
-    public long CompanyID { get; set; }
+    public long CustomerGroupId { get; set; }
 
-    public string GroupCode { get; set; }
-    public string GroupName { get; set; }
+    public long CompanyId { get; set; }
+
+    public string GroupCode { get; set; } = null!;
+
+    public string GroupName { get; set; } = null!;
+
+    public string? Description { get; set; }
 
     public bool IsActive { get; set; }
 
-    // THÊM DÒNG NÀY: Để logic Xóa mềm (Soft Delete) hoạt động
-    public bool IsDelete { get; set; } = false;
+    public virtual Company Company { get; set; } = null!;
 
-    // Navigation
-    public List<Customer> Customers { get; set; }
+    public virtual ICollection<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; } = new List<CustomerGroupProductPrice>();
+
+    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
 }

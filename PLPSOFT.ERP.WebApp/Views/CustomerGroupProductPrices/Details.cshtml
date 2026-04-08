@@ -1,60 +1,79 @@
-﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerGroupProductPrice
-
+﻿@model PLPSOFT.ERP.WebApp.Models.CustomerGroupProductPriceRowViewModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết giá nhóm";
 }
 
-<h1>Details</h1>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Giá nhóm</a></li>
+        <li class="breadcrumb-item active">Chi tiết #@Model.GroupPriceID</li>
+    </ol>
+</nav>
 
-<div>
-    <h4>CustomerGroupProductPrice</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerGroupId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CustomerGroupId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiscountRate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DiscountRate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EffectiveFrom)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EffectiveFrom)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EffectiveTo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EffectiveTo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-    </dl>
+<div class="card shadow-sm" style="max-width: 700px;">
+    <div class="card-header bg-info text-white d-flex justify-content-between">
+        <span><i class="bi bi-info-circle me-2"></i> Chi tiết #@Model.GroupPriceID</span>
+        @if (Model.IsCurrentlyValid)
+        {
+            <span class="badge bg-light text-success fs-6">Đang áp dụng</span>
+        }
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">Nhóm khách hàng</dt>
+            <dd class="col-sm-8">
+                <span class="badge bg-secondary me-1">@Model.GroupCode</span>@Model.GroupName
+            </dd>
+
+            <dt class="col-sm-4">Sản phẩm</dt>
+            <dd class="col-sm-8">
+                <span class="badge bg-light text-dark border me-1">@Model.ProductCode</span>@Model.ProductName
+            </dd>
+
+            <dt class="col-sm-4">Giá riêng</dt>
+            <dd class="col-sm-8 fw-bold text-primary fs-5">
+                @(Model.Price.HasValue? Model.Price.Value.ToString("N0") + " ₫" : "–")
+            </dd>
+
+            <dt class="col-sm-4">Chiết khấu</dt>
+            <dd class="col-sm-8">
+                @(Model.DiscountRate.HasValue? Model.DiscountRate.Value.ToString("0.##") + "%" : "–")
+            </dd>
+
+            <dt class="col-sm-4">Hiệu lực từ</dt>
+            <dd class="col-sm-8">@Model.EffectiveFrom.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-4">Hiệu lực đến</dt>
+            <dd class="col-sm-8">
+                @(Model.EffectiveTo.HasValue
+                                ? Model.EffectiveTo.Value.ToString("dd/MM/yyyy")
+                                : "Không giới hạn")
+            </dd>
+
+            <dt class="col-sm-4">Trạng thái</dt>
+            <dd class="col-sm-8">
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success">Kích hoạt</span>
+                }
+                else
+                {
+
+                    <span class="badge bg-secondary">Đã tắt</span>
+                }
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.GroupPriceID" class="btn btn-warning">
+            <i class="bi bi-pencil me-1"></i> Sửa
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.GroupPriceID" class="btn btn-outline-danger">
+            <i class="bi bi-trash me-1"></i> Xóa
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Quay lại
+        </a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.GroupPriceId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

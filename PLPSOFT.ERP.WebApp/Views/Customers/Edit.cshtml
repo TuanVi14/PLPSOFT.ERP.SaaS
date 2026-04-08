@@ -5,7 +5,7 @@
     <h2 class="mb-4">Sửa khách hàng</h2>
 
     <form asp-action="Edit" method="post" class="card p-4 shadow-sm">
-        <input type="hidden" asp-for="CustomerID" />
+        <input type="hidden" asp-for="CustomerId" />
 
         <div class="row">
             <div class="col-md-6 mb-3">
@@ -20,7 +20,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Nhóm</label>
-                <select asp-for="CustomerGroupID" class="form-select" asp-items="@(new SelectList(ViewBag.CustomerGroups, "CustomerGroupID", "GroupName", Model.CustomerGroupID))">
+                <select asp-for="CustomerGroupId" class="form-select" asp-items="@(new SelectList(ViewBag.CustomerGroups, "CustomerGroupID", "GroupName", Model.CustomerGroupId))">
                     <option value="">-- Chọn nhóm --</option>
                 </select>
             </div>

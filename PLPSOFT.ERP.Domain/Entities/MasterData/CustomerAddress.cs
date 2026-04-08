@@ -1,48 +1,44 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema; // Thêm thư viện này
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PLPSOFT.ERP.Domain.Entities.MasterData;
 
-public class CustomerAddress
+public partial class CustomerAddress
 {
-    [Key]
-    public long CustomerAddressID { get; set; }
+    public long AddressId { get; set; }
 
-    [NotMapped] // EF sẽ bỏ qua cái này
-    public long Id => CustomerAddressID;
+    public long CustomerId { get; set; }
 
-    public long CustomerID { get; set; }
+    public string ReceiverName { get; set; } = null!;
 
-    [NotMapped] // EF sẽ bỏ qua cái này, không còn bị trùng cột nữa
-    public long CustomerId { get => CustomerID; set => CustomerID = value; }
+    public string? Phone { get; set; }
 
-    public long CompanyID { get; set; }
+    public string? Province { get; set; }
 
-    public string AddressLine1 { get; set; } = string.Empty;
+    public string? District { get; set; }
 
-    [NotMapped] // EF sẽ bỏ qua cái này
-    public string AddressLine { get => AddressLine1; set => AddressLine1 = value; }
+    public string? Ward { get; set; }
 
-    public string? AddressLine2 { get; set; }
-    public string? City { get; set; }
+    public string Address { get; set; } = null!;
 
-    [NotMapped] // EF sẽ bỏ qua cái này
-    public string? Ward { get => City; set => City = value; }
+    public decimal? Latitude { get; set; }
 
-    [NotMapped] // EF sẽ bỏ qua cái này
-    public string? District { get => State; set => State = value; }
-
-    public string? State { get; set; }
-    public string? PostalCode { get; set; }
-    public string? Country { get; set; }
+    public decimal? Longitude { get; set; }
 
     public bool IsDefault { get; set; }
-    public bool IsActive { get; set; }
-    public bool IsDelete { get; set; } = false;
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime? UpdatedAt { get; set; }
+    public bool IsBillingAddress { get; set; }
 
-    public virtual Customer? Customer { get; set; }
+    public bool IsShippingAddress { get; set; }
+
+    public string? Note { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public bool IsDeleted { get; set; }
+
+    public virtual Customer Customer { get; set; } = null!;
 }
