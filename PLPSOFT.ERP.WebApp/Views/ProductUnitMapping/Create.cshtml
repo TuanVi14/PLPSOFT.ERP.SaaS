@@ -1,0 +1,80 @@
+﻿@model PLPSOFT.ERP.WebApp.Models.ProductUnitMappingFormViewModel
+@{
+    ViewData["Title"] = "Thêm đơn vị tính";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-action="Index" asp-route-productId="@Model.ProductID">Đơn vị tính</a>
+        </li>
+        <li class="breadcrumb-item active">Thêm mới</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm" style="max-width: 640px;">
+    <div class="card-header bg-primary text-white">
+        <i class="bi bi-plus-circle me-2"></i> Thêm đơn vị tính cho sản phẩm
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="ProductID" class="form-label fw-semibold"></label>
+                <select asp-for="ProductID" asp-items="@Model.ProductOptions" class="form-select">
+                    <option value="">-- Chọn sản phẩm --</option>
+                </select>
+                <span asp-validation-for="ProductID" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="UnitID" class="form-label fw-semibold"></label>
+                <select asp-for="UnitID" asp-items="@Model.UnitOptions" class="form-select">
+                    <option value="">-- Chọn đơn vị tính --</option>
+                </select>
+                <span asp-validation-for="UnitID" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConversionRate" class="form-label fw-semibold"></label>
+                <div class="input-group">
+                    <span class="input-group-text">1 ÷</span>
+                    <input asp-for="ConversionRate" type="number" min="0.000001" step="0.000001"
+                           class="form-control" placeholder="1.000000" />
+                </div>
+                <div class="form-text">
+                    Ví dụ: 1 thùng = 24 lon → nhập <strong>24</strong>
+                </div>
+                <span asp-validation-for="ConversionRate" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check form-switch">
+                    <input asp-for="IsDefault" class="form-check-input" type="checkbox" role="switch" />
+                    <label asp-for="IsDefault" class="form-check-label fw-semibold">
+                        Đặt làm đơn vị mặc định
+                    </label>
+                </div>
+                <div class="form-text">Mỗi sản phẩm chỉ có 1 đơn vị mặc định.</div>
+            </div>
+
+            <hr />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i> Lưu
+                </button>
+                <a asp-action="Index" asp-route-productId="@Model.ProductID"
+                   class="btn btn-outline-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

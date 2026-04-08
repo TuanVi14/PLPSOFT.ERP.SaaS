@@ -1,0 +1,189 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = PLPSOFT.ERP.WebApp
+build_property.RootNamespace = PLPSOFT.ERP.WebApp
+build_property.ProjectDir = D:\test\PLPSOFT.ERP.SaaS\PLPSOFT.ERP.WebApp\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\test\PLPSOFT.ERP.SaaS\PLPSOFT.ERP.WebApp
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/CustomerGroupProductPrices/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJHcm91cFByb2R1Y3RQcmljZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/CustomerGroupProductPrices/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJHcm91cFByb2R1Y3RQcmljZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/CustomerGroupProductPrices/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJHcm91cFByb2R1Y3RQcmljZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/CustomerGroupProductPrices/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJHcm91cFByb2R1Y3RQcmljZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/CustomerGroupProductPrices/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJHcm91cFByb2R1Y3RQcmljZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/CustomerGroupProductPrices/_Form.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJHcm91cFByb2R1Y3RQcmljZXNcX0Zvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Customers/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductCategories/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdENhdGVnb3JpZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductCategories/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdENhdGVnb3JpZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductCategories/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdENhdGVnb3JpZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductPrices/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFByaWNlc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductPrices/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFByaWNlc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductPrices/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFByaWNlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductUnitMapping/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFVuaXRNYXBwaW5nXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductUnitMapping/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFVuaXRNYXBwaW5nXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductUnitMapping/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFVuaXRNYXBwaW5nXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductUnitMapping/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFVuaXRNYXBwaW5nXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductUnits/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFVuaXRzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductUnits/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFVuaXRzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/ProductUnits/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFVuaXRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Product/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Product/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Product/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Product/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/SupplierGroupsMVC/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJHcm91cHNNVkNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/SupplierGroupsMVC/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJHcm91cHNNVkNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/SupplierGroupsMVC/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJHcm91cHNNVkNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/SuppliersMVC/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzTVZDXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/SuppliersMVC/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzTVZDXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/SuppliersMVC/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzTVZDXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/TaxRates/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGF4UmF0ZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/TaxRates/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGF4UmF0ZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/TaxRates/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGF4UmF0ZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/test/PLPSOFT.ERP.SaaS/PLPSOFT.ERP.WebApp/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-x1zep6eb1j
