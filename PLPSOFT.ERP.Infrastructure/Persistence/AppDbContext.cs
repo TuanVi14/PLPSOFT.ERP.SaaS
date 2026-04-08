@@ -26,12 +26,17 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence
         public DbSet<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; }
         public DbSet<ProductUnitMapping> ProductUnitMappings { get; set; }
 
-
-
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductUnit> ProductUnits { get; set; }
         public IEnumerable ProductTypes { get; set; }
+
+        // Missing DbSets used by WebApp controllers
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CustomerGroup> CustomerGroups { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<SystemTypeValue> SystemTypeValues { get; set; }
 
         // 🔥 Apply Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)

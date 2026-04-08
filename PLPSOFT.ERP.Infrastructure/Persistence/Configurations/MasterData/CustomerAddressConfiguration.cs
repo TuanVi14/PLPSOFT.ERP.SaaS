@@ -9,49 +9,25 @@ namespace PLPSOFT.ERP.Infrastructure.Persistence.Configurations.MasterData
         public void Configure(EntityTypeBuilder<CustomerAddress> builder)
         {
             builder.ToTable("CustomerAddresses");
+            builder.HasKey(x => x.AddressId);
 
-            builder.HasKey(x => x.CustomerAddressID);
-
-            builder.Property(x => x.AddressLine1)
-                   .HasMaxLength(200)
-                   .IsRequired();
-
-            builder.Property(x => x.AddressLine2)
-                   .HasMaxLength(200);
-
-            builder.Property(x => x.City)
-                   .HasMaxLength(100);
-
-            builder.Property(x => x.State)
-                   .HasMaxLength(100);
-
-            builder.Property(x => x.PostalCode)
-                   .HasMaxLength(50)
-                   .IsUnicode(false);
-
-            builder.Property(x => x.Country)
-                   .HasMaxLength(100);
-
-            builder.Property(x => x.Latitude)
-                   .HasColumnType("decimal(9,6)")
-                   .IsRequired(false);
-
-            builder.Property(x => x.Longitude)
-                   .HasColumnType("decimal(9,6)")
-                   .IsRequired(false);
-
-            builder.Property(x => x.IsDefault)
-                   .HasDefaultValue(false);
-
-            builder.Property(x => x.IsActive)
-                   .HasDefaultValue(true);
-
-            builder.Property(x => x.CreatedAt)
-                   .HasDefaultValueSql("sysdatetime()");
+            builder.Property(x => x.AddressId).HasColumnName("AddressID");
+            builder.Property(x => x.CustomerId).HasColumnName("CustomerID");
+            builder.Property(x => x.Address).HasMaxLength(500);
+            builder.Property(x => x.ReceiverName).HasMaxLength(255);
+            builder.Property(x => x.Province).HasMaxLength(100);
+            builder.Property(x => x.District).HasMaxLength(100);
+            builder.Property(x => x.Ward).HasMaxLength(100);
+            builder.Property(x => x.Phone).HasMaxLength(30).IsUnicode(false);
+            builder.Property(x => x.Note).HasMaxLength(500);
+            builder.Property(x => x.Latitude).HasColumnType("decimal(18,8)").IsRequired(false);
+            builder.Property(x => x.Longitude).HasColumnType("decimal(18,8)").IsRequired(false);
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("(sysdatetime())");
 
             builder.HasOne(x => x.Customer)
-                   .WithMany(x => x.Addresses)
-                   .HasForeignKey(x => x.CustomerID);
+                   .WithMany(x => x.CustomerAddresses)
+                   .HasForeignKey(x => x.CustomerId)
+                   .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

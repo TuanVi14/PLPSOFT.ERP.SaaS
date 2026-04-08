@@ -1,0 +1,29 @@
+@model PLPSOFT.ERP.Domain.Entities.MasterData.Customer
+
+@{
+    ViewData["Title"] = "Chi tiết khách hàng";
+}
+
+<h2>Chi tiết khách hàng</h2>
+
+<div class="mb-3">
+    <strong>Mã:</strong> @Model.CustomerCode
+</div>
+<div class="mb-3">
+    <strong>Tên:</strong> @Model.CustomerName
+</div>
+<div class="mb-3">
+    <strong>Nhóm:</strong> @Model.CustomerGroup?.GroupName
+</div>
+<div class="mb-3">
+    <strong>Điện thoại:</strong> @Model.Phone
+</div>
+<div class="mb-3">
+    <strong>Email:</strong> @Model.Email
+</div>
+<div class="mb-3">
+    <strong>Công ty:</strong> @Model.Company?.CompanyName
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-primary">Sửa</a>
+<a asp-action="Index" class="btn btn-secondary">Quay lại</a>

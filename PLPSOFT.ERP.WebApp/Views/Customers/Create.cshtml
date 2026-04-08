@@ -1,0 +1,40 @@
+@model PLPSOFT.ERP.Domain.Entities.MasterData.Customer
+
+@{
+    ViewData["Title"] = "Thêm khách hàng";
+}
+
+<h2>Thêm khách hàng</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Công ty</label>
+        <select asp-for="CompanyId" class="form-select" asp-items="ViewBag.Companies"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CustomerCode" class="form-label"></label>
+        <input asp-for="CustomerCode" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="CustomerName" class="form-label"></label>
+        <input asp-for="CustomerName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Nhóm khách hàng</label>
+        <select asp-for="CustomerGroupId" class="form-select" asp-items="ViewBag.CustomerGroups"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label"></label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label"></label>
+    </div>
+    <button class="btn btn-primary" type="submit">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

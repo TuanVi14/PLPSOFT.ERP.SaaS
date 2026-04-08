@@ -1,0 +1,48 @@
+@model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.CustomerGroup>
+
+@{
+    ViewData["Title"] = "Nhóm khách hàng";
+}
+
+<h2>Nhóm khách hàng</h2>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Tìm theo mã/tên" />
+        <button class="btn btn-outline-secondary" type="submit">Tìm</button>
+        <a asp-action="Create" class="btn btn-primary ms-2">Thêm nhóm</a>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Tên</th>
+            <th>Công ty</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var g in Model)
+    {
+        <tr>
+            <td>@g.GroupCode</td>
+            <td>@g.GroupName</td>
+            <td>@g.Company?.CompanyName</td>
+            <td>@g.Description</td>
+            <td>@(g.IsActive ? "Active" : "Inactive")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@g.CustomerGroupId" class="btn btn-sm btn-outline-primary">Sửa</a>
+                <a asp-action="Details" asp-route-id="@g.CustomerGroupId" class="btn btn-sm btn-outline-secondary">Chi tiết</a>
+                <form asp-action="Delete" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@g.CustomerGroupId" />
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xác nhận ngừng hoạt động?');">Ngừng</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,26 @@
+@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerGroup
+
+@{
+    ViewData["Title"] = "Chi tiết nhóm khách hàng";
+}
+
+<h2>Chi tiết nhóm khách hàng</h2>
+
+<div class="mb-3">
+    <strong>Mã:</strong> @Model.GroupCode
+</div>
+<div class="mb-3">
+    <strong>Tên:</strong> @Model.GroupName
+</div>
+<div class="mb-3">
+    <strong>Công ty:</strong> @Model.Company?.CompanyName
+</div>
+<div class="mb-3">
+    <strong>Mô tả:</strong> @Model.Description
+</div>
+<div class="mb-3">
+    <strong>Trạng thái:</strong> @(Model.IsActive ? "Active" : "Inactive")
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.CustomerGroupId" class="btn btn-primary">Sửa</a>
+<a asp-action="Index" class="btn btn-secondary">Quay lại</a>
