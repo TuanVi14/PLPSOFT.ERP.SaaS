@@ -27,7 +27,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<CustomerGroup> CustomerGroups { get; set; }
 
-    public virtual DbSet<CustomerGroupProductPrice> CustomerGroupProductPrices { get; set; }
+    public virtual DbSet<CustomerGroupProductPrice>     CustomerGroupProductPrices { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 

@@ -1,0 +1,16 @@
+@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerAddress
+
+@{
+    ViewData["Title"] = "Chi tiết địa chỉ";
+}
+
+<h2>Chi tiết địa chỉ</h2>
+
+<div class="mb-3"><strong>Người nhận:</strong> @Model.ReceiverName</div>
+<div class="mb-3"><strong>Điện thoại:</strong> @Model.Phone</div>
+<div class="mb-3"><strong>Địa chỉ:</strong> @Model.Address</div>
+<div class="mb-3"><strong>Phường/Quận/Tỉnh:</strong> @Model.Ward, @Model.District, @Model.Province</div>
+<div class="mb-3"><strong>Ghi chú:</strong> @Model.Note</div>
+
+<a asp-controller="CustomerAddresses" asp-action="Edit" asp-route-id="@Model.AddressId" class="btn btn-primary">Sửa</a>
+<a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" class="btn btn-secondary ms-2">Quay lại</a>

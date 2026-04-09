@@ -1,43 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj": {}
+    "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj": {}
   },
   "projects": {
-    "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
+    "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
+        "projectUniqueName": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
         "projectName": "PLPSOFT.ERP.Application",
-        "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
-        "packagesPath": "C:\\Users\\MSII\\.nuget\\packages\\",
-        "outputPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\obj\\",
+        "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
+        "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\MSII\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://www.nuget.org/api/v2/": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
               },
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
               }
             }
           }
@@ -52,7 +45,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -83,34 +76,27 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
+    "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
         "projectName": "PLPSOFT.ERP.Domain",
-        "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
-        "packagesPath": "C:\\Users\\MSII\\.nuget\\packages\\",
-        "outputPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\obj\\",
+        "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj",
+        "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\MSII\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://www.nuget.org/api/v2/": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
@@ -128,7 +114,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -149,47 +135,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj": {
+    "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
         "projectName": "PLPSOFT.ERP.Infrastructure",
-        "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\MSII\\.nuget\\packages\\",
-        "outputPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\MSII\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://www.nuget.org/api/v2/": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
               },
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
               },
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
               }
             }
           }
@@ -204,7 +183,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -255,34 +234,27 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
+    "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj",
         "projectName": "PLPSOFT.ERP.Shared",
-        "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj",
-        "packagesPath": "C:\\Users\\MSII\\.nuget\\packages\\",
-        "outputPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\obj\\",
+        "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj",
+        "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\MSII\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://www.nuget.org/api/v2/": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
@@ -300,7 +272,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -321,50 +293,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj": {
+    "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
+        "projectUniqueName": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
         "projectName": "PLPSOFT.ERP.WebApp",
-        "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
-        "packagesPath": "C:\\Users\\MSII\\.nuget\\packages\\",
-        "outputPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\obj\\",
+        "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\PLPSOFT.ERP.WebApp.csproj",
+        "packagesPath": "C:\\Users\\acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.WebApp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\MSII\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\acer\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://www.nuget.org/api/v2/": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
               },
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
               },
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj"
               },
-              "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
-                "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
+              "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
+                "projectPath": "C:\\Users\\acer\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
               }
             }
           }
@@ -379,7 +344,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -421,7 +386,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

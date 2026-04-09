@@ -80,6 +80,19 @@
                 </a>
             </div>
 
+            <div class="mt-4">
+                <h5 class="text-primary">Tiện ích quản lý</h5>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-outline-primary" href="@Url.Action("Index","CustomerGroupProductPrices", new { ProductID = Model.ProductId })">
+                        <i class="bi bi-tags me-1"></i> Giá theo nhóm khách hàng
+                    </a>
+
+                    <a class="btn btn-outline-secondary" href="@Url.Action("Index","ProductUnitMapping", new { productId = Model.ProductId })">
+                        <i class="bi bi-arrow-left-right me-1"></i> Quy đổi đơn vị tính
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

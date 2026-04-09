@@ -32,6 +32,16 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             return View(addresses);
         }
 
+        // Returns a partial list of addresses for embedding in other views (AJAX)
+        public async Task<IActionResult> List(long customerId)
+        {
+            var addresses = await _context.CustomerAddresses
+                .Where(a => a.CustomerId == customerId)
+                .ToListAsync();
+
+            return PartialView("_List", addresses);
+        }
+
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null) return NotFound();
@@ -51,7 +61,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,AddressLine,Ward,District,City,IsDefault")] CustomerAddress customerAddress)
+        public async Task<IActionResult> Create([Bind("AddressId,CustomerId,ReceiverName,Phone,Province,District,Ward,Address,IsDefault,IsBillingAddress,IsShippingAddress,Note")] CustomerAddress customerAddress)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +84,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,CustomerId,AddressLine,Ward,District,City,IsDefault")] CustomerAddress customerAddress)
+        public async Task<IActionResult> Edit(long id, [Bind("AddressId,CustomerId,ReceiverName,Phone,Province,District,Ward,Address,IsDefault,IsBillingAddress,IsShippingAddress,Note")] CustomerAddress customerAddress)
         {
             if (id != customerAddress.AddressId) return NotFound();
 

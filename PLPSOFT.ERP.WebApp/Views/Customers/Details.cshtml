@@ -1,0 +1,43 @@
+@model PLPSOFT.ERP.Domain.Entities.MasterData.Customer
+
+@{
+    ViewData["Title"] = "Chi tiết khách hàng";
+}
+
+<h2>Chi tiết khách hàng</h2>
+
+<div class="mb-3">
+    <strong>Mã:</strong> @Model.CustomerCode
+</div>
+<div class="mb-3">
+    <strong>Tên:</strong> @Model.CustomerName
+</div>
+<div class="mb-3">
+    <strong>Nhóm:</strong> @Model.CustomerGroup?.GroupName
+</div>
+<div class="mb-3">
+    <strong>Điện thoại:</strong> @Model.Phone
+</div>
+<div class="mb-3">
+    <strong>Email:</strong> @Model.Email
+</div>
+<div class="mb-3">
+    <strong>Công ty:</strong> @Model.Company?.CompanyName
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-primary">Sửa</a>
+<a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+
+<div class="mt-4">
+    <a class="btn btn-sm btn-success mb-2" href="@Url.Action("Create","CustomerAddresses", new { customerId = Model.CustomerId })">Thêm địa chỉ</a>
+    <div id="customer-addresses-container">Đang tải địa chỉ...</div>
+</div>
+
+<script>
+    (function(){
+        fetch('@Url.Action("List","CustomerAddresses", new { customerId = Model.CustomerId })')
+            .then(function(r){ return r.text(); })
+            .then(function(html){ document.getElementById('customer-addresses-container').innerHTML = html; })
+            .catch(function(){ document.getElementById('customer-addresses-container').innerText = 'Không thể tải địa chỉ.'; });
+    })();
+</script>

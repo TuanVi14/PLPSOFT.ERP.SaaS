@@ -1,0 +1,59 @@
+@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerAddress
+
+@{
+    ViewData["Title"] = "Thêm địa chỉ";
+}
+
+<h2>Thêm địa chỉ</h2>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="CustomerId" />
+
+    <div class="mb-3">
+        <label class="form-label">Người nhận</label>
+        <input asp-for="ReceiverName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Số điện thoại</label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Địa chỉ</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="mb-3 row">
+        <div class="col">
+            <label class="form-label">Phường/Xã</label>
+            <input asp-for="Ward" class="form-control" />
+        </div>
+        <div class="col">
+            <label class="form-label">Quận/Huyện</label>
+            <input asp-for="District" class="form-control" />
+        </div>
+        <div class="col">
+            <label class="form-label">Tỉnh/Thành</label>
+            <input asp-for="Province" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-check mt-3">
+        <input asp-for="IsDefault" class="form-check-input" />
+        <label class="form-check-label">Mặc định</label>
+    </div>
+    <div class="form-check">
+        <input asp-for="IsBillingAddress" class="form-check-input" />
+        <label class="form-check-label">Billing</label>
+    </div>
+    <div class="form-check">
+        <input asp-for="IsShippingAddress" class="form-check-input" />
+        <label class="form-check-label">Shipping</label>
+    </div>
+
+    <div class="mb-3 mt-2">
+        <label class="form-label">Ghi chú</label>
+        <textarea asp-for="Note" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-primary">Lưu</button>
+    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" class="btn btn-secondary ms-2">Quay lại</a>
+</form>

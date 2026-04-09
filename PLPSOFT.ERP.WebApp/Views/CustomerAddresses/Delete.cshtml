@@ -1,0 +1,23 @@
+@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerAddress
+
+@{
+    ViewData["Title"] = "Xóa địa chỉ";
+}
+
+<h2>Xóa địa chỉ</h2>
+
+<div class="mb-3">
+    <strong>Người nhận:</strong> @Model.ReceiverName
+</div>
+<div class="mb-3">
+    <strong>Điện thoại:</strong> @Model.Phone
+</div>
+<div class="mb-3">
+    <strong>Địa chỉ:</strong> @Model.Address
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="AddressId" />
+    <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" class="btn btn-secondary ms-2">Hủy</a>
+</form>

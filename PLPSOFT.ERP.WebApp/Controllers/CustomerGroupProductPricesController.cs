@@ -255,11 +255,11 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 .FirstOrDefaultAsync(x => x.GroupPriceId == id);
 
             if (entity is null) return NotFound();
-
-            _db.CustomerGroupProductPrices.Remove(entity);
+            // Soft-delete: set IsActive = false (project uses IsActive, not IsDeleted)
+            entity.IsActive = false;
             await _db.SaveChangesAsync();
 
-            TempData["Success"] = "Đã xóa bản ghi giá nhóm.";
+            TempData["Success"] = "Đã xóa (soft) bản ghi giá nhóm.";
             return RedirectToAction(nameof(Index));
         }
 
