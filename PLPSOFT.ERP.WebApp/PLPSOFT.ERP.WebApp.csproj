@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Compile Remove="Migrations\**" />
+    <Content Remove="Areas\**" />
+    <Content Remove="Migrations\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Areas\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,11 +35,6 @@
     <ProjectReference Include="..\PLPSOFT.ERP.Domain\PLPSOFT.ERP.Domain.csproj" />
     <ProjectReference Include="..\PLPSOFT.ERP.Infrastructure\PLPSOFT.ERP.Infrastructure.csproj" />
     <ProjectReference Include="..\PLPSOFT.ERP.Shared\PLPSOFT.ERP.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

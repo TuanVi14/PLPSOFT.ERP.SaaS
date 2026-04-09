@@ -1,0 +1,50 @@
+@model PLPSOFT.ERP.WebApp.Models.CustomerGroupViewModel
+
+@{
+    ViewData["Title"] = "Thêm nhóm khách hàng";
+}
+
+<h2>Thêm nhóm khách hàng</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Công ty</label>
+        <select asp-for="CompanyID" class="form-select" asp-items="ViewBag.Companies">
+            <option value="">-- Chọn công ty --</option>
+        </select>
+        <span asp-validation-for="CompanyID" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GroupCode" class="form-label"></label>
+        <input asp-for="GroupCode" class="form-control" />
+        <span asp-validation-for="GroupCode" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GroupName" class="form-label"></label>
+        <input asp-for="GroupName" class="form-control" />
+        <span asp-validation-for="GroupName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label"></label>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
