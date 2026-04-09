@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using PLPSOFT.ERP.Infrastructure.Persistence;
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient(); // Đã có dòng này là rất tốt
 builder.Services.AddControllersWithViews();

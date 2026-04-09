@@ -1,4 +1,4 @@
-@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerGroup
+@model PLPSOFT.ERP.WebApp.Models.CustomerGroupViewModel
 
 @{
     ViewData["Title"] = "Sửa nhóm khách hàng";
@@ -7,11 +7,13 @@
 <h2>Sửa nhóm khách hàng</h2>
 
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="CustomerGroupId" />
+    <input type="hidden" asp-for="CustomerGroupID" />
 
     <div class="mb-3">
         <label class="form-label">Công ty</label>
-        <select asp-for="CompanyId" class="form-select" asp-items="ViewBag.Companies"></select>
+        <select asp-for="CompanyID" class="form-select" asp-items="Model.Companies" disabled>
+            <option value="">-- Chọn công ty --</option>
+        </select>
     </div>
     <div class="mb-3">
         <label asp-for="GroupCode" class="form-label"></label>

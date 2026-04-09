@@ -1,52 +1,188 @@
 @model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.Customer>
-
 @{
     ViewData["Title"] = "Danh sách khách hàng";
 }
 
-<h2>Danh sách khách hàng</h2>
-
-<form asp-action="Index" method="get" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Tìm theo mã/tên/số điện thoại" />
-        <button class="btn btn-outline-secondary" type="submit">Tìm</button>
-        <a asp-action="Create" class="btn btn-primary ms-2">Thêm khách hàng</a>
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h4 class="mb-0 fw-semibold">Khách hàng</h4>
+        <small class="text-muted">Quản lý danh sách khách hàng</small>
     </div>
-</form>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Thêm khách hàng
+    </a>
+</div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Mã</th>
-            <th>Tên</th>
-            <th>Nhóm</th>
-            <th>Điện thoại</th>
-            <th>Email</th>
-            <th>Công ty</th>
-            <th>Trạng thái</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var c in Model)
-    {
-        <tr>
-            <td>@c.CustomerCode</td>
-            <td>@c.CustomerName</td>
-            <td>@(c.CustomerGroup?.GroupName ?? "-")</td>
-            <td>@c.Phone</td>
-            <td>@c.Email</td>
-            <td>@c.Company?.CompanyName</td>
-            <td>@(c.IsActive ? "Active" : "Inactive")</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@c.CustomerId" class="btn btn-sm btn-outline-secondary">Chi tiết</a>
-                <a asp-action="Edit" asp-route-id="@c.CustomerId" class="btn btn-sm btn-outline-primary">Sửa</a>
-                <form asp-action="Delete" method="post" class="d-inline">
-                    <input type="hidden" name="id" value="@c.CustomerId" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xác nhận ngừng hoạt động?');">Ngừng</button>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-1"></i> @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-circle me-1"></i> @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <form asp-action="Index" method="get" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+                           class="form-control border-start-0"
+                           placeholder="Tìm theo tên, mã, SĐT, email, mã số thuế..." />
+                    <button class="btn btn-outline-secondary" type="submit">Tìm</button>
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-danger">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-auto ms-auto text-muted small">
+                Tổng: <strong>@Model.Count()</strong> khách hàng
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:140px">Mã KH</th>
+                        <th>Tên khách hàng</th>
+                        <th>Công ty</th>
+                        <th>Nhóm KH</th>
+                        <th style="width:130px">Điện thoại</th>
+                        <th style="width:90px" class="text-center">Trạng thái</th>
+                        <th style="width:110px" class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                Không có dữ liệu
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><code class="text-primary">@item.CustomerCode</code></td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.CustomerId"
+                                   class="text-decoration-none fw-medium text-dark">
+                                    @item.CustomerName
+                                </a>
+                                @if (!string.IsNullOrEmpty(item.Email))
+                                {
+                                    <div class="text-muted small">@item.Email</div>
+                                }
+                            </td>
+                            <td class="text-muted">@item.Company?.CompanyName</td>
+                            <td class="text-muted">@(item.CustomerGroup?.GroupName ?? "—")</td>
+                            <td class="text-muted">@(item.Phone ?? "—")</td>
+                            <td class="text-center">
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle">Hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Ngừng</span>
+                                }
+                            </td>
+
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="Details" asp-route-id="@item.CustomerId"
+                                       class="btn btn-outline-secondary" title="Chi tiết">
+                                        <i class="bi bi-eye"></i> Chi tiết
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.CustomerId"
+                                       class="btn btn-outline-primary" title="Chỉnh sửa">
+                                        <i class="bi bi-pencil"></i> Chỉnh sửa
+                                    </a>
+                                    <a asp-controller="CustomerAddresses" asp-action="Index"
+                                       asp-route-customerId="@item.CustomerId"
+                                       class="btn btn-outline-secondary" title="Địa chỉ">
+                                        <i class="bi bi-geo-alt"></i> Địa chỉ
+                                    </a>
+                                </div>
+                            </td>
+
+                            <td class="text-center">
+                                @if (item.IsActive)
+                                {
+                                    <button type="button" class="btn btn-outline-danger btn-sm"
+                                            onclick="confirmDelete(@item.CustomerId, '@Html.Raw(item.CustomerName.Replace("'", "\\'"))')">
+                                        <i class="bi bi-trash me-1"></i> Xóa
+                                    </button>
+                                }
+                                else
+                                {
+                                    <form asp-action="Restore" asp-route-id="@item.CustomerId" method="post" style="display:inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-info btn-sm">
+                                            <i class="bi bi-arrow-counterclockwise"></i> Phục hồi
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@* Modal xác nhận xóa *@
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Xác nhận xóa
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa khách hàng <strong id="deleteCustomerName"></strong>?
+                <div class="text-muted small mt-1">Dữ liệu sẽ bị ẩn và có thể khôi phục lại.</div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>Xóa
+                    </button>
                 </form>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id, name) {
+            document.getElementById('deleteCustomerName').textContent = name;
+            document.getElementById('deleteForm').action = '/Customers/Delete/' + id;
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        }
+    </script>
+}

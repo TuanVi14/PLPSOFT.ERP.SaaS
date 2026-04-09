@@ -22,10 +22,10 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
 
         public DateTime? EffectiveTo { get; set; }
 
-        public virtual Branch Branch { get; set; } = null!;
+        public virtual Branch? Branch { get; set; } = null!;
 
-        public virtual Company Company { get; set; } = null!;
+        public virtual Company? Company { get; set; } = null!;
 
-        public virtual Product Product { get; set; } = null!;
+        public virtual Product? Product { get; set; } = null!;
     }
 }

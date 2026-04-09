@@ -11,7 +11,8 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
         public long BranchId { get; set; }
 
         public string BranchName { get; set; } = null!;
-
+        public long? CompanyId { get; set; }
+        public virtual Company? Company { get; set; } = null!;
         public virtual ICollection<ProductPrice> ProductPrices { get; set; } = new List<ProductPrice>();
     }
 

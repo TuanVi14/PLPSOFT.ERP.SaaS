@@ -1,0 +1,150 @@
+﻿@model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.ProductPrice>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold">Danh sách bảng giá sản phẩm</h3>
+        <a asp-action="Create" class="btn btn-primary">
+            + Thêm mới
+        </a>
+    </div>
+
+    <form method="get" asp-action="Index" class="mb-3">
+        <div class="input-group">
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Tìm theo sản phẩm, chi nhánh, công ty, giá..."
+                   value="@Context.Request.Query["keyword"]" />
+
+            <button type="submit" class="btn btn-primary">
+                Tìm
+            </button>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark text-center align-middle">
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Chi nhánh</th>
+                <th>Công ty</th>
+                <th>Giá</th>
+                <th>Hiệu lực từ</th>
+                <th>Hiệu lực đến</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                var now = DateTime.Now;
+            }
+
+            @foreach (var item in Model)
+            {
+                var effectiveTo = item.EffectiveTo;
+
+             
+                bool isDeleted = effectiveTo.HasValue && effectiveTo.Value <= now;
+
+                bool isActive = !isDeleted;
+
+                <tr class="@(isDeleted ? "table-danger text-muted opacity-75" : "")">
+
+                    <td>@item.Product?.ProductName</td>
+                    <td>@item.Branch?.BranchName</td>
+                    <td>@item.Company?.CompanyName</td>
+
+                    <td class="text-end fw-semibold text-success">
+                        @item.Price.ToString("N0")
+                    </td>
+
+                    <td>@item.EffectiveFrom.ToString("dd/MM/yyyy")</td>
+
+                    <td>
+                        @(item.EffectiveTo.HasValue
+                                            ? item.EffectiveTo.Value.ToString("dd/MM/yyyy")
+                                            : "-")
+                </td>
+
+                    <td class="text-center">
+                    @if (isDeleted)
+                        {
+                            <span class="badge bg-danger">Hết hạn</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Đang hoạt động</span>
+                        }
+                    </td>
+
+                    <td class="text-center">
+                        @if (isDeleted)
+                        {
+                            <button class="btn btn-sm btn-success"
+                                    onclick="restorePrice(@item.PriceId)">
+                                Khôi phục
+                            </button>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.PriceId"
+                                   class="btn btn-sm btn-warning">
+                                    Sửa
+                                </a>
+
+                                <button class="btn btn-sm btn-danger"
+                                        onclick="deletePrice(@item.PriceId)">
+                                    Xóa
+                                </button>
+                            </div>
+                        }
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function deletePrice(id) {
+        if (!confirm("Bạn có chắc muốn xóa không?")) return;
+
+        fetch('/ProductPrices/Delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert("Xóa thất bại");
+            }
+        });
+    }
+
+    function restorePrice(id) {
+        if (!confirm("Bạn có muốn khôi phục không?")) return;
+
+        fetch('/ProductPrices/Restore', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert("Khôi phục thất bại");
+            }
+        });
+    }
+</script>

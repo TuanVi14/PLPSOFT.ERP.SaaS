@@ -1,42 +1,227 @@
 @model PLPSOFT.ERP.Domain.Entities.MasterData.Customer
-
 @{
-    ViewData["Title"] = "Sửa khách hàng";
+    ViewData["Title"] = "Chỉnh sửa khách hàng";
 }
 
-<h2>Sửa khách hàng</h2>
+<div class="d-flex align-items-center mb-3">
+    <a asp-action="Index" class="btn btn-sm btn-outline-secondary me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h4 class="mb-0 fw-semibold">Chỉnh sửa khách hàng</h4>
+        <small class="text-muted">@Model.CustomerCode — @Model.CustomerName</small>
+    </div>
+</div>
 
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="CustomerId" />
+    @Html.AntiForgeryToken()
+    <input asp-for="CustomerId" type="hidden" />
 
-    <div class="mb-3">
-        <label class="form-label">Công ty</label>
-        <select asp-for="CompanyId" class="form-select" asp-items="ViewBag.Companies"></select>
+    <div class="row g-4">
+        @* ── Cột trái ── *@
+        <div class="col-lg-8">
+
+            @* Thông tin cơ bản *@
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-semibold py-3">
+                    <i class="bi bi-person-vcard me-2 text-primary"></i>Thông tin cơ bản
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="CompanyId" class="form-label fw-medium">
+                                Công ty <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="CompanyId" asp-items="ViewBag.Companies"
+                                    class="form-select">
+                                <option value="">-- Chọn công ty --</option>
+                            </select>
+                            <span asp-validation-for="CompanyId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CustomerCode" class="form-label fw-medium">
+                                Mã khách hàng <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="CustomerCode" class="form-control" />
+                            <span asp-validation-for="CustomerCode" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="CustomerName" class="form-label fw-medium">
+                                Tên khách hàng <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="CustomerName" class="form-control" />
+                            <span asp-validation-for="CustomerName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CustomerTypeId" class="form-label fw-medium">
+                                Loại khách hàng <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="CustomerTypeId" asp-items="ViewBag.CustomerTypes"
+                                    class="form-select">
+                                <option value="">-- Chọn loại --</option>
+                            </select>
+                            <span asp-validation-for="CustomerTypeId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CustomerGroupId" class="form-label fw-medium">Nhóm khách hàng</label>
+                            <select asp-for="CustomerGroupId" asp-items="ViewBag.CustomerGroups"
+                                    class="form-select">
+                                <option value="">-- Chọn nhóm --</option>
+                            </select>
+                            <span asp-validation-for="CustomerGroupId" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Thông tin liên hệ *@
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-semibold py-3">
+                    <i class="bi bi-telephone me-2 text-primary"></i>Thông tin liên hệ
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label fw-medium">Điện thoại</label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-medium">Email</label>
+                            <input asp-for="Email" type="email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Facebook" class="form-label fw-medium">Facebook</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-facebook text-primary"></i>
+                                </span>
+                                <input asp-for="Facebook" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Facebook" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Zalo" class="form-label fw-medium">Zalo</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-chat-dots text-info"></i>
+                                </span>
+                                <input asp-for="Zalo" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Zalo" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Thông tin cá nhân *@
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-semibold py-3">
+                    <i class="bi bi-person me-2 text-primary"></i>Thông tin cá nhân
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="Gender" class="form-label fw-medium">Giới tính</label>
+                            <select asp-for="Gender" asp-items="ViewBag.Genders"
+                                    class="form-select"></select>
+                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="DateOfBirth" class="form-label fw-medium">Ngày sinh</label>
+                            <input asp-for="DateOfBirth" type="date" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="TaxCode" class="form-label fw-medium">Mã số thuế</label>
+                            <input asp-for="TaxCode" class="form-control" />
+                            <span asp-validation-for="TaxCode" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        @* ── Cột phải ── *@
+        <div class="col-lg-4">
+
+            @* Tín dụng & Công nợ *@
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-semibold py-3">
+                    <i class="bi bi-credit-card me-2 text-primary"></i>Tín dụng & Công nợ
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="CreditLimit" class="form-label fw-medium">Hạn mức tín dụng (VNĐ)</label>
+                        <input asp-for="CreditLimit" type="number" min="0" step="1"
+                               class="form-control" />
+                        <span asp-validation-for="CreditLimit" class="text-danger small"></span>
+                    </div>
+                    <div>
+                        <label asp-for="PaymentTermDays" class="form-label fw-medium">Số ngày công nợ</label>
+                        <div class="input-group">
+                            <input asp-for="PaymentTermDays" type="number" min="0" max="365"
+                                   class="form-control" />
+                            <span class="input-group-text bg-light">ngày</span>
+                        </div>
+                        <span asp-validation-for="PaymentTermDays" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+
+            @* Điểm tích lũy (readonly) *@
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-semibold py-3">
+                    <i class="bi bi-star me-2 text-warning"></i>Điểm tích lũy
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fs-3 fw-bold text-warning">@Model.LoyaltyPoint.ToString("N0")</span>
+                        <span class="text-muted">điểm</span>
+                    </div>
+                    <div class="text-muted small mt-1">Hệ thống tự động tính, không chỉnh sửa trực tiếp.</div>
+                </div>
+            </div>
+
+            @* Trạng thái *@
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-semibold py-3">
+                    <i class="bi bi-toggle-on me-2 text-primary"></i>Trạng thái
+                </div>
+                <div class="card-body">
+                    <div class="form-check form-switch">
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox"
+                               role="switch" id="isActiveSwitch" />
+                        <label class="form-check-label" for="isActiveSwitch">Đang hoạt động</label>
+                    </div>
+                    @if (Model.UpdatedAt.HasValue)
+                    {
+                        <div class="text-muted small mt-2">
+                            Cập nhật lần cuối: @Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")
+                        </div>
+                    }
+                    <div class="text-muted small">
+                        Tạo lúc: @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+                </div>
+            </div>
+
+            @* Nút lưu *@
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-floppy me-2"></i>Lưu thay đổi
+                </button>
+                <a asp-action="Details" asp-route-id="@Model.CustomerId"
+                   class="btn btn-outline-secondary">Hủy</a>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="CustomerCode" class="form-label"></label>
-        <input asp-for="CustomerCode" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="CustomerName" class="form-label"></label>
-        <input asp-for="CustomerName" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Nhóm khách hàng</label>
-        <select asp-for="CustomerGroupId" class="form-select" asp-items="ViewBag.CustomerGroups"></select>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Phone" class="form-label"></label>
-        <input asp-for="Phone" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <div class="form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label"></label>
-    </div>
-    <button class="btn btn-primary" type="submit">Lưu</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

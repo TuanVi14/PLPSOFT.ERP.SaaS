@@ -54,6 +54,8 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
 
         public byte[] RowVersion { get; set; } = null!;
 
+        public virtual ICollection<Branch> Branches { get; set; } = new List<Branch>();
+
         public virtual ICollection<CustomerGroup> CustomerGroups { get; set; } = new List<CustomerGroup>();
 
         public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();

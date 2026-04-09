@@ -29,7 +29,6 @@ public partial class Product
     public long? DefaultTaxRateId { get; set; }
 
     public decimal CostPrice { get; set; }
-
     public decimal StandardPrice { get; set; }
 
     public bool TrackInventory { get; set; }

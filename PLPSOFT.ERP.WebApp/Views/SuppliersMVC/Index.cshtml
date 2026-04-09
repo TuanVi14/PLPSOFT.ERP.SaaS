@@ -1,0 +1,95 @@
+﻿@model List<PLPSOFT.ERP.Domain.Entities.MasterData.Supplier>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Danh sách nhà cung cấp</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <!-- Search -->
+        <form method="get" class="d-flex">
+            <input type="text" name="search" value="@ViewBag.Search"
+                   class="form-control me-2"
+                   style="width: 300px"
+                   placeholder="🔍 Tìm mã hoặc tên..." />
+            <button type="submit" class="btn btn-dark">Tìm</button>
+        </form>
+
+        <!-- Add -->
+        <a class="btn btn-primary px-3" href="/SuppliersMVC/Create">
+             Thêm mới
+        </a>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped align-middle shadow-sm">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Mã</th>
+                <th>Tên NCC</th>
+                <th>Loại NCC</th>
+                <th>Nhóm NCC</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Giới hạn tín dụng</th>
+                <th>Thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-nowrap">@item.SupplierCode</td>
+                    <td>@item.SupplierName</td>
+                    <td>@item.SupplierType.ValueName</td>
+                    <td>@item.SupplierGroup?.GroupName</td>
+                    <td class="text-nowrap">@item.Phone</td>
+                    <td>@item.Email</td>
+                    <td class="text-end">@item.CreditLimit</td>
+                    <td class="text-center">@item.PaymentTermDays</td>
+
+                    <td class="text-center">
+                        @if (item.IsDeleted)
+                        {
+                            <span class="badge bg-danger">Deleted</span>
+                        }
+                        else if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </td>
+
+                    <td>
+                        <div class="d-grid gap-1">
+                            <a class="btn btn-sm btn-warning"
+                               href="/SuppliersMVC/Edit/@item.SupplierId">
+                                Sửa
+                            </a>
+
+                            @if (!item.IsDeleted)
+                            {
+                                <a class="btn btn-sm btn-danger"
+                                   href="/SuppliersMVC/Delete/@item.SupplierId"
+                                   onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                    Xóa
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm btn-success"
+                                   href="/SuppliersMVC/Restore/@item.SupplierId">
+                                    Khôi phục
+                                </a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

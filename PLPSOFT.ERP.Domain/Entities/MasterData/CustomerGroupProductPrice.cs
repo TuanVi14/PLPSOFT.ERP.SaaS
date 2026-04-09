@@ -14,7 +14,7 @@ namespace PLPSOFT.ERP.Domain.Entities.MasterData
 
         public long ProductId { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal? Price { get; set; } // Bỏ dấu ? nếu muốn bắt buộc nhập giá
 
         public decimal? DiscountRate { get; set; }
 

@@ -22,27 +22,55 @@
             <th>Công ty</th>
             <th>Mô tả</th>
             <th>Trạng thái</th>
-            <th></th>
+            <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var g in Model)
-    {
-        <tr>
-            <td>@g.GroupCode</td>
-            <td>@g.GroupName</td>
-            <td>@g.Company?.CompanyName</td>
-            <td>@g.Description</td>
-            <td>@(g.IsActive ? "Active" : "Inactive")</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@g.CustomerGroupId" class="btn btn-sm btn-outline-primary">Sửa</a>
-                <a asp-action="Details" asp-route-id="@g.CustomerGroupId" class="btn btn-sm btn-outline-secondary">Chi tiết</a>
-                <form asp-action="Delete" method="post" class="d-inline">
-                    <input type="hidden" name="id" value="@g.CustomerGroupId" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xác nhận ngừng hoạt động?');">Ngừng</button>
-                </form>
-            </td>
-        </tr>
-    }
+        @foreach (var g in Model)
+        {
+            <tr>
+                <td>@g.GroupCode</td>
+                <td>@g.GroupName</td>
+                <td>@g.Company?.CompanyName</td>
+                <td>@g.Description</td>
+                <td>
+                    @if (g.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@g.CustomerGroupId" class="btn btn-sm btn-outline-primary">Sửa</a>
+                    
+
+                    @if (g.IsActive)
+                    {
+                        <form asp-action="Delete" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@g.CustomerGroupId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Xác nhận ngừng hoạt động?');">
+                                Ngừng
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="Restore" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@g.CustomerGroupId" />
+                            <button type="submit" class="btn btn-sm btn-outline-success"
+                                    onclick="return confirm('Khôi phục nhóm khách hàng?');">
+                                Khôi phục
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

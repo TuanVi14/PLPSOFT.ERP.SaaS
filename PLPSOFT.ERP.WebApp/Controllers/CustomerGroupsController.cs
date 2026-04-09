@@ -35,17 +35,44 @@ public class CustomerGroupsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("CompanyId,GroupCode,GroupName,Description,IsActive")] CustomerGroup vm)
+    public async Task<IActionResult> Create(
+    [Bind("CompanyID,GroupCode,GroupName,Description,IsActive")] CustomerGroupViewModel vm)
     {
         if (!ModelState.IsValid)
         {
-            ViewBag.Companies = _context.Companies.Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName });
+            vm.Companies = _context.Companies.Select(c => new SelectListItem
+            {
+                Value = c.CompanyId.ToString(),
+                Text = c.CompanyName
+            });
             return View(vm);
         }
 
-        _context.CustomerGroups.Add(vm);
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        var entity = new CustomerGroup
+        {
+            CompanyId = vm.CompanyID,
+            GroupCode = vm.GroupCode,
+            GroupName = vm.GroupName,
+            Description = vm.Description,
+            IsActive = vm.IsActive
+        };
+
+        try
+        {
+            _context.CustomerGroups.Add(entity);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", ex.InnerException?.Message ?? ex.Message);
+            vm.Companies = _context.Companies.Select(c => new SelectListItem
+            {
+                Value = c.CompanyId.ToString(),
+                Text = c.CompanyName
+            });
+            return View(vm);
+        }
     }
 
     public async Task<IActionResult> Edit(long id)
@@ -53,32 +80,68 @@ public class CustomerGroupsController : Controller
         var entity = await _context.CustomerGroups.FindAsync(id);
         if (entity == null) return NotFound();
 
-        ViewBag.Companies = _context.Companies.Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName, Selected = c.CompanyId == entity.CompanyId });
-        return View(entity);
+        var vm = new CustomerGroupViewModel
+        {
+            CustomerGroupID = entity.CustomerGroupId,
+            CompanyID = entity.CompanyId,
+            GroupCode = entity.GroupCode,
+            GroupName = entity.GroupName,
+            Description = entity.Description,
+            IsActive = entity.IsActive,
+            Companies = _context.Companies.Select(c => new SelectListItem
+            {
+                Value = c.CompanyId.ToString(),
+                Text = c.CompanyName,
+                Selected = c.CompanyId == entity.CompanyId
+            })
+        };
+
+        return View(vm);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit([Bind("CustomerGroupId,CompanyId,GroupCode,GroupName,Description,IsActive")] CustomerGroup vm)
+    public async Task<IActionResult> Edit(
+    [Bind("CustomerGroupID,GroupCode,GroupName,Description,IsActive")] CustomerGroupViewModel vm)
     {
         if (!ModelState.IsValid)
         {
-            ViewBag.Companies = _context.Companies.Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName, Selected = c.CompanyId == vm.CompanyId });
+            var current = await _context.CustomerGroups.FindAsync(vm.CustomerGroupID);
+            vm.Companies = _context.Companies.Select(c => new SelectListItem
+            {
+                Value = c.CompanyId.ToString(),
+                Text = c.CompanyName,
+                Selected = c.CompanyId == current!.CompanyId
+            });
             return View(vm);
         }
 
-        var entity = await _context.CustomerGroups.FindAsync(vm.CustomerGroupId);
+        var entity = await _context.CustomerGroups.FindAsync(vm.CustomerGroupID);
         if (entity == null) return NotFound();
 
-        entity.CompanyId = vm.CompanyId;
+        // CompanyId giữ nguyên từ entity, không cập nhật
         entity.GroupCode = vm.GroupCode;
         entity.GroupName = vm.GroupName;
         entity.Description = vm.Description;
         entity.IsActive = vm.IsActive;
 
-        _context.Update(entity);
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        try
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", ex.InnerException?.Message ?? ex.Message);
+            vm.Companies = _context.Companies.Select(c => new SelectListItem
+            {
+                Value = c.CompanyId.ToString(),
+                Text = c.CompanyName,
+                Selected = c.CompanyId == entity.CompanyId
+            });
+            return View(vm);
+        }
     }
 
     [HttpPost]
@@ -91,7 +154,7 @@ public class CustomerGroupsController : Controller
         entity.IsActive = false;
         _context.Update(entity);
         await _context.SaveChangesAsync();
-        return Json(new { success = true, message = "Đã ngừng hoạt động nhóm khách hàng." });
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -104,6 +167,6 @@ public class CustomerGroupsController : Controller
         entity.IsActive = true;
         _context.Update(entity);
         await _context.SaveChangesAsync();
-        return Json(new { success = true, message = "Đã phục hồi nhóm khách hàng." });
+        return RedirectToAction(nameof(Index));
     }
 }

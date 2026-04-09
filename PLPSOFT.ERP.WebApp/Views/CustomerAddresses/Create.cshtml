@@ -1,0 +1,92 @@
+﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.CustomerAddress
+
+@{
+    ViewData["Title"] = "Thêm địa chỉ";
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Customers" asp-action="Index">Khách hàng</a></li>
+            <li class="breadcrumb-item">
+                <a asp-action="Index" asp-route-customerId="@Model.CustomerId">@ViewBag.CustomerName</a>
+            </li>
+            <li class="breadcrumb-item active">Thêm địa chỉ</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Thêm địa chỉ — @ViewBag.CustomerName</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="CustomerId" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="ReceiverName" class="form-label">Tên người nhận <span class="text-danger">*</span></label>
+                        <input asp-for="ReceiverName" class="form-control" placeholder="Nhập tên người nhận" />
+                        <span asp-validation-for="ReceiverName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label">Số điện thoại</label>
+                        <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Province" class="form-label">Tỉnh / Thành phố</label>
+                        <input asp-for="Province" class="form-control" placeholder="Ví dụ: TP. Hồ Chí Minh" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="District" class="form-label">Quận / Huyện</label>
+                        <input asp-for="District" class="form-control" placeholder="Ví dụ: Quận 1" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Ward" class="form-label">Phường / Xã</label>
+                        <input asp-for="Ward" class="form-control" placeholder="Ví dụ: Phường Bến Nghé" />
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Address" class="form-label">Địa chỉ chi tiết <span class="text-danger">*</span></label>
+                        <input asp-for="Address" class="form-control" placeholder="Số nhà, tên đường..." />
+                        <span asp-validation-for="Address" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Note" class="form-label">Ghi chú</label>
+                        <textarea asp-for="Note" class="form-control" rows="2"
+                                  placeholder="Ghi chú thêm (tuỳ chọn)"></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check">
+                                <input asp-for="IsDefault" class="form-check-input" type="checkbox" />
+                                <label asp-for="IsDefault" class="form-check-label">Địa chỉ mặc định</label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="IsBillingAddress" class="form-check-input" type="checkbox" />
+                                <label asp-for="IsBillingAddress" class="form-check-label">Địa chỉ thanh toán</label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="IsShippingAddress" class="form-check-input" type="checkbox" />
+                                <label asp-for="IsShippingAddress" class="form-check-label">Địa chỉ giao hàng</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a asp-action="Index" asp-route-customerId="@Model.CustomerId"
+                       class="btn btn-secondary">Quay lại</a>
+                    <button type="submit" class="btn btn-success">Lưu địa chỉ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

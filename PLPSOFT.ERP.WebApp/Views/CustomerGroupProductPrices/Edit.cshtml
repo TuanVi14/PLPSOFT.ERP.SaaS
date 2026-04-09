@@ -1,0 +1,40 @@
+﻿@model PLPSOFT.ERP.WebApp.Models.CustomerGroupProductPriceFormViewModel
+@{
+    ViewData["Title"] = "Sửa giá nhóm khách hàng";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Giá nhóm</a></li>
+        <li class="breadcrumb-item active">Chỉnh sửa #@Model.GroupPriceID</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm" style="max-width: 860px;">
+    <div class="card-header bg-warning text-dark">
+        <i class="bi bi-pencil-square me-2"></i> Chỉnh sửa giá nhóm #@Model.GroupPriceID
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" asp-route-id="@Model.GroupPriceID" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="GroupPriceID" type="hidden" />
+            <partial name="_Form" model="@Model" />
+            <hr />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-save me-1"></i> Cập nhật
+                </button>
+                <a asp-action="Details" asp-route-id="@Model.GroupPriceID" class="btn btn-outline-info">
+                    Xem chi tiết
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

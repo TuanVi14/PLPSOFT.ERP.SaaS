@@ -31,15 +31,14 @@ public class ProductCategoriesController : Controller
         return View(categories);
     }
 
-    public IActionResult Create()
+    public IActionResult Create(long? companyId)
     {
         var vm = new CategoryViewModel
         {
-            Companies = _context.Companies
-                .Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName }),
-            ParentCategories = _context.ProductCategories
-                .Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName })
+            CompanyID = companyId ?? 0,
         };
+
+        LoadDropdowns(vm);
         return View(vm);
     }
 
@@ -47,8 +46,15 @@ public class ProductCategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CategoryViewModel vm)
     {
-        if (ModelState.IsValid)
+        if (vm.CompanyID == 0)
         {
+            ModelState.AddModelError("CompanyID", "Vui lòng chọn công ty");
+        }
+        if (!ModelState.IsValid)
+        {
+            LoadDropdowns(vm);
+            return View(vm);
+        }
             var category = new ProductCategory
             {
                 CompanyId = vm.CompanyID,
@@ -60,13 +66,6 @@ public class ProductCategoriesController : Controller
             _context.Add(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        vm.Companies = _context.Companies
-            .Select(c => new SelectListItem { Value = c.CompanyId.ToString(), Text = c.CompanyName });
-        vm.ParentCategories = _context.ProductCategories
-            .Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName });
-        return View(vm);
     }
 
     public async Task<IActionResult> Edit(long id)
@@ -98,6 +97,7 @@ public class ProductCategoriesController : Controller
                     Selected = c.CategoryId == category.ParentId
                 })
         };
+        LoadDropdowns(vm);
         return View(vm);
     }
 
@@ -105,8 +105,11 @@ public class ProductCategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(CategoryViewModel vm)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
+            LoadDropdowns(vm);
+            return View(vm);
+        }
             var category = await _context.ProductCategories.FindAsync(vm.CategoryID);
             if (category == null) return NotFound();
 
@@ -119,8 +122,6 @@ public class ProductCategoriesController : Controller
             _context.Update(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-        return View(vm);
     }
 
     // POST: ProductCategories/Delete/13
@@ -167,6 +168,24 @@ public class ProductCategoriesController : Controller
         await _context.SaveChangesAsync();
 
         return Json(new { success = true, message = "Đã phục hồi danh mục." });
+    }
+
+    private void LoadDropdowns(CategoryViewModel vm)
+    {
+        vm.Companies = _context.Companies
+            .Select(c => new SelectListItem
+            {
+                Value = c.CompanyId.ToString(),
+                Text = c.CompanyName
+            });
+
+        vm.ParentCategories = _context.ProductCategories
+            .Where(c => vm.CompanyID != 0 && c.CompanyId == vm.CompanyID && c.ParentId==null)
+            .Select(c => new SelectListItem
+            {
+                Value = c.CategoryId.ToString(),
+                Text = c.CategoryName
+            });
     }
 }
 

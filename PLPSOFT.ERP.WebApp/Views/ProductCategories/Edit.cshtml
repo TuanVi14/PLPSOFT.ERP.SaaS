@@ -1,5 +1,4 @@
 ﻿@model PLPSOFT.ERP.WebApp.Models.CategoryViewModel
-
 @{
     ViewData["Title"] = "Chỉnh sửa danh mục";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,7 +6,6 @@
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">@ViewData["Title"]</h1>
-
     <!-- Breadcrumb -->
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
@@ -24,31 +22,39 @@
 
         <!-- BODY -->
         <div class="card-body">
-            <form asp-action="Edit">
+            <form asp-action="Edit" method="post">
                 <input type="hidden" asp-for="CategoryID" />
+                <input type="hidden" asp-for="CompanyID" />
 
                 <div class="row">
-
                     <!-- LEFT -->
                     <div class="col-md-6">
-
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Công ty</label>
-                            <select asp-for="CompanyID" class="form-select" asp-items="Model.Companies"></select>
+                            <select class="form-select"
+                                    onchange="window.location.href='?id=@Model.CategoryID&companyId=' + this.value">
+                                <option value="0">-- Chọn công ty --</option>
+                                @foreach (var c in Model.Companies)
+                                {
+                                    <option value="@c.Value"
+                                            selected="@(c.Value == Model.CompanyID.ToString() ? "selected" : null)">
+                                        @c.Text
+                                    </option>
+                                }
+                            </select>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Danh mục cha</label>
-                            <select asp-for="ParentID" class="form-select" asp-items="Model.ParentCategories">
+                            <select asp-for="ParentID" class="form-select"
+                                    asp-items="Model.ParentCategories">
                                 <option value="">-- Cấp cao nhất --</option>
                             </select>
                         </div>
-
                     </div>
 
                     <!-- RIGHT -->
                     <div class="col-md-6">
-
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Mã danh mục</label>
                             <input asp-for="CategoryCode" class="form-control" />
@@ -62,12 +68,9 @@
                         <div class="mb-3 d-flex align-items-center">
                             <div class="form-check mt-3">
                                 <input class="form-check-input" asp-for="IsActive" />
-                                <label class="form-check-label fw-semibold">
-                                    Hoạt động
-                                </label>
+                                <label class="form-check-label fw-semibold">Hoạt động</label>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -76,7 +79,6 @@
                     <a asp-action="Index" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Quay lại
                     </a>
-
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> Cập nhật
                     </button>

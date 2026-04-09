@@ -1,0 +1,79 @@
+﻿@model List<PLPSOFT.ERP.Domain.Entities.MasterData.SupplierGroup>
+
+<div class="container mt-4">
+    <h2 class="mb-3">Danh sách nhóm nhà cung cấp</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <!--Search -->
+        <form method="get" class="d-flex" style="width: 300px;">
+            <input type="text" name="search" value="@ViewBag.Search"
+                   class="form-control me-2"
+                   placeholder="🔍 Tìm tên nhóm..." />
+            <button type="submit" class="btn btn-dark">Tìm</button>
+        </form>
+
+        <!-- Add -->
+        <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+    </div>
+
+    <table class="table table-bordered table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>Công ty</th>
+                <th>Trạng thái</th>
+                <th style="width:150px">Hành động</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.GroupCode</td>
+                    <td>@item.GroupName</td>
+                    <td>@item.Company.CompanyName</td>
+                    <!-- TRẠNG THÁI -->
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </td>
+
+                    <!--  HÀNH ĐỘNG -->
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.SupplierGroupId"
+                           class="btn btn-warning btn-sm">Sửa</a>
+
+                        @if (item.IsActive)
+                        {
+                            <!-- Xóa -->
+                            <a asp-action="Delete"
+                               asp-route-id="@item.SupplierGroupId"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                Xóa
+                            </a>
+                        }
+                        else
+                        {
+                            <!-- Khôi phục -->
+                            <a asp-action="Restore"
+                               asp-route-id="@item.SupplierGroupId"
+                               class="btn btn-success btn-sm">
+                                Khôi phục
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
