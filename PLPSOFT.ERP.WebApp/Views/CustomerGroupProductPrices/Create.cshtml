@@ -3,29 +3,37 @@
     ViewData["Title"] = "Thêm giá nhóm khách hàng";
 }
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-action="Index">Giá nhóm</a></li>
-        <li class="breadcrumb-item active">Thêm mới</li>
-    </ol>
-</nav>
+<div class="plp-page">
 
-<div class="card shadow-sm" style="max-width: 860px;">
-    <div class="card-header bg-primary text-white">
-        <i class="bi bi-plus-circle me-2"></i> Thêm giá bán theo nhóm khách hàng
-    </div>
-    <div class="card-body">
-        <form asp-action="Create" method="post">
-            @Html.AntiForgeryToken()
-            <partial name="_Form" model="@Model" />
-            <hr />
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-save me-1"></i> Lưu
-                </button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+    <!-- PAGE HEADER -->
+    <div class="plp-page-header">
+        <div>
+            <h3 class="plp-page-title">
+                <i class="bi bi-tags text-primary me-1"></i>
+                Thêm giá nhóm khách hàng
+            </h3>
+
+            <div class="plp-text-muted">
+                Tạo mới giá bán theo nhóm khách hàng
             </div>
-        </form>
+
+            <div class="plp-breadcrumb">
+                <a asp-action="Index">Giá nhóm</a>
+                <span>/</span>
+                <span>Thêm mới</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="plp-card" style="max-width: 860px;">
+        <div class="plp-card-body">
+            <form asp-action="Create" method="post" class="plp-form">
+                @Html.AntiForgeryToken()
+
+                <partial name="_Form" model="@Model" />
+            </form>
+        </div>
     </div>
 </div>
 

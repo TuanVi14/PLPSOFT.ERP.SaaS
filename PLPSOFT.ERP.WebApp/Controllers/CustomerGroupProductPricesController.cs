@@ -144,7 +144,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
             {
                 CustomerGroupId = vm.CustomerGroupID,
                 ProductId = vm.ProductID,
-                Price = (decimal)vm.Price,
+                Price = vm.Price,
                 DiscountRate = vm.DiscountRate,
                 EffectiveFrom = vm.EffectiveFrom,
                 EffectiveTo = vm.EffectiveTo,
@@ -217,7 +217,7 @@ namespace PLPSOFT.ERP.WebApp.Controllers
 
             entity.CustomerGroupId = vm.CustomerGroupID;
             entity.ProductId = vm.ProductID;
-            entity.Price = (decimal)vm.Price;
+            entity.Price = vm.Price;
             entity.DiscountRate = vm.DiscountRate;
             entity.EffectiveFrom = vm.EffectiveFrom;
             entity.EffectiveTo = vm.EffectiveTo;

@@ -4,269 +4,275 @@
     string V(string? v) => string.IsNullOrEmpty(v) ? "—" : v;
 }
 
-<div class="d-flex align-items-center justify-content-between mb-3">
-    <div class="d-flex align-items-center">
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary me-3">
+<!-- HEADER -->
+<div class="plp-page-header">
+    <div>
+        <h1 class="plp-page-title">
+            <i class="bi bi-person text-primary me-2"></i>
+            @Model.CustomerName
+            <small>
+                <span class="plp-code">@Model.CustomerCode</span>
+            </small>
+        </h1>
+
+        @if (Model.IsActive)
+        {
+            <span class="plp-badge plp-badge-success">
+                <i class="bi bi-check-circle"></i> Hoạt động
+            </span>
+        }
+        else
+        {
+            <span class="plp-badge plp-badge-muted">
+                <i class="bi bi-slash-circle"></i> Ngừng hoạt động
+            </span>
+        }
+    </div>
+
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.CustomerId"
+           class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Chỉnh sửa
+        </a>
+
+        <button type="button"
+                class="btn btn-danger"
+                onclick="confirmDelete(@Model.CustomerId, '@Html.Raw(Model.CustomerName.Replace("'", "\\'"))')">
+            <i class="bi bi-trash"></i> Xóa
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
             <i class="bi bi-arrow-left"></i>
         </a>
-        <div>
-            <h4 class="mb-0 fw-semibold">@Model.CustomerName</h4>
-            <small class="text-muted">
-                <code>@Model.CustomerCode</code>
-                &nbsp;·&nbsp;
-                @if (Model.IsActive)
-                {
-                    <span class="badge bg-success-subtle text-success border border-success-subtle">Hoạt động</span>
-                }
-                else
-                {
-                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Ngừng hoạt động</span>
-                }
-            </small>
-        </div>
-    </div>
-    <div class="d-flex gap-2">
-        <a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-primary">
-            <i class="bi bi-pencil me-1"></i>Chỉnh sửa
-        </a>
-        <button type="button" class="btn btn-outline-danger"
-                onclick="confirmDelete(@Model.CustomerId, '@Html.Raw(Model.CustomerName.Replace("'", "\\'"))')">
-            <i class="bi bi-trash me-1"></i>Xóa
-        </button>
     </div>
 </div>
 
 <div class="row g-4">
+
+    <!-- ===== LEFT ===== -->
     <div class="col-lg-8">
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold py-3">
-                <i class="bi bi-person-vcard me-2 text-primary"></i>Thông tin cơ bản
+        <!-- THÔNG TIN CƠ BẢN -->
+        <div class="plp-card mb-4">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-person-vcard"></i> Thông tin cơ bản
+                </h2>
             </div>
-            <div class="card-body">
-                <div class="row g-0">
-                    <div class="col-md-4 py-2 text-muted border-bottom">Công ty</div>
-                    <div class="col-md-8 py-2 border-bottom">@V(Model.Company?.CompanyName)</div>
 
-                    <div class="col-md-4 py-2 text-muted border-bottom">Mã khách hàng</div>
-                    <div class="col-md-8 py-2 border-bottom"><code>@V(Model.CustomerCode)</code></div>
+            <div class="plp-card-body">
+                <div class="plp-detail-grid">
 
-                    <div class="col-md-4 py-2 text-muted border-bottom">Tên khách hàng</div>
-                    <div class="col-md-8 py-2 border-bottom fw-medium">@V(Model.CustomerName)</div>
+                    <div class="label">Công ty</div>
+                    <div>@V(Model.Company?.CompanyName)</div>
 
-                    <div class="col-md-4 py-2 text-muted border-bottom">Loại khách hàng</div>
-                    <div class="col-md-8 py-2 border-bottom">@V(Model.CustomerType?.ValueName)</div>
+                    <div class="label">Mã khách hàng</div>
+                    <div><span class="plp-code">@V(Model.CustomerCode)</span></div>
 
-                    <div class="col-md-4 py-2 text-muted border-bottom">Nhóm khách hàng</div>
-                    <div class="col-md-8 py-2 border-bottom">@V(Model.CustomerGroup?.GroupName)</div>
+                    <div class="label">Tên khách hàng</div>
+                    <div class="fw-medium">@V(Model.CustomerName)</div>
 
-                    <div class="col-md-4 py-2 text-muted">Mã số thuế</div>
-                    <div class="col-md-8 py-2">@V(Model.TaxCode)</div>
+                    <div class="label">Loại khách hàng</div>
+                    <div>@V(Model.CustomerType?.ValueName)</div>
+
+                    <div class="label">Nhóm khách hàng</div>
+                    <div>@V(Model.CustomerGroup?.GroupName)</div>
+
+                    <div class="label">Mã số thuế</div>
+                    <div>@V(Model.TaxCode)</div>
+
                 </div>
             </div>
         </div>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold py-3">
-                <i class="bi bi-telephone me-2 text-primary"></i>Thông tin liên hệ
+        <!-- LIÊN HỆ -->
+        <div class="plp-card mb-4">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-telephone"></i> Thông tin liên hệ
+                </h2>
             </div>
-            <div class="card-body">
-                <div class="row g-0">
-                    <div class="col-md-4 py-2 text-muted border-bottom">Điện thoại</div>
-                    <div class="col-md-8 py-2 border-bottom">@V(Model.Phone)</div>
 
-                    <div class="col-md-4 py-2 text-muted border-bottom">Email</div>
-                    <div class="col-md-8 py-2 border-bottom">
+            <div class="plp-card-body">
+                <div class="plp-detail-grid">
+
+                    <div class="label">Điện thoại</div>
+                    <div>@V(Model.Phone)</div>
+
+                    <div class="label">Email</div>
+                    <div>
                         @if (!string.IsNullOrEmpty(Model.Email))
                         {
-                            <a href="mailto:@Model.Email" class="text-decoration-none">@Model.Email</a>
+                            <a href="mailto:@Model.Email">@Model.Email</a>
                         }
-                        else
-                        {
-                            <span>—</span>
-                        }
+                        else { <span>—</span> }
                     </div>
 
-                    <div class="col-md-4 py-2 text-muted border-bottom">Facebook</div>
-                    <div class="col-md-8 py-2 border-bottom">
+                    <div class="label">Facebook</div>
+                    <div>
                         @if (!string.IsNullOrEmpty(Model.Facebook))
                         {
-                            <a href="@Model.Facebook" target="_blank" class="text-decoration-none">
-                                <i class="bi bi-facebook text-primary me-1"></i>@Model.Facebook
-                            </a>
+                            <a href="@Model.Facebook" target="_blank">@Model.Facebook</a>
                         }
-                        else
-                        {
-                            <span>—</span>
-                        }
+                        else { <span>—</span> }
                     </div>
 
-                    <div class="col-md-4 py-2 text-muted">Zalo</div>
-                    <div class="col-md-8 py-2">
-                        @if (!string.IsNullOrEmpty(Model.Zalo))
-                        {
-                            <i class="bi bi-chat-dots text-info me-1"></i>
-                            @Model.Zalo
-                        }
-                        else
-                        {
-                            <span>—</span>
-                        }
-                    </div>
+                    <div class="label">Zalo</div>
+                    <div>@V(Model.Zalo)</div>
+
                 </div>
             </div>
         </div>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold py-3">
-                <i class="bi bi-person me-2 text-primary"></i>Thông tin cá nhân
+        <!-- CÁ NHÂN -->
+        <div class="plp-card mb-4">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-person"></i> Thông tin cá nhân
+                </h2>
             </div>
-            <div class="card-body">
-                <div class="row g-0">
-                    <div class="col-md-4 py-2 text-muted border-bottom">Giới tính</div>
-                    <div class="col-md-8 py-2 border-bottom">
+
+            <div class="plp-card-body">
+                <div class="plp-detail-grid">
+
+                    <div class="label">Giới tính</div>
+                    <div>
                         @(Model.Gender switch {
-                            "Male"   => "Nam",
+                            "Male" => "Nam",
                             "Female" => "Nữ",
-                            "Other"  => "Khác",
-                            _        => "—"
+                            "Other" => "Khác",
+                            _ => "—"
                         })
                     </div>
 
-                    <div class="col-md-4 py-2 text-muted">Ngày sinh</div>
-                    <div class="col-md-8 py-2">
-                        @(Model.DateOfBirth.HasValue ? Model.DateOfBirth.Value.ToString("dd/MM/yyyy") : "—")
+                    <div class="label">Ngày sinh</div>
+                    <div>
+                        @(Model.DateOfBirth?.ToString("dd/MM/yyyy") ?? "—")
                     </div>
+
                 </div>
             </div>
         </div>
 
-@if (Model.CustomerAddresses?.Any() == true)
-        {
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white d-flex align-items-center justify-content-between py-3">
-                    <span class="fw-semibold">
-                        <i class="bi bi-geo-alt me-2 text-primary"></i>Địa chỉ (@Model.CustomerAddresses.Count)
-                    </span>
-                    <a asp-controller="CustomerAddresses" asp-action="Index"
-                       asp-route-customerId="@Model.CustomerId"
-                       class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-pencil me-1"></i>Quản lý địa chỉ
-                    </a>
-                </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush">
+        <!-- ĐỊA CHỈ -->
+        <div class="plp-card mb-4">
+            <div class="plp-card-header d-flex justify-content-between">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-geo-alt"></i> Địa chỉ
+                </h2>
+
+                <a asp-controller="CustomerAddresses"
+                   asp-action="Index"
+                   asp-route-customerId="@Model.CustomerId"
+                   class="btn btn-sm btn-outline-primary">
+                    Quản lý
+                </a>
+            </div>
+
+            <div class="plp-card-body">
+
+                @if (Model.CustomerAddresses?.Any() == true)
+                {
+                    <div class="plp-list">
                         @foreach (var addr in Model.CustomerAddresses.OrderByDescending(a => a.IsDefault))
                         {
-                            <div class="list-group-item py-3">
-                                <div class="d-flex align-items-start gap-2">
-                                    <i class="bi bi-geo-alt-fill @(addr.IsDefault ? "text-primary" : "text-muted") mt-1"></i>
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center gap-2 mb-1">
-                                            <strong>@addr.ReceiverName</strong>
-                                            @if (!string.IsNullOrEmpty(addr.Phone))
-                                            {
-                                                <span class="text-muted">·</span>
-                                                <span class="text-muted small">@addr.Phone</span>
-                                            }
-                                            @if (addr.IsDefault)
-                                            {
-                                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Mặc định</span>
-                                            }
-                                            @if (addr.IsBillingAddress)
-                                            {
-                                                <span class="badge bg-info-subtle text-info border border-info-subtle">Thanh toán</span>
-                                            }
-                                            @if (addr.IsShippingAddress)
-                                            {
-                                                <span class="badge bg-success-subtle text-success border border-success-subtle">Giao hàng</span>
-                                            }
-                                        </div>
-                                        <div class="text-muted small">
-                                            @addr.Address
-                                            @if (!string.IsNullOrEmpty(addr.Ward))    { <text>, @addr.Ward</text> }
-                                            @if (!string.IsNullOrEmpty(addr.District)) { <text>, @addr.District</text> }
-                                            @if (!string.IsNullOrEmpty(addr.Province)) { <text>, @addr.Province</text> }
-                                        </div>
-                                        @if (!string.IsNullOrEmpty(addr.Note))
-                                        {
-                                            <div class="text-muted small fst-italic mt-1">@addr.Note</div>
-                                        }
-                                    </div>
+                            <div class="plp-list-item">
+
+                                <div class="fw-semibold">
+                                    @addr.ReceiverName
+
+                                    @if (addr.IsDefault)
+                                    {
+                                        <span class="plp-badge plp-badge-primary">Mặc định</span>
+                                    }
                                 </div>
+
+                                <div class="text-muted small">
+                                    @addr.Address,
+                                    @addr.Ward,
+                                    @addr.District,
+                                    @addr.Province
+                                </div>
+
                             </div>
                         }
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="plp-empty">
+                        <i class="bi bi-geo-alt"></i>
+                        <p>Chưa có địa chỉ</p>
+                    </div>
+                }
+
             </div>
-        }
-        else
-        {
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white d-flex align-items-center justify-content-between py-3">
-                    <span class="fw-semibold">
-                        <i class="bi bi-geo-alt me-2 text-primary"></i>Địa chỉ
-                    </span>
-                    <a asp-controller="CustomerAddresses" asp-action="Create"
-                       asp-route-customerId="@Model.CustomerId"
-                       class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-plus-lg me-1"></i>Thêm địa chỉ
-                    </a>
-                </div>
-                <div class="card-body text-center text-muted py-4">
-                    <i class="bi bi-geo-alt fs-2 d-block mb-2 opacity-25"></i>
-                    Chưa có địa chỉ nào.
-                </div>
-            </div>
-        }
+        </div>
 
     </div>
 
+    <!-- ===== RIGHT ===== -->
     <div class="col-lg-4">
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold py-3">
-                <i class="bi bi-credit-card me-2 text-primary"></i>Tín dụng & Công nợ
+        <!-- CÔNG NỢ -->
+        <div class="plp-card mb-4">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-credit-card"></i> Tín dụng
+                </h2>
             </div>
-            <div class="card-body">
+
+            <div class="plp-card-body">
                 <div class="mb-3">
-                    <div class="text-muted small">Hạn mức tín dụng</div>
-                    <div class="fs-5 fw-semibold">
-                        @Model.CreditLimit.ToString("N0") <small class="text-muted fw-normal">VNĐ</small>
+                    <div class="text-muted small">Hạn mức</div>
+                    <div class="fw-semibold fs-5">
+                        @Model.CreditLimit.ToString("N0") VNĐ
                     </div>
                 </div>
+
                 <div>
-                    <div class="text-muted small">Số ngày công nợ</div>
-                    <div class="fs-5 fw-semibold">
-                        @Model.PaymentTermDays <small class="text-muted fw-normal">ngày</small>
+                    <div class="text-muted small">Công nợ</div>
+                    <div class="fw-semibold fs-5">
+                        @Model.PaymentTermDays ngày
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold py-3">
-                <i class="bi bi-star-fill me-2 text-warning"></i>Điểm tích lũy
+        <!-- ĐIỂM -->
+        <div class="plp-card mb-4 text-center">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-star-fill text-warning"></i> Điểm tích lũy
+                </h2>
             </div>
-            <div class="card-body text-center py-4">
-                <div class="fs-1 fw-bold text-warning">@Model.LoyaltyPoint.ToString("N0")</div>
+
+            <div class="plp-card-body">
+                <div class="display-6 fw-bold text-warning">
+                    @Model.LoyaltyPoint.ToString("N0")
+                </div>
                 <div class="text-muted">điểm</div>
             </div>
         </div>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white fw-semibold py-3">
-                <i class="bi bi-clock-history me-2 text-primary"></i>Lịch sử
+        <!-- LỊCH SỬ -->
+        <div class="plp-card mb-4">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-clock-history"></i> Lịch sử
+                </h2>
             </div>
-            <div class="card-body">
+
+            <div class="plp-card-body">
                 <div class="mb-2">
                     <div class="text-muted small">Ngày tạo</div>
                     <div>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
                 </div>
+
                 @if (Model.UpdatedAt.HasValue)
                 {
                     <div>
-                        <div class="text-muted small">Cập nhật lần cuối</div>
+                        <div class="text-muted small">Cập nhật</div>
                         <div>@Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</div>
                     </div>
                 }
@@ -275,39 +281,3 @@
 
     </div>
 </div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title text-danger">
-                    <i class="bi bi-exclamation-triangle me-2"></i>Xác nhận xóa
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                Bạn có chắc muốn xóa khách hàng <strong id="deleteCustomerName"></strong>?
-                <div class="text-muted small mt-1">Dữ liệu sẽ bị ẩn và có thể khôi phục lại.</div>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <form id="deleteForm" method="post">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">
-                        <i class="bi bi-trash me-1"></i>Xóa
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        function confirmDelete(id, name) {
-            document.getElementById('deleteCustomerName').textContent = name;
-            document.getElementById('deleteForm').action = '/Customers/Delete/' + id;
-            new bootstrap.Modal(document.getElementById('deleteModal')).show();
-        }
-    </script>
-}

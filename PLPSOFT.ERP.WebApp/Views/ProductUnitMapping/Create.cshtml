@@ -1,72 +1,113 @@
 ﻿@model PLPSOFT.ERP.WebApp.Models.ProductUnitMappingFormViewModel
+
 @{
     ViewData["Title"] = "Thêm đơn vị tính";
 }
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a asp-action="Index" asp-route-productId="@Model.ProductID">Đơn vị tính</a>
-        </li>
-        <li class="breadcrumb-item active">Thêm mới</li>
-    </ol>
-</nav>
+<!-- PAGE HEADER -->
+<div class="plp-page-header">
+    <div>
+        <h1 class="plp-page-title">
+            <i class="bi bi-plus-circle text-primary me-2"></i>
+            Thêm đơn vị tính cho sản phẩm
+        </h1>
 
-<div class="card shadow-sm" style="max-width: 640px;">
-    <div class="card-header bg-primary text-white">
-        <i class="bi bi-plus-circle me-2"></i> Thêm đơn vị tính cho sản phẩm
+        <nav class="plp-breadcrumb">
+            <a asp-action="Index" asp-route-productId="@Model.ProductID">Đơn vị tính</a>
+            <span> / </span>
+            <span>Thêm mới</span>
+        </nav>
     </div>
-    <div class="card-body">
+</div>
+
+<!-- FORM CARD -->
+<div class="plp-card" style="max-width: 640px;">
+    <div class="plp-card-header">
+        <h2 class="plp-card-title">
+            <i class="bi bi-rulers"></i>
+            Thông tin đơn vị tính
+        </h2>
+    </div>
+
+    <div class="plp-card-body">
         <form asp-action="Create" method="post">
             @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
+            <div asp-validation-summary="ModelOnly"
+                 class="plp-validation mb-3"></div>
+
+            <!-- Product -->
             <div class="mb-3">
-                <label asp-for="ProductID" class="form-label fw-semibold"></label>
-                <select asp-for="ProductID" asp-items="@Model.ProductOptions" class="form-select">
+                <label asp-for="ProductID" class="plp-form-label"></label>
+                <select asp-for="ProductID"
+                        asp-items="@Model.ProductOptions"
+                        class="form-select">
                     <option value="">-- Chọn sản phẩm --</option>
                 </select>
-                <span asp-validation-for="ProductID" class="text-danger small"></span>
+                <span asp-validation-for="ProductID"
+                      class="text-danger small"></span>
             </div>
 
+            <!-- Unit -->
             <div class="mb-3">
-                <label asp-for="UnitID" class="form-label fw-semibold"></label>
-                <select asp-for="UnitID" asp-items="@Model.UnitOptions" class="form-select">
+                <label asp-for="UnitID" class="plp-form-label"></label>
+                <select asp-for="UnitID"
+                        asp-items="@Model.UnitOptions"
+                        class="form-select">
                     <option value="">-- Chọn đơn vị tính --</option>
                 </select>
-                <span asp-validation-for="UnitID" class="text-danger small"></span>
+                <span asp-validation-for="UnitID"
+                      class="text-danger small"></span>
             </div>
 
+            <!-- Conversion Rate -->
             <div class="mb-3">
-                <label asp-for="ConversionRate" class="form-label fw-semibold"></label>
+                <label asp-for="ConversionRate" class="plp-form-label"></label>
+
                 <div class="input-group">
                     <span class="input-group-text">1 ÷</span>
-                    <input asp-for="ConversionRate" type="number" min="0.000001" step="0.000001"
-                           class="form-control" placeholder="1.000000" />
+                    <input asp-for="ConversionRate"
+                           type="number"
+                           min="0.000001"
+                           step="0.000001"
+                           class="form-control"
+                           placeholder="1.000000" />
                 </div>
+
                 <div class="form-text">
                     Ví dụ: 1 thùng = 24 lon → nhập <strong>24</strong>
                 </div>
-                <span asp-validation-for="ConversionRate" class="text-danger small"></span>
+
+                <span asp-validation-for="ConversionRate"
+                      class="text-danger small"></span>
             </div>
 
-            <div class="mb-3">
-                <div class="form-check form-switch">
-                    <input asp-for="IsDefault" class="form-check-input" type="checkbox" role="switch" />
-                    <label asp-for="IsDefault" class="form-check-label fw-semibold">
-                        Đặt làm đơn vị mặc định
-                    </label>
+            <!-- Is Default -->
+            <div class="form-check mb-4">
+                <input asp-for="IsDefault"
+                       class="form-check-input"
+                       type="checkbox" />
+                <label asp-for="IsDefault"
+                       class="form-check-label">
+                    Đặt làm đơn vị mặc định
+                </label>
+
+                <div class="form-text">
+                    Mỗi sản phẩm chỉ có 1 đơn vị mặc định.
                 </div>
-                <div class="form-text">Mỗi sản phẩm chỉ có 1 đơn vị mặc định.</div>
             </div>
 
-            <hr />
-            <div class="d-flex gap-2">
+            <!-- ACTIONS -->
+            <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-save me-1"></i> Lưu
+                    <i class="bi bi-save"></i> Lưu
                 </button>
-                <a asp-action="Index" asp-route-productId="@Model.ProductID"
-                   class="btn btn-outline-secondary">Hủy</a>
+
+                <a asp-action="Index"
+                   asp-route-productId="@Model.ProductID"
+                   class="btn btn-secondary">
+                    Hủy
+                </a>
             </div>
         </form>
     </div>
@@ -77,4 +118,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-

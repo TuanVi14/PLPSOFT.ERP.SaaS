@@ -1,72 +1,123 @@
 ﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.TaxRate
 
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Thêm mới thuế suất</h4>
+@{
+    ViewData["Title"] = "Thêm mới thuế suất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="bi bi-percent me-2"></i>
+            Thêm mới thuế suất
+        </h1>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Thuế suất</a></li>
+            <li class="breadcrumb-item active">Thêm mới</li>
+        </ol>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-header">
+            <i class="bi bi-info-circle me-1"></i>
+            Thông tin thuế suất
         </div>
 
         <div class="card-body">
-            <form asp-action="Create" method="post">
+            <form asp-action="Create" method="post" class="form-standard">
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="TaxCode" class="form-label">Mã thuế</label>
-                        <input asp-for="TaxCode" class="form-control" placeholder="Nhập mã thuế" />
+                <!-- SECTION: Thông tin chính -->
+                <div class="form-section">
+                    <div class="form-section-title">Thông tin chính</div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <label asp-for="TaxCode" class="form-label required">Mã thuế</label>
+                            <input asp-for="TaxCode" class="form-control" placeholder="Nhập mã thuế" />
+                            <span asp-validation-for="TaxCode" class="form-error"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="TaxName" class="form-label required">Tên thuế</label>
+                            <input asp-for="TaxName" class="form-control" placeholder="Nhập tên thuế" />
+                            <span asp-validation-for="TaxName" class="form-error"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Rate" class="form-label required">Thuế suất (%)</label>
+                            <div class="input-group">
+                                <input asp-for="Rate"
+                                       class="form-control"
+                                       type="number"
+                                       step="0.01"
+                                       placeholder="0.00" />
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="CompanyId" class="form-label required">Công ty</label>
+                            <select asp-for="CompanyId" class="form-select">
+                                <option value="">-- Chọn công ty --</option>
+                                @foreach (var item in ViewBag.Companies)
+                                {
+                                    <option value="@item.CompanyId">@item.CompanyName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CompanyId" class="form-error"></span>
+                        </div>
+
                     </div>
+                </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="TaxName" class="form-label">Tên thuế</label>
-                        <input asp-for="TaxName" class="form-control" placeholder="Nhập tên thuế" />
-                    </div>
+                <!-- SECTION: Hiệu lực -->
+                <div class="form-section">
+                    <div class="form-section-title">Hiệu lực</div>
 
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="Rate" class="form-label">Thuế suất (%)</label>
-                        <input asp-for="Rate" class="form-control" type="number" step="0.01"/>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label asp-for="EffectiveFrom" class="form-label">Hiệu lực từ</label>
+                            <input asp-for="EffectiveFrom" class="form-control" type="date" />
+                        </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="CompanyId" class="form-label">Công ty</label>
-                        <select asp-for="CompanyId" class="form-control">
-                            <option value="0">-- Chọn công ty --</option>
-                            @foreach (var item in ViewBag.Companies)
-                            {
-                                <option value="@item.CompanyId">
-                                    @item.CompanyName
-                                </option>
-                            }
-                        </select>
-
-                        <span asp-validation-for="CompanyId" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="EffectiveFrom" class="form-label">Hiệu lực từ</label>
-                        <input asp-for="EffectiveFrom" class="form-control" type="date" />
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="EffectiveTo" class="form-label">Hiệu lực đến</label>
-                        <input asp-for="EffectiveTo" class="form-control" type="date" />
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Trạng thái</label>
-                        <div>
-                            <span class="badge bg-success">Đang hoạt động</span>
+                        <div class="col-md-6">
+                            <label asp-for="EffectiveTo" class="form-label">Hiệu lực đến</label>
+                            <input asp-for="EffectiveTo" class="form-control" type="date" />
                         </div>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end">
-                    <a asp-action="Index" class="btn btn-secondary me-2">Quay lại</a>
-                    <button type="submit" class="btn btn-success">Lưu</button>
+                <!-- SECTION: Trạng thái -->
+                <div class="form-section">
+                    <div class="form-section-title">Trạng thái</div>
+
+                    <span class="badge status-badge bg-success-subtle text-success">
+                        ● Đang hoạt động
+                    </span>
+                </div>
+
+                <!-- ACTION -->
+                <div class="form-actions">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Quay lại
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Lưu
+                    </button>
                 </div>
 
             </form>
         </div>
     </div>
+
 </div>
+
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

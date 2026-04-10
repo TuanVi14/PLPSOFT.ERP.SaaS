@@ -1,66 +1,96 @@
 ﻿@model PLPSOFT.ERP.WebApp.Models.CustomerGroupProductPriceFormViewModel
 
-<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+<!-- VALIDATION -->
+<div asp-validation-summary="ModelOnly" class="plp-alert plp-alert-danger"></div>
 
-<div class="row g-3">
-    <div class="col-12 col-md-6">
-        <label asp-for="CustomerGroupID" class="form-label fw-semibold"></label>
-        <select asp-for="CustomerGroupID"
-                asp-items="@Model.CustomerGroupOptions"
-                class="form-select">
-            <option value="">-- Chọn nhóm khách hàng --</option>
-        </select>
-        <span asp-validation-for="CustomerGroupID" class="text-danger small"></span>
+<div class="plp-card">
+    <div class="plp-card-header">
+        <h2 class="plp-card-title">
+            <i class="bi bi-tags"></i> Thông tin giá nhóm khách hàng
+        </h2>
     </div>
 
-    <div class="col-12 col-md-6">
-        <label asp-for="ProductID" class="form-label fw-semibold"></label>
-        <select asp-for="ProductID"
-                asp-items="@Model.ProductOptions"
-                class="form-select">
-            <option value="">-- Chọn sản phẩm --</option>
-        </select>
-        <span asp-validation-for="ProductID" class="text-danger small"></span>
-    </div>
+    <div class="plp-card-body">
+        <div class="row g-3">
 
-    <div class="col-12 col-md-4">
-        <label asp-for="Price" class="form-label fw-semibold"></label>
-        <div class="input-group">
-            <input asp-for="Price" type="number" min="0" step="1000"
-                   class="form-control" placeholder="Nhập giá..." />
-            <span class="input-group-text">₫</span>
+            <!-- Nhóm khách hàng -->
+            <div class="col-md-6">
+                <label asp-for="CustomerGroupID" class="plp-form-label"></label>
+                <select asp-for="CustomerGroupID"
+                        asp-items="@Model.CustomerGroupOptions"
+                        class="form-select">
+                    <option value="">-- Chọn nhóm khách hàng --</option>
+                </select>
+                <span asp-validation-for="CustomerGroupID" class="text-danger small"></span>
+            </div>
+
+            <!-- Sản phẩm -->
+            <div class="col-md-6">
+                <label asp-for="ProductID" class="plp-form-label"></label>
+                <select asp-for="ProductID"
+                        asp-items="@Model.ProductOptions"
+                        class="form-select">
+                    <option value="">-- Chọn sản phẩm --</option>
+                </select>
+                <span asp-validation-for="ProductID" class="text-danger small"></span>
+            </div>
+
+            <!-- Giá -->
+            <div class="col-md-4">
+                <label asp-for="Price" class="plp-form-label"></label>
+                <div class="input-group">
+                    <input asp-for="Price" type="number" min="0" step="1000"
+                           class="form-control" placeholder="Nhập giá..." />
+                    <span class="input-group-text">₫</span>
+                </div>
+                <span asp-validation-for="Price" class="text-danger small"></span>
+                <div class="text-muted small">Để trống nếu chỉ dùng chiết khấu.</div>
+            </div>
+
+            <!-- Chiết khấu -->
+            <div class="col-md-4">
+                <label asp-for="DiscountRate" class="plp-form-label"></label>
+                <div class="input-group">
+                    <input asp-for="DiscountRate" type="number" min="0" max="100" step="0.01"
+                           class="form-control" placeholder="0.00" />
+                    <span class="input-group-text">%</span>
+                </div>
+                <span asp-validation-for="DiscountRate" class="text-danger small"></span>
+            </div>
+
+            <!-- Trạng thái -->
+            <div class="col-md-4 d-flex align-items-end">
+                <div class="form-check form-switch">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                    <label asp-for="IsActive" class="form-check-label">Kích hoạt</label>
+                </div>
+            </div>
+
+            <!-- Hiệu lực từ -->
+            <div class="col-md-6">
+                <label asp-for="EffectiveFrom" class="plp-form-label"></label>
+                <input asp-for="EffectiveFrom" type="date" class="form-control" />
+                <span asp-validation-for="EffectiveFrom" class="text-danger small"></span>
+            </div>
+
+            <!-- Hiệu lực đến -->
+            <div class="col-md-6">
+                <label asp-for="EffectiveTo" class="plp-form-label"></label>
+                <input asp-for="EffectiveTo" type="date" class="form-control" />
+                <span asp-validation-for="EffectiveTo" class="text-danger small"></span>
+                <div class="text-muted small">Để trống = không giới hạn thời gian.</div>
+            </div>
+
         </div>
-        <span asp-validation-for="Price" class="text-danger small"></span>
-        <div class="form-text">Để trống nếu chỉ dùng chiết khấu.</div>
     </div>
+</div>
 
-    <div class="col-12 col-md-4">
-        <label asp-for="DiscountRate" class="form-label fw-semibold"></label>
-        <div class="input-group">
-            <input asp-for="DiscountRate" type="number" min="0" max="100" step="0.01"
-                   class="form-control" placeholder="0.00" />
-            <span class="input-group-text">%</span>
-        </div>
-        <span asp-validation-for="DiscountRate" class="text-danger small"></span>
-    </div>
-
-    <div class="col-12 col-md-4 d-flex align-items-end pb-1">
-        <div class="form-check form-switch">
-            <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" />
-            <label asp-for="IsActive" class="form-check-label fw-semibold">Kích hoạt</label>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6">
-        <label asp-for="EffectiveFrom" class="form-label fw-semibold"></label>
-        <input asp-for="EffectiveFrom" type="date" class="form-control" />
-        <span asp-validation-for="EffectiveFrom" class="text-danger small"></span>
-    </div>
-
-    <div class="col-12 col-md-6">
-        <label asp-for="EffectiveTo" class="form-label fw-semibold"></label>
-        <input asp-for="EffectiveTo" type="date" class="form-control" />
-        <span asp-validation-for="EffectiveTo" class="text-danger small"></span>
-        <div class="form-text">Để trống = không giới hạn thời gian.</div>
-    </div>
+<!-- ACTIONS -->
+<div class="plp-form-actions">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+    <button type="submit" class="btn btn-primary btn-lg">
+        <i class="bi bi-check-lg"></i> Lưu
+    </button>
 </div>

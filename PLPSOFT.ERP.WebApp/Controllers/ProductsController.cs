@@ -81,6 +81,17 @@ namespace PLPSOFT.ERP.WebApp.Controllers
                 return View(vm);
             }
 
+            var exists = await _context.Products.AnyAsync(p =>
+                    p.CompanyId == vm.CompanyID &&
+                    p.ProductCode == vm.ProductCode);
+
+            if (exists)
+            {
+                ModelState.AddModelError(nameof(vm.ProductCode),
+                    "Mã sản phẩm đã tồn tại trong công ty này.");
+                return View(vm);
+            }
+
             var product = new Product
             {
                 CompanyId = vm.CompanyID,

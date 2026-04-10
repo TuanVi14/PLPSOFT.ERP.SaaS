@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pIV3mucKAb4=",
+  "dgSpecHash": "upq7RO2DC+w=",
   "success": true,
-  "projectFilePath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Api\\PLPSOFT.ERP.Api.csproj",
+  "projectFilePath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Api\\PLPSOFT.ERP.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MSII\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\MSII\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -99,9 +99,9 @@
       "code": "NU1608",
       "level": "Warning",
       "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 14.1.0 was resolved.",
-      "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Api\\PLPSOFT.ERP.Api.csproj",
+      "projectPath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Api\\PLPSOFT.ERP.Api.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Api\\PLPSOFT.ERP.Api.csproj",
+      "filePath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Api\\PLPSOFT.ERP.Api.csproj",
       "libraryId": "MediatR",
       "targetGraphs": [
         "net9.0"

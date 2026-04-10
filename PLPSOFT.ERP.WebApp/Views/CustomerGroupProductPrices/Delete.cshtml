@@ -3,42 +3,80 @@
     ViewData["Title"] = "Xóa giá nhóm";
 }
 
-<div class="card shadow-sm border-danger" style="max-width: 600px;">
-    <div class="card-header bg-danger text-white">
-        <i class="bi bi-exclamation-triangle me-2"></i> Xác nhận xóa bản ghi #@Model.GroupPriceID
+<!-- PAGE HEADER -->
+<div class="plp-page-header">
+    <h1 class="plp-page-title text-danger">
+        <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+        Xóa giá nhóm
+        <small>Xác nhận xóa bản ghi #@Model.GroupPriceID</small>
+    </h1>
+</div>
+
+<!-- CARD -->
+<div class="plp-card" style="max-width: 600px;">
+
+    <div class="plp-card-header">
+        <h2 class="plp-card-title text-danger">
+            <i class="bi bi-trash"></i> Xác nhận xóa
+        </h2>
     </div>
-    <div class="card-body">
-        <div class="alert alert-warning">
-            Bạn có chắc muốn <strong>xóa vĩnh viễn</strong> bản ghi giá này? Thao tác không thể hoàn tác.
+
+    <div class="plp-card-body">
+
+        <!-- WARNING -->
+        <div class="plp-alert plp-alert-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            <div>
+                Bạn có chắc muốn <strong>xóa vĩnh viễn</strong> bản ghi giá này?
+                Thao tác không thể hoàn tác.
+            </div>
         </div>
-        <dl class="row">
-            <dt class="col-sm-5">Nhóm khách hàng</dt>
-            <dd class="col-sm-7">@Model.GroupCode – @Model.GroupName</dd>
 
-            <dt class="col-sm-5">Sản phẩm</dt>
-            <dd class="col-sm-7">[@Model.ProductCode] @Model.ProductName</dd>
+        <!-- DETAIL -->
+        <dl class="plp-detail-grid">
 
-            <dt class="col-sm-5">Giá riêng / Chiết khấu</dt>
-            <dd class="col-sm-7">
+            <dt>Nhóm khách hàng</dt>
+            <dd>
+                <span class="plp-code">@Model.GroupCode</span>
+                @Model.GroupName
+            </dd>
+
+            <dt>Sản phẩm</dt>
+            <dd>
+                <span class="plp-code">@Model.ProductCode</span>
+                @Model.ProductName
+            </dd>
+
+            <dt>Giá riêng / Chiết khấu</dt>
+            <dd>
                 @(Model.Price.HasValue? Model.Price.Value.ToString("N0") + " ₫" : "–")
                 /
                 @(Model.DiscountRate.HasValue? Model.DiscountRate.Value + "%" : "–")
             </dd>
 
-            <dt class="col-sm-5">Khoảng thời gian</dt>
-            <dd class="col-sm-7">
-                @Model.EffectiveFrom.ToString("dd/MM/yyyy") →
-                @(Model.EffectiveTo.HasValue? Model.EffectiveTo.Value.ToString("dd/MM/yyyy") : "∞")
+            <dt>Khoảng thời gian</dt>
+            <dd>
+                @Model.EffectiveFrom.ToString("dd/MM/yyyy")
+                →
+                @(Model.EffectiveTo.HasValue
+                                ? Model.EffectiveTo.Value.ToString("dd/MM/yyyy")
+                                : "∞")
             </dd>
+
         </dl>
     </div>
-    <div class="card-footer d-flex gap-2">
-        <form asp-action="Delete" asp-route-id="@Model.GroupPriceID" method="post">
-            @Html.AntiForgeryToken()
-            <button type="submit" class="btn btn-danger">
-                <i class="bi bi-trash me-1"></i> Xóa
-            </button>
-        </form>
-        <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
-    </div>
+</div>
+
+<!-- ACTIONS -->
+<div class="plp-form-actions" style="max-width: 600px;">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Hủy
+    </a>
+
+    <form asp-action="Delete" asp-route-id="@Model.GroupPriceID" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Xóa
+        </button>
+    </form>
 </div>

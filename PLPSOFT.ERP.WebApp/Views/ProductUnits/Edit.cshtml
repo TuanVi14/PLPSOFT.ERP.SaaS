@@ -5,83 +5,89 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid px-4">
-    <h1 class="mt-4">@ViewData["Title"]</h1>
+<div class="page-wrapper">
 
-    <!-- Breadcrumb -->
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item"><a asp-action="Index">Đơn vị tính</a></li>
-        <li class="breadcrumb-item active">@Model.UnitName</li>
-    </ol>
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">Chỉnh sửa đơn vị tính</h1>
 
-    <div class="card shadow-sm">
-        <!-- HEADER -->
-        <div class="card-header bg-light">
-            <i class="fas fa-edit me-1"></i>
-            <span class="fw-bold">Thông tin đơn vị tính</span>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Đơn vị tính</a></li>
+            <li class="breadcrumb-item active">@Model.UnitName</li>
+        </ol>
+    </div>
+
+    <!-- Card -->
+    <div class="card form-card">
+        <div class="card-header">
+            <i class="bi bi-pencil-square me-1"></i>
+            Thông tin đơn vị tính
         </div>
 
-        <!-- BODY -->
         <div class="card-body">
-            <form asp-action="Edit">
+            <form asp-action="Edit" class="form-standard">
+
                 <input type="hidden" asp-for="UnitID" />
 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="ModelOnly" class="form-error-summary"></div>
 
-                <div class="row">
+                <div class="row g-3">
 
                     <!-- LEFT -->
                     <div class="col-md-6">
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Mã đơn vị</label>
+                        <div class="form-group">
+                            <label class="form-label">Mã đơn vị</label>
                             <input asp-for="UnitCode" class="form-control" />
-                            <span asp-validation-for="UnitCode" class="text-danger"></span>
+                            <span asp-validation-for="UnitCode" class="form-error"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Tên đơn vị</label>
+                        <div class="form-group">
+                            <label class="form-label">Tên đơn vị</label>
                             <input asp-for="UnitName" class="form-control" />
-                            <span asp-validation-for="UnitName" class="text-danger"></span>
+                            <span asp-validation-for="UnitName" class="form-error"></span>
                         </div>
-
                     </div>
 
                     <!-- RIGHT -->
                     <div class="col-md-6">
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Nhóm/Loại đơn vị</label>
-                            <select asp-for="UnitTypeID" class="form-select" asp-items="Model.UnitTypeOptions">
+                        <div class="form-group">
+                            <label class="form-label">Nhóm/Loại đơn vị</label>
+                            <select asp-for="UnitTypeID"
+                                    class="form-select"
+                                    asp-items="Model.UnitTypeOptions">
                                 <option value="">-- Chọn loại đơn vị --</option>
                             </select>
-                            <span asp-validation-for="UnitTypeID" class="text-danger"></span>
+                            <span asp-validation-for="UnitTypeID" class="form-error"></span>
                         </div>
 
-                        <div class="mb-3 d-flex align-items-center">
-                            <div class="form-check mt-3">
-                                <input class="form-check-input" asp-for="IsActive" />
-                                <label class="form-check-label fw-semibold">
+                        <div class="form-group mt-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       asp-for="IsActive"
+                                       type="checkbox" />
+                                <label class="form-check-label">
                                     Hoạt động
                                 </label>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
 
-                <!-- FOOTER -->
-                <div class="mt-4 d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Quay lại
+                <!-- Actions -->
+                <div class="form-actions">
+                    <a asp-action="Index" class="btn btn-light">
+                        <i class="bi bi-arrow-left"></i>
+                        Quay lại
                     </a>
 
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Cập nhật
+                        <i class="bi bi-save"></i>
+                        Cập nhật
                     </button>
                 </div>
+
             </form>
         </div>
     </div>

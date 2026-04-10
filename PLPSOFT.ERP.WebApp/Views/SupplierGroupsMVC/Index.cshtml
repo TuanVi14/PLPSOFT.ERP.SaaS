@@ -1,79 +1,188 @@
 ﻿@model List<PLPSOFT.ERP.Domain.Entities.MasterData.SupplierGroup>
 
-<div class="container mt-4">
-    <h2 class="mb-3">Danh sách nhóm nhà cung cấp</h2>
+@{
+    ViewData["Title"] = "Nhóm nhà cung cấp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    <div class="d-flex justify-content-between mb-3">
+<div class="page-wrapper">
 
-        <!--Search -->
-        <form method="get" class="d-flex" style="width: 300px;">
-            <input type="text" name="search" value="@ViewBag.Search"
-                   class="form-control me-2"
-                   placeholder="🔍 Tìm tên nhóm..." />
-            <button type="submit" class="btn btn-dark">Tìm</button>
-        </form>
+    <!-- HEADER -->
+    <div class="plp-page-header">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-diagram-3 me-2"></i>
+                Nhóm nhà cung cấp
+            </h1>
+            <div class="page-subtitle">
+                Quản lý nhóm NCC
+            </div>
+        </div>
 
-        <!-- Add -->
-        <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+        <div class="page-actions">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i>
+                Thêm mới
+            </a>
+        </div>
     </div>
 
-    <table class="table table-bordered table-hover shadow-sm">
-        <thead class="table-dark">
-            <tr>
-                <th>Mã</th>
-                <th>Tên</th>
-                <th>Công ty</th>
-                <th>Trạng thái</th>
-                <th style="width:150px">Hành động</th>
-            </tr>
-        </thead>
+    <!-- FILTER -->
+    <div class="card filter-card">
+        <div class="card-body">
+            <form method="get" class="filter-form">
+                <div class="row g-3 align-items-center">
 
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.GroupCode</td>
-                    <td>@item.GroupName</td>
-                    <td>@item.Company.CompanyName</td>
-                    <!-- TRẠNG THÁI -->
-                    <td>
-                        @if (item.IsActive)
-                        {
-                            <span class="badge bg-success">Active</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary">Inactive</span>
-                        }
-                    </td>
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                            </span>
 
-                    <!--  HÀNH ĐỘNG -->
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.SupplierGroupId"
-                           class="btn btn-warning btn-sm">Sửa</a>
+                            <input type="text"
+                                   name="search"
+                                   value="@ViewBag.Search"
+                                   class="form-control"
+                                   placeholder="Tìm tên nhóm..." />
+                        </div>
+                    </div>
 
-                        @if (item.IsActive)
+                    <div class="col-md-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i>
+                            Tìm
+                        </button>
+
+                        @if (!string.IsNullOrEmpty(ViewBag.Search))
                         {
-                            <!-- Xóa -->
-                            <a asp-action="Delete"
-                               asp-route-id="@item.SupplierGroupId"
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('Bạn có chắc muốn xóa?')">
-                                Xóa
+                            <a asp-action="Index" class="btn btn-light">
+                                <i class="bi bi-arrow-clockwise"></i>
                             </a>
                         }
-                        else
-                        {
-                            <!-- Khôi phục -->
-                            <a asp-action="Restore"
-                               asp-route-id="@item.SupplierGroupId"
-                               class="btn btn-success btn-sm">
-                                Khôi phục
-                            </a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EMPTY -->
+    @if (!Model.Any())
+    {
+        <div class="card">
+            <div class="empty-state">
+                <i class="bi bi-diagram-3"></i>
+                <p>Chưa có nhóm nhà cung cấp nào</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- TABLE -->
+        <div class="card table-card">
+
+            <div class="card-header">
+                <span class="table-title">
+                    <i class="bi bi-table me-1"></i>
+                    Danh sách
+                </span>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-system align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width:120px;">Mã</th>
+                                <th>Tên</th>
+                                <th>Công ty</th>
+                                <th class="text-center" style="width:150px;">Trạng thái</th>
+                                <th class="text-center" style="width:160px;">Hành động</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="@(item.IsActive ? "" : "row-inactive")">
+
+                                    <!-- CODE -->
+                                    <td>
+                                        <span class="text-primary fw-semibold">
+                                            @item.GroupCode
+                                        </span>
+                                    </td>
+
+                                    <!-- NAME -->
+                                    <td class="fw-medium">
+                                        @item.GroupName
+                                    </td>
+
+                                    <!-- COMPANY -->
+                                    <td>
+                                        @item.Company?.CompanyName
+                                    </td>
+
+                                    <!-- STATUS -->
+                                    <td class="text-center">
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge badge-success">
+                                                <i class="bi bi-check-circle me-1"></i>
+                                                Hoạt động
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">
+                                                <i class="bi bi-slash-circle me-1"></i>
+                                                Ngừng
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <!-- ACTION -->
+                                    <td class="text-center">
+                                        <div class="action-group">
+
+                                            <!-- EDIT -->
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.SupplierGroupId"
+                                               class="btn btn-sm btn-outline-warning">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            @if (item.IsActive)
+                                            {
+                                                <!-- DELETE -->
+                                                <a asp-action="Delete"
+                                                   asp-route-id="@item.SupplierGroupId"
+                                                   class="btn btn-sm btn-outline-danger"
+                                                   onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <!-- RESTORE -->
+                                                <a asp-action="Restore"
+                                                   asp-route-id="@item.SupplierGroupId"
+                                                   class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                                </a>
+                                            }
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    }
+
 </div>

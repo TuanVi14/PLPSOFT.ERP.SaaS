@@ -4770,11 +4770,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
+      "projectUniqueName": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
       "projectName": "PLPSOFT.ERP.Infrastructure",
-      "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
+      "projectPath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\PLPSOFT.ERP.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\MSII\\.nuget\\packages\\",
-      "outputPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\obj\\",
+      "outputPath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4796,14 +4796,14 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
-              "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
+            "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj": {
+              "projectPath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj"
             },
-            "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
-              "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
+            "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj": {
+              "projectPath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Domain\\PLPSOFT.ERP.Domain.csproj"
             },
-            "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
-              "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
+            "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj": {
+              "projectPath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Shared\\PLPSOFT.ERP.Shared.csproj"
             }
           }
         }

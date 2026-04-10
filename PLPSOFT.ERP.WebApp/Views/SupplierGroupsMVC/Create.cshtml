@@ -1,25 +1,91 @@
 ﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.SupplierGroup
 
-<div class="container mt-4">
-    <h2 class="mb-3">Thêm nhóm</h2>
+@{
+    ViewData["Title"] = "Thêm nhóm nhà cung cấp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    <form asp-action="Create" method="post">
-        <div class="mb-3">
-            <label class="form-label">Tên nhóm</label>
-            <input asp-for="GroupName" class="form-control" />
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-diagram-3 me-2"></i>
+                Thêm nhóm nhà cung cấp
+            </h1>
+
+            <div class="page-subtitle">
+                Nhập thông tin nhóm nhà cung cấp
+            </div>
         </div>
-        <div class="mb-3">
-            <label>Công ty</label>
-            <select asp-for="CompanyId" class="form-select">
-                @foreach (var item in ViewBag.Companies)
-                {
-                    <option value="@item.CompanyId">@item.CompanyName</option>
-                }
-            </select>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Nhóm nhà cung cấp</a></li>
+            <li class="breadcrumb-item active">Thêm mới</li>
+        </ol>
+    </div>
+
+    <!-- FORM -->
+    <div class="card form-card">
+        <div class="card-header">
+            <i class="bi bi-pencil-square me-1"></i>
+            Thông tin nhóm
         </div>
 
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="form-standard">
 
-        <button type="submit" class="btn btn-success">Lưu</button>
-        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-    </form>
+                <!-- Validation -->
+                <div asp-validation-summary="ModelOnly" class="form-error-summary"></div>
+
+                <div class="row g-3">
+
+                    <!-- LEFT -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Tên nhóm</label>
+                            <input asp-for="GroupName"
+                                   class="form-control"
+                                   placeholder="Nhập tên nhóm nhà cung cấp..." />
+                            <span asp-validation-for="GroupName" class="form-error"></span>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Công ty</label>
+                            <select asp-for="CompanyId" class="form-select">
+                                <option value="">-- Chọn công ty --</option>
+                                @foreach (var item in ViewBag.Companies)
+                                {
+                                    <option value="@item.CompanyId">
+                                        @item.CompanyName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ACTION -->
+                <div class="form-actions">
+                    <a asp-action="Index" class="btn btn-light">
+                        <i class="bi bi-arrow-left"></i>
+                        Quay lại
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i>
+                        Lưu
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
 </div>

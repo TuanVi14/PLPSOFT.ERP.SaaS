@@ -4,33 +4,85 @@
     ViewData["Title"] = "Sửa nhóm khách hàng";
 }
 
-<h2>Sửa nhóm khách hàng</h2>
+<!-- PAGE HEADER -->
+<div class="plp-page-header">
+    <h1 class="plp-page-title">
+        <i class="bi bi-diagram-3 text-primary me-2"></i>
+        Sửa nhóm khách hàng
+        <small>Chỉnh sửa thông tin nhóm khách hàng</small>
+    </h1>
+</div>
 
-<form asp-action="Edit" method="post">
+<!-- FORM -->
+<form asp-action="Edit" method="post" style="max-width: 720px;">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="CustomerGroupID" />
 
-    <div class="mb-3">
-        <label class="form-label">Công ty</label>
-        <select asp-for="CompanyID" class="form-select" asp-items="Model.Companies" disabled>
-            <option value="">-- Chọn công ty --</option>
-        </select>
+    <div class="plp-card">
+        <div class="plp-card-header">
+            <h2 class="plp-card-title">
+                <i class="bi bi-pencil-square"></i> Thông tin nhóm khách hàng
+            </h2>
+        </div>
+
+        <div class="plp-card-body">
+            <div class="row g-3">
+
+                <!-- Công ty (disabled) -->
+                <div class="col-md-6">
+                    <label class="plp-form-label">Công ty</label>
+                    <select asp-for="CompanyID"
+                            class="form-select"
+                            asp-items="Model.Companies"
+                            disabled>
+                        <option value="">-- Chọn công ty --</option>
+                    </select>
+                </div>
+
+                <!-- Mã nhóm -->
+                <div class="col-md-6">
+                    <label asp-for="GroupCode" class="plp-form-label"></label>
+                    <input asp-for="GroupCode" class="form-control" />
+                    <span asp-validation-for="GroupCode" class="text-danger small"></span>
+                </div>
+
+                <!-- Tên nhóm -->
+                <div class="col-md-6">
+                    <label asp-for="GroupName" class="plp-form-label"></label>
+                    <input asp-for="GroupName" class="form-control" />
+                    <span asp-validation-for="GroupName" class="text-danger small"></span>
+                </div>
+
+                <!-- Mô tả -->
+                <div class="col-md-12">
+                    <label asp-for="Description" class="plp-form-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+
+                <!-- Trạng thái -->
+                <div class="col-md-6 d-flex align-items-end">
+                    <div class="form-check form-switch">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label"></label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="GroupCode" class="form-label"></label>
-        <input asp-for="GroupCode" class="form-control" />
+
+    <!-- ACTIONS -->
+    <div class="plp-form-actions" style="max-width: 720px;">
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Hủy
+        </a>
+
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="bi bi-check-lg"></i> Cập nhật
+        </button>
     </div>
-    <div class="mb-3">
-        <label asp-for="GroupName" class="form-label"></label>
-        <input asp-for="GroupName" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-    </div>
-    <div class="form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label"></label>
-    </div>
-    <button class="btn btn-primary" type="submit">Lưu</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

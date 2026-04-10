@@ -46,6 +46,8 @@ public class ProductCategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CategoryViewModel vm)
     {
+
+        
         if (vm.CompanyID == 0)
         {
             ModelState.AddModelError("CompanyID", "Vui lòng chọn công ty");
@@ -55,7 +57,21 @@ public class ProductCategoriesController : Controller
             LoadDropdowns(vm);
             return View(vm);
         }
-            var category = new ProductCategory
+
+        var exists = await _context.ProductCategories.AnyAsync(x =>
+            x.CompanyId == vm.CompanyID &&
+            x.CategoryCode == vm.CategoryCode.Trim()
+        );
+
+        if (exists)
+        {
+            ModelState.AddModelError(nameof(vm.CategoryCode),
+                "Mã danh mục đã tồn tại trong công ty này");
+
+            return View(vm);
+        }
+
+        var category = new ProductCategory
             {
                 CompanyId = vm.CompanyID,
                 ParentId = vm.ParentID,

@@ -39,6 +39,5 @@ public partial class CustomerAddress
     public DateTime CreatedAt { get; set; }
 
     public bool IsDeleted { get; set; }
-
-    public virtual Customer Customer { get; set; } = null!;
+    public virtual Customer? Customer { get; set; } = null!;
 }

@@ -3,14 +3,15 @@
     ViewData["Title"] = "Chỉnh sửa khách hàng";
 }
 
-<div class="d-flex align-items-center mb-3">
-    <a asp-action="Index" class="btn btn-sm btn-outline-secondary me-3">
-        <i class="bi bi-arrow-left"></i>
+<div class="plp-page-header">
+    <h1 class="plp-page-title">
+        <i class="bi bi-people text-primary me-2"></i>
+        Chỉnh sửa khách hàng
+        <small>@Model.CustomerCode — @Model.CustomerName</small>
+    </h1>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Quay lại
     </a>
-    <div>
-        <h4 class="mb-0 fw-semibold">Chỉnh sửa khách hàng</h4>
-        <small class="text-muted">@Model.CustomerCode — @Model.CustomerName</small>
-    </div>
 </div>
 
 <form asp-action="Edit" method="post">
@@ -18,206 +19,216 @@
     <input asp-for="CustomerId" type="hidden" />
 
     <div class="row g-4">
-        @* ── Cột trái ── *@
+
+        <!-- LEFT -->
         <div class="col-lg-8">
 
-            @* Thông tin cơ bản *@
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-semibold py-3">
-                    <i class="bi bi-person-vcard me-2 text-primary"></i>Thông tin cơ bản
+            <!-- Thông tin cơ bản -->
+            <div class="plp-card">
+                <div class="plp-card-header">
+                    <h2 class="plp-card-title">
+                        <i class="bi bi-person-vcard"></i> Thông tin cơ bản
+                    </h2>
                 </div>
-                <div class="card-body">
+                <div class="plp-card-body">
                     <div class="row g-3">
+
                         <div class="col-md-6">
-                            <label asp-for="CompanyId" class="form-label fw-medium">
+                            <label asp-for="CompanyId" class="plp-form-label">
                                 Công ty <span class="text-danger">*</span>
                             </label>
-                            <select asp-for="CompanyId" asp-items="ViewBag.Companies"
-                                    class="form-select">
+                            <select asp-for="CompanyId" asp-items="ViewBag.Companies" class="form-select">
                                 <option value="">-- Chọn công ty --</option>
                             </select>
                             <span asp-validation-for="CompanyId" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="CustomerCode" class="form-label fw-medium">
+                            <label asp-for="CustomerCode" class="plp-form-label">
                                 Mã khách hàng <span class="text-danger">*</span>
                             </label>
                             <input asp-for="CustomerCode" class="form-control" />
                             <span asp-validation-for="CustomerCode" class="text-danger small"></span>
                         </div>
+
                         <div class="col-12">
-                            <label asp-for="CustomerName" class="form-label fw-medium">
+                            <label asp-for="CustomerName" class="plp-form-label">
                                 Tên khách hàng <span class="text-danger">*</span>
                             </label>
                             <input asp-for="CustomerName" class="form-control" />
                             <span asp-validation-for="CustomerName" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="CustomerTypeId" class="form-label fw-medium">
+                            <label asp-for="CustomerTypeId" class="plp-form-label">
                                 Loại khách hàng <span class="text-danger">*</span>
                             </label>
-                            <select asp-for="CustomerTypeId" asp-items="ViewBag.CustomerTypes"
-                                    class="form-select">
+                            <select asp-for="CustomerTypeId" asp-items="ViewBag.CustomerTypes" class="form-select">
                                 <option value="">-- Chọn loại --</option>
                             </select>
                             <span asp-validation-for="CustomerTypeId" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="CustomerGroupId" class="form-label fw-medium">Nhóm khách hàng</label>
-                            <select asp-for="CustomerGroupId" asp-items="ViewBag.CustomerGroups"
-                                    class="form-select">
+                            <label asp-for="CustomerGroupId" class="plp-form-label">
+                                Nhóm khách hàng
+                            </label>
+                            <select asp-for="CustomerGroupId" asp-items="ViewBag.CustomerGroups" class="form-select">
                                 <option value="">-- Chọn nhóm --</option>
                             </select>
                             <span asp-validation-for="CustomerGroupId" class="text-danger small"></span>
                         </div>
+
                     </div>
                 </div>
             </div>
 
-            @* Thông tin liên hệ *@
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-semibold py-3">
-                    <i class="bi bi-telephone me-2 text-primary"></i>Thông tin liên hệ
+            <!-- Thông tin liên hệ -->
+            <div class="plp-card">
+                <div class="plp-card-header">
+                    <h2 class="plp-card-title">
+                        <i class="bi bi-telephone"></i> Thông tin liên hệ
+                    </h2>
                 </div>
-                <div class="card-body">
+                <div class="plp-card-body">
                     <div class="row g-3">
+
                         <div class="col-md-6">
-                            <label asp-for="Phone" class="form-label fw-medium">Điện thoại</label>
+                            <label asp-for="Phone" class="plp-form-label">Điện thoại</label>
                             <input asp-for="Phone" class="form-control" />
                             <span asp-validation-for="Phone" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="Email" class="form-label fw-medium">Email</label>
+                            <label asp-for="Email" class="plp-form-label">Email</label>
                             <input asp-for="Email" type="email" class="form-control" />
                             <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="Facebook" class="form-label fw-medium">Facebook</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="bi bi-facebook text-primary"></i>
-                                </span>
-                                <input asp-for="Facebook" class="form-control" />
-                            </div>
+                            <label asp-for="Facebook" class="plp-form-label">Facebook</label>
+                            <input asp-for="Facebook" class="form-control" />
                             <span asp-validation-for="Facebook" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-6">
-                            <label asp-for="Zalo" class="form-label fw-medium">Zalo</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="bi bi-chat-dots text-info"></i>
-                                </span>
-                                <input asp-for="Zalo" class="form-control" />
-                            </div>
+                            <label asp-for="Zalo" class="plp-form-label">Zalo</label>
+                            <input asp-for="Zalo" class="form-control" />
                             <span asp-validation-for="Zalo" class="text-danger small"></span>
                         </div>
+
                     </div>
                 </div>
             </div>
 
-            @* Thông tin cá nhân *@
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-semibold py-3">
-                    <i class="bi bi-person me-2 text-primary"></i>Thông tin cá nhân
+            <!-- Thông tin cá nhân -->
+            <div class="plp-card">
+                <div class="plp-card-header">
+                    <h2 class="plp-card-title">
+                        <i class="bi bi-person"></i> Thông tin cá nhân
+                    </h2>
                 </div>
-                <div class="card-body">
+                <div class="plp-card-body">
                     <div class="row g-3">
+
                         <div class="col-md-4">
-                            <label asp-for="Gender" class="form-label fw-medium">Giới tính</label>
-                            <select asp-for="Gender" asp-items="ViewBag.Genders"
-                                    class="form-select"></select>
+                            <label asp-for="Gender" class="plp-form-label">Giới tính</label>
+                            <select asp-for="Gender" asp-items="ViewBag.Genders" class="form-select"></select>
                             <span asp-validation-for="Gender" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-4">
-                            <label asp-for="DateOfBirth" class="form-label fw-medium">Ngày sinh</label>
+                            <label asp-for="DateOfBirth" class="plp-form-label">Ngày sinh</label>
                             <input asp-for="DateOfBirth" type="date" class="form-control" />
                             <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
                         </div>
+
                         <div class="col-md-4">
-                            <label asp-for="TaxCode" class="form-label fw-medium">Mã số thuế</label>
+                            <label asp-for="TaxCode" class="plp-form-label">Mã số thuế</label>
                             <input asp-for="TaxCode" class="form-control" />
                             <span asp-validation-for="TaxCode" class="text-danger small"></span>
                         </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
 
-        @* ── Cột phải ── *@
+        <!-- RIGHT -->
         <div class="col-lg-4">
 
-            @* Tín dụng & Công nợ *@
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-semibold py-3">
-                    <i class="bi bi-credit-card me-2 text-primary"></i>Tín dụng & Công nợ
+            <!-- Tín dụng -->
+            <div class="plp-card">
+                <div class="plp-card-header">
+                    <h2 class="plp-card-title">
+                        <i class="bi bi-credit-card"></i> Tín dụng & Công nợ
+                    </h2>
                 </div>
-                <div class="card-body">
+                <div class="plp-card-body">
+
                     <div class="mb-3">
-                        <label asp-for="CreditLimit" class="form-label fw-medium">Hạn mức tín dụng (VNĐ)</label>
-                        <input asp-for="CreditLimit" type="number" min="0" step="1"
-                               class="form-control" />
+                        <label asp-for="CreditLimit" class="plp-form-label">Hạn mức tín dụng (VNĐ)</label>
+                        <input asp-for="CreditLimit" type="number" class="form-control" />
                         <span asp-validation-for="CreditLimit" class="text-danger small"></span>
                     </div>
+
                     <div>
-                        <label asp-for="PaymentTermDays" class="form-label fw-medium">Số ngày công nợ</label>
-                        <div class="input-group">
-                            <input asp-for="PaymentTermDays" type="number" min="0" max="365"
-                                   class="form-control" />
-                            <span class="input-group-text bg-light">ngày</span>
-                        </div>
+                        <label asp-for="PaymentTermDays" class="plp-form-label">Số ngày công nợ</label>
+                        <input asp-for="PaymentTermDays" type="number" class="form-control" />
                         <span asp-validation-for="PaymentTermDays" class="text-danger small"></span>
                     </div>
+
                 </div>
             </div>
 
-            @* Điểm tích lũy (readonly) *@
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-semibold py-3">
-                    <i class="bi bi-star me-2 text-warning"></i>Điểm tích lũy
+            <!-- Điểm -->
+            <div class="plp-card">
+                <div class="plp-card-header">
+                    <h2 class="plp-card-title">
+                        <i class="bi bi-star"></i> Điểm tích lũy
+                    </h2>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="fs-3 fw-bold text-warning">@Model.LoyaltyPoint.ToString("N0")</span>
-                        <span class="text-muted">điểm</span>
-                    </div>
-                    <div class="text-muted small mt-1">Hệ thống tự động tính, không chỉnh sửa trực tiếp.</div>
+                <div class="plp-card-body">
+                    <span class="fs-3 fw-bold text-warning">@Model.LoyaltyPoint.ToString("N0")</span>
+                    <div class="text-muted small">Hệ thống tự động tính</div>
                 </div>
             </div>
 
-            @* Trạng thái *@
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white fw-semibold py-3">
-                    <i class="bi bi-toggle-on me-2 text-primary"></i>Trạng thái
+            <!-- Trạng thái -->
+            <div class="plp-card">
+                <div class="plp-card-header">
+                    <h2 class="plp-card-title">
+                        <i class="bi bi-toggle-on"></i> Trạng thái
+                    </h2>
                 </div>
-                <div class="card-body">
+                <div class="plp-card-body">
+
                     <div class="form-check form-switch">
-                        <input asp-for="IsActive" class="form-check-input" type="checkbox"
-                               role="switch" id="isActiveSwitch" />
-                        <label class="form-check-label" for="isActiveSwitch">Đang hoạt động</label>
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                        <label class="form-check-label">Đang hoạt động</label>
                     </div>
-                    @if (Model.UpdatedAt.HasValue)
-                    {
-                        <div class="text-muted small mt-2">
-                            Cập nhật lần cuối: @Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")
-                        </div>
-                    }
-                    <div class="text-muted small">
+
+                    <div class="text-muted small mt-2">
                         Tạo lúc: @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")
                     </div>
+
                 </div>
             </div>
 
-            @* Nút lưu *@
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="bi bi-floppy me-2"></i>Lưu thay đổi
-                </button>
-                <a asp-action="Details" asp-route-id="@Model.CustomerId"
-                   class="btn btn-outline-secondary">Hủy</a>
-            </div>
         </div>
     </div>
+
+    <!-- ACTIONS -->
+    <div class="plp-form-actions">
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="bi bi-check-lg"></i> Lưu
+        </button>
+    </div>
+
 </form>
 
 @section Scripts {

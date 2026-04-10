@@ -3,77 +3,117 @@
     ViewData["Title"] = "Chi tiết giá nhóm";
 }
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-action="Index">Giá nhóm</a></li>
-        <li class="breadcrumb-item active">Chi tiết #@Model.GroupPriceID</li>
-    </ol>
-</nav>
+<!-- PAGE HEADER -->
+<div class="plp-page-header">
+    <h1 class="plp-page-title">
+        <i class="bi bi-tags text-primary me-2"></i>
+        Chi tiết giá nhóm
+        <small>Bản ghi #@Model.GroupPriceID</small>
+    </h1>
+</div>
 
-<div class="card shadow-sm" style="max-width: 700px;">
-    <div class="card-header bg-info text-white d-flex justify-content-between">
-        <span><i class="bi bi-info-circle me-2"></i> Chi tiết #@Model.GroupPriceID</span>
+<!-- BREADCRUMB -->
+<div class="plp-breadcrumb-wrap mb-3">
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+            <a asp-action="Index">Giá nhóm</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Chi tiết #@Model.GroupPriceID
+        </li>
+    </ol>
+</div>
+
+<!-- DETAIL CARD -->
+<div class="plp-card" style="max-width: 700px;">
+    <div class="plp-card-header">
+        <h2 class="plp-card-title">
+            <i class="bi bi-info-circle"></i> Thông tin chi tiết
+        </h2>
+
         @if (Model.IsCurrentlyValid)
         {
-            <span class="badge bg-light text-success fs-6">Đang áp dụng</span>
+            <span class="plp-badge plp-badge-success">
+                <i class="bi bi-check-circle"></i> Đang áp dụng
+            </span>
         }
     </div>
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-4">Nhóm khách hàng</dt>
-            <dd class="col-sm-8">
-                <span class="badge bg-secondary me-1">@Model.GroupCode</span>@Model.GroupName
+
+    <div class="plp-card-body">
+        <dl class="plp-detail-grid">
+
+            <dt>Nhóm khách hàng</dt>
+            <dd>
+                <span class="plp-code">@Model.GroupCode</span>
+                @Model.GroupName
             </dd>
 
-            <dt class="col-sm-4">Sản phẩm</dt>
-            <dd class="col-sm-8">
-                <span class="badge bg-light text-dark border me-1">@Model.ProductCode</span>@Model.ProductName
+            <dt>Sản phẩm</dt>
+            <dd>
+                <span class="plp-code">@Model.ProductCode</span>
+                @Model.ProductName
             </dd>
 
-            <dt class="col-sm-4">Giá riêng</dt>
-            <dd class="col-sm-8 fw-bold text-primary fs-5">
+            <dt>Giá riêng</dt>
+            <dd class="fw-semibold text-primary">
                 @(Model.Price.HasValue? Model.Price.Value.ToString("N0") + " ₫" : "–")
             </dd>
 
-            <dt class="col-sm-4">Chiết khấu</dt>
-            <dd class="col-sm-8">
+            <dt>Chiết khấu</dt>
+            <dd>
                 @(Model.DiscountRate.HasValue? Model.DiscountRate.Value.ToString("0.##") + "%" : "–")
             </dd>
 
-            <dt class="col-sm-4">Hiệu lực từ</dt>
-            <dd class="col-sm-8">@Model.EffectiveFrom.ToString("dd/MM/yyyy")</dd>
+            <dt>Hiệu lực từ</dt>
+            <dd>@Model.EffectiveFrom.ToString("dd/MM/yyyy")</dd>
 
-            <dt class="col-sm-4">Hiệu lực đến</dt>
-            <dd class="col-sm-8">
-                @(Model.EffectiveTo.HasValue
-                                ? Model.EffectiveTo.Value.ToString("dd/MM/yyyy")
-                                : "Không giới hạn")
-            </dd>
-
-            <dt class="col-sm-4">Trạng thái</dt>
-            <dd class="col-sm-8">
-                @if (Model.IsActive)
+            <dt>Hiệu lực đến</dt>
+            <dd>
+                @if (Model.EffectiveTo.HasValue)
                 {
-                    <span class="badge bg-success">Kích hoạt</span>
+                    @Model.EffectiveTo.Value.ToString("dd/MM/yyyy")
                 }
                 else
                 {
-
-                    <span class="badge bg-secondary">Đã tắt</span>
+                    <span class="text-muted fst-italic">Không giới hạn</span>
                 }
             </dd>
+
+            <dt>Trạng thái</dt>
+            <dd>
+                @if (Model.IsActive)
+                {
+                    <span class="plp-badge plp-badge-success">
+                        <i class="bi bi-check-circle"></i> Kích hoạt
+                    </span>
+                }
+                else
+                {
+                    <span class="plp-badge plp-badge-muted">
+                        <i class="bi bi-slash-circle"></i> Đã tắt
+                    </span>
+                }
+            </dd>
+
         </dl>
-    </div>
-    <div class="card-footer d-flex gap-2">
-        <a asp-action="Edit" asp-route-id="@Model.GroupPriceID" class="btn btn-warning">
-            <i class="bi bi-pencil me-1"></i> Sửa
-        </a>
-        <a asp-action="Delete" asp-route-id="@Model.GroupPriceID" class="btn btn-outline-danger">
-            <i class="bi bi-trash me-1"></i> Xóa
-        </a>
-        <a asp-action="Index" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left me-1"></i> Quay lại
-        </a>
     </div>
 </div>
 
+<!-- ACTIONS -->
+<div class="plp-form-actions" style="max-width: 700px;">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.GroupPriceID"
+           class="btn btn-outline-warning">
+            <i class="bi bi-pencil"></i> Sửa
+        </a>
+
+        <a asp-action="Delete" asp-route-id="@Model.GroupPriceID"
+           class="btn btn-outline-danger">
+            <i class="bi bi-trash"></i> Xóa
+        </a>
+    </div>
+</div>

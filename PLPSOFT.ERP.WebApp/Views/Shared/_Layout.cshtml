@@ -5,108 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PLPSOFT ERP</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PLPSOFT.ERP.WebApp.styles.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/PLPSOFT.ERP.WebApp.styles.css" asp-append-version="true" /> *@
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/plp-system.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
-                    PLPSOFT ERP
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarMain" aria-controls="navbarMain"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="plp-body">
+    <!-- ═══════════════════════════════════════════
+         SIDEBAR
+    ═══════════════════════════════════════════ -->
+    <aside class="plp-sidebar" id="plpSidebar">
 
-                <div class="collapse navbar-collapse" id="navbarMain">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Brand -->
+        <div class="plp-brand">
+            <div class="plp-brand-logo">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+            </div>
+            <div class="plp-brand-text">
+                <span class="plp-brand-name">PLPSOFT</span>
+                <span class="plp-brand-sub">ERP Sales v2026</span>
+            </div>
+        </div>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Trang chủ</a>
-                        </li>
+        <!-- Nav -->
+        <nav class="plp-nav">
 
-                        <!-- Khách hàng -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Khách hàng
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Customers" asp-action="Index">Danh sách khách hàng</a></li>
-                                <li><a class="dropdown-item" asp-controller="CustomerGroups" asp-action="Index">Nhóm khách hàng</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-controller="CustomerGroupProductPrices" asp-action="Index">Giá theo nhóm KH</a></li>
-                            </ul>
-                        </li>
+            <div class="plp-nav-section">Tổng quan</div>
+            <a asp-controller="Home" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
 
-                        <!-- Nhà cung cấp -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Nhà cung cấp
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="SupplierGroupsMVC" asp-action="Index">Nhóm nhà cung cấp</a></li>
-                                <li><a class="dropdown-item" asp-controller="SuppliersMVC" asp-action="Index">Nhà cung cấp</a></li>
-                            </ul>
-                        </li>
+            <div class="plp-nav-section">Khách hàng</div>
+            <a asp-controller="Customers" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Customers" ? "active" : "")">
+                <i class="bi bi-people"></i>
+                <span>Danh sách KH</span>
+            </a>
+            <a asp-controller="CustomerGroupProductPrices" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "CustomerGroupProductPrices" ? "active" : "")">
+                <i class="bi bi-tags"></i>
+                <span>Giá theo nhóm KH</span>
+            </a>
 
-                        <!-- Sản phẩm -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Sản phẩm
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index">Danh sách sản phẩm</a></li>
-                                <li><a class="dropdown-item" asp-controller="ProductCategories" asp-action="Index">Danh mục sản phẩm</a></li>
-                                <li><a class="dropdown-item" asp-controller="ProductUnits" asp-action="Index">Đơn vị tính</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-controller="ProductUnitMapping" asp-action="Index">Quy đổi đơn vị</a></li>
-                            </ul>
-                        </li>
+            <div class="plp-nav-section">Nhà cung cấp</div>
+            <a asp-controller="SupplierGroupsMVC" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "SupplierGroupsMVC" ? "active" : "")">
+                <i class="bi bi-diagram-3"></i>
+                <span>Nhóm NCC</span>
+            </a>
+            <a asp-controller="SuppliersMVC" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "SuppliersMVC" ? "active" : "")">
+                <i class="bi bi-truck"></i>
+                <span>Nhà cung cấp</span>
+            </a>
 
-                        <!-- Định giá -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Định giá
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-controller="TaxRates" asp-action="Index">Thuế suất</a></li>
-                                <li><a class="dropdown-item" asp-controller="ProductPrices" asp-action="Index">Bảng giá sản phẩm</a></li>
-                            </ul>
-                        </li>
+            <div class="plp-nav-section">Sản phẩm</div>
+            <a asp-controller="Product" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product" ? "active" : "")">
+                <i class="bi bi-box-seam"></i>
+                <span>Danh sách SP</span>
+            </a>
+            <a asp-controller="ProductCategories" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ProductCategories" ? "active" : "")">
+                <i class="bi bi-folder2-open"></i>
+                <span>Danh mục SP</span>
+            </a>
+            <a asp-controller="ProductUnits" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ProductUnits" ? "active" : "")">
+                <i class="bi bi-rulers"></i>
+                <span>Đơn vị tính</span>
+            </a>
+            <a asp-controller="ProductUnitMapping" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ProductUnitMapping" ? "active" : "")">
+                <i class="bi bi-arrow-left-right"></i>
+                <span>Quy đổi đơn vị</span>
+            </a>
 
-                    </ul>
-                    <div class="d-flex">
-                        <span class="text-white-50"><i class="fas fa-user-circle"></i> Admin</span>
-                    </div>
+            <div class="plp-nav-section">Định giá</div>
+            <a asp-controller="TaxRates" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "TaxRates" ? "active" : "")">
+                <i class="bi bi-percent"></i>
+                <span>Thuế suất</span>
+            </a>
+            <a asp-controller="ProductPrices" asp-action="Index" class="plp-nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ProductPrices" ? "active" : "")">
+                <i class="bi bi-currency-dollar"></i>
+                <span>Bảng giá SP</span>
+            </a>
+
+        </nav>
+
+        <!-- Sidebar footer -->
+        <div class="plp-sidebar-footer">
+            <div class="plp-user-chip">
+                <div class="plp-user-avatar">A</div>
+                <div class="plp-user-info">
+                    <span class="plp-user-name">Admin</span>
+                    <span class="plp-user-role">Quản trị hệ thống</span>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
 
-    <div class="container-fluid px-4">
-        <main role="main" class="pb-4">
+    </aside>
+
+    <!-- ═══════════════════════════════════════════
+         MAIN CONTENT
+    ═══════════════════════════════════════════ -->
+    <div class="plp-main">
+
+        <!-- Top Bar -->
+        <header class="plp-topbar">
+            <div class="plp-topbar-left">
+                <button class="plp-sidebar-toggle" id="sidebarToggle" title="Thu/mở menu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="plp-breadcrumb-wrap">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a asp-controller="Home" asp-action="Index"><i class="bi bi-house"></i></a>
+                        </li>
+                        @if (ViewData["BreadcrumbParent"] != null)
+                        {
+                            <li class="breadcrumb-item">
+                                <a href="@ViewData["BreadcrumbParentUrl"]">@ViewData["BreadcrumbParent"]</a>
+                            </li>
+                        }
+                        @if (ViewData["Title"] != null)
+                        {
+                            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                        }
+                    </ol>
+                </nav>
+            </div>
+            <div class="plp-topbar-right">
+                <span class="plp-topbar-badge">
+                    <i class="bi bi-database-check"></i>
+                    Module 3 V3
+                </span>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="plp-content">
             @RenderBody()
         </main>
+
+        <!-- Footer -->
+        <footer class="plp-footer">
+            <span>&copy; 2026 PLPSOFT ERP Sales SaaS — Database: <code>PLPSOFT_ERP_SALES_SAAS_V2026</code></span>
+            <a asp-controller="Home" asp-action="Privacy" class="plp-footer-link">Privacy</a>
+        </footer>
+
     </div>
 
-    <footer class="border-top footer text-muted mt-4">
-        <div class="container">
-            &copy; 2026 - PLPSOFT ERP -
-            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!-- Overlay for mobile -->
+    <div class="plp-overlay" id="sidebarOverlay"></div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Sidebar toggle
+        const sidebar   = document.getElementById('plpSidebar');
+        const toggle    = document.getElementById('sidebarToggle');
+        const overlay   = document.getElementById('sidebarOverlay');
+
+        toggle?.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            overlay.classList.toggle('visible');
+        });
+        overlay?.addEventListener('click', () => {
+            sidebar.classList.remove('collapsed');
+            overlay.classList.remove('visible');
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,90 +1,201 @@
 ﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.Supplier
 
-<div class="container mt-4">
-    <h2 class="mb-4"> Thêm nhà cung cấp</h2>
+@{
+    ViewData["Title"] = "Thêm nhà cung cấp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    <form asp-action="Create" method="post" class="card p-4 shadow-sm">
-        <div class="col">
-            <label class="form-label">Công ty</label>
-            <select id="companyDropdown" asp-for="CompanyId" class="form-select" required>
-                <option value="">-- Chọn công ty --</option>
-                @foreach (var item in ViewBag.Companies)
-                {
-                    <option value="@item.CompanyId">@item.CompanyName</option>
-                }
-            </select>
-        </div>
-        <div class="row">
+<div class="page-wrapper">
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Tên</label>
-                <input asp-for="SupplierName" class="form-control" />
-            </div>
+    <!-- HEADER -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-person-plus me-2"></i>
+                Thêm nhà cung cấp
+            </h1>
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Mã số thuế</label>
-                <input asp-for="TaxCode" class="form-control" />
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Loại nhóm</label>
-                <select id="supplierTypeDropdown" asp-for="SupplierTypeId" class="form-select" required>
-                    <option value="">-- Chọn loại nhà cung cấp --</option>
-                    @foreach (var item in ViewBag.SupplietType)
-                    {
-                        <option value="@item.TypeValueId">@item.ValueName</option>
-                    }
-                </select>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Nhóm nhà cung cấp</label>
-                <select id="groupDropdown" asp-for="SupplierGroupId" class="form-select">
-                    <option value="">-- Chọn nhóm --</option>
-                </select>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Phone</label>
-                <input asp-for="Phone" class="form-control" />
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Email</label>
-                <input asp-for="Email" class="form-control" />
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Giới hạn tín dụng</label>
-                <input asp-for="CreditLimit" class="form-control" />
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Số ngày thanh toán</label>
-                <input asp-for="PaymentTermDays" class="form-control" />
+            <div class="page-subtitle">
+                Nhập thông tin nhà cung cấp
             </div>
         </div>
 
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-success"> Lưu</button>
-            <a asp-action="Index" class="btn btn-secondary"> Quay lại</a>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Nhà cung cấp</a></li>
+            <li class="breadcrumb-item active">Thêm mới</li>
+        </ol>
+    </div>
+
+    <!-- FORM -->
+    <div class="card form-card">
+        <div class="card-header">
+            <i class="bi bi-info-circle me-1"></i>
+            Thông tin nhà cung cấp
         </div>
 
-    </form>
-    <script>
-        document.getElementById("companyDropdown").addEventListener("change", function () {
-            var companyId = this.value;
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="form-standard">
 
-            fetch('/SuppliersMVC/GetSupplierGroupsByCompany?companyId=' + companyId)
-                .then(response => response.json())
-                .then(data => {
-                    var groupDropdown = document.getElementById("groupDropdown");
-                    groupDropdown.innerHTML = '<option value="">-- Chọn nhóm --</option>';
+                <!-- VALIDATION -->
+                <div asp-validation-summary="ModelOnly" class="form-error-summary"></div>
 
-                    data.forEach(item => {
-                        groupDropdown.innerHTML += `<option value="${item.supplierGroupId}">${item.groupName}</option>`;
-                    });
-                });
-        });
-    </script>
+                <div class="row g-3">
+
+                    <!-- Công ty -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Công ty</label>
+                            <select id="companyDropdown"
+                                    asp-for="CompanyId"
+                                    class="form-select"
+                                    required>
+                                <option value="">-- Chọn công ty --</option>
+                                @foreach (var item in ViewBag.Companies)
+                                {
+                                    <option value="@item.CompanyId">
+                                        @item.CompanyName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tên -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Tên</label>
+                            <input asp-for="SupplierName"
+                                   class="form-control"
+                                   placeholder="Nhập tên nhà cung cấp..." />
+                            <span asp-validation-for="SupplierName" class="form-error"></span>
+                        </div>
+                    </div>
+
+                    <!-- Mã số thuế -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Mã số thuế</label>
+                            <input asp-for="TaxCode"
+                                   class="form-control"
+                                   placeholder="Nhập mã số thuế..." />
+                        </div>
+                    </div>
+
+                    <!-- Loại nhóm -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Loại nhóm</label>
+                            <select id="supplierTypeDropdown"
+                                    asp-for="SupplierTypeId"
+                                    class="form-select"
+                                    required>
+                                <option value="">-- Chọn loại nhà cung cấp --</option>
+                                @foreach (var item in ViewBag.SupplietType)
+                                {
+                                    <option value="@item.TypeValueId">
+                                        @item.ValueName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Nhóm nhà cung cấp -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Nhóm nhà cung cấp</label>
+                            <select id="groupDropdown"
+                                    asp-for="SupplierGroupId"
+                                    class="form-select">
+                                <option value="">-- Chọn nhóm --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input asp-for="Phone"
+                                   class="form-control"
+                                   placeholder="Nhập số điện thoại..." />
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="example@email.com" />
+                        </div>
+                    </div>
+
+                    <!-- Credit -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Giới hạn tín dụng</label>
+                            <input asp-for="CreditLimit"
+                                   class="form-control"
+                                   placeholder="Nhập số tiền..." />
+                        </div>
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Số ngày thanh toán</label>
+                            <input asp-for="PaymentTermDays"
+                                   class="form-control"
+                                   placeholder="VD: 30" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ACTION -->
+                <div class="form-actions">
+                    <a asp-action="Index" class="btn btn-light">
+                        <i class="bi bi-arrow-left"></i>
+                        Quay lại
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i>
+                        Lưu
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById("companyDropdown")
+            .addEventListener("change", function () {
+
+                var companyId = this.value;
+
+                fetch('/SuppliersMVC/GetSupplierGroupsByCompany?companyId=' + companyId)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        var groupDropdown = document.getElementById("groupDropdown");
+                        groupDropdown.innerHTML = '<option value="">-- Chọn nhóm --</option>';
+
+                        data.forEach(item => {
+                            groupDropdown.innerHTML += `<option value="${item.supplierGroupId}">
+                                ${item.groupName}
+                            </option>`;
+                        });
+                    });
+            });
+    </script>
+}

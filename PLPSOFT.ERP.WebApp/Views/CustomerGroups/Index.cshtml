@@ -4,73 +4,154 @@
     ViewData["Title"] = "Nhóm khách hàng";
 }
 
-<h2>Nhóm khách hàng</h2>
+<!-- PAGE HEADER -->
+<div class="plp-page-header">
+    <h1 class="plp-page-title">
+        <i class="bi bi-diagram-3 text-primary me-2"></i>
+        Nhóm khách hàng
+        <small>Quản lý danh sách nhóm khách hàng</small>
+    </h1>
 
-<form asp-action="Index" method="get" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Tìm theo mã/tên" />
-        <button class="btn btn-outline-secondary" type="submit">Tìm</button>
-        <a asp-action="Create" class="btn btn-primary ms-2">Thêm nhóm</a>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Thêm nhóm
+    </a>
+</div>
+
+<!-- FILTER -->
+<div class="plp-filter-bar">
+    <form asp-action="Index" method="get">
+        <div class="row g-2">
+
+            <div class="col-md-8">
+                <div class="plp-search-group">
+                    <i class="bi bi-search plp-search-icon"></i>
+                    <input type="text"
+                           name="searchString"
+                           value="@ViewData["CurrentFilter"]"
+                           class="form-control plp-search-input"
+                           placeholder="Tìm theo mã/tên..." />
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-fill">
+                    <i class="bi bi-search"></i> Tìm
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<!-- TABLE -->
+<div class="plp-card">
+    <div class="plp-card-header">
+        <h2 class="plp-card-title">
+            <i class="bi bi-table"></i> Danh sách nhóm khách hàng
+        </h2>
     </div>
-</form>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Mã</th>
-            <th>Tên</th>
-            <th>Công ty</th>
-            <th>Mô tả</th>
-            <th>Trạng thái</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var g in Model)
-        {
-            <tr>
-                <td>@g.GroupCode</td>
-                <td>@g.GroupName</td>
-                <td>@g.Company?.CompanyName</td>
-                <td>@g.Description</td>
-                <td>
-                    @if (g.IsActive)
-                    {
-                        <span class="badge bg-success">Active</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">Inactive</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@g.CustomerGroupId" class="btn btn-sm btn-outline-primary">Sửa</a>
-                    
+    <div class="plp-table-wrap">
+        <table class="plp-table">
+            <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th>Công ty</th>
+                    <th>Mô tả</th>
+                    <th class="col-center">Trạng thái</th>
+                    <th class="col-actions">Hành động</th>
+                </tr>
+            </thead>
 
-                    @if (g.IsActive)
-                    {
-                        <form asp-action="Delete" method="post" class="d-inline">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@g.CustomerGroupId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                    onclick="return confirm('Xác nhận ngừng hoạt động?');">
-                                Ngừng
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form asp-action="Restore" method="post" class="d-inline">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@g.CustomerGroupId" />
-                            <button type="submit" class="btn btn-sm btn-outline-success"
-                                    onclick="return confirm('Khôi phục nhóm khách hàng?');">
-                                Khôi phục
-                            </button>
-                        </form>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="plp-empty">
+                                <i class="bi bi-inbox"></i>
+                                <p>Không có dữ liệu</p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+                @foreach (var g in Model)
+                {
+                    <tr class="@(!g.IsActive ? "row-inactive" : "")">
+
+                        <td>
+                            <span class="plp-code">@g.GroupCode</span>
+                        </td>
+
+                        <td>@g.GroupName</td>
+
+                        <td>@g.Company?.CompanyName</td>
+
+                        <td>@g.Description</td>
+
+                        <td class="col-center">
+                            @if (g.IsActive)
+                            {
+                                <span class="plp-badge plp-badge-success">
+                                    <i class="bi bi-check-circle"></i> Hoạt động
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="plp-badge plp-badge-muted">
+                                    <i class="bi bi-slash-circle"></i> Ngừng
+                                </span>
+                            }
+                        </td>
+
+                        <td class="col-actions">
+                            <div class="d-flex justify-content-center gap-1">
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@g.CustomerGroupId"
+                                   class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                                @if (g.IsActive)
+                                {
+                                    <form asp-action="Delete" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@g.CustomerGroupId" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Xác nhận ngừng hoạt động?');">
+                                            <i class="bi bi-power"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-action="Restore" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@g.CustomerGroupId" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-success"
+                                                onclick="return confirm('Khôi phục nhóm khách hàng?');">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </form>
+                                }
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

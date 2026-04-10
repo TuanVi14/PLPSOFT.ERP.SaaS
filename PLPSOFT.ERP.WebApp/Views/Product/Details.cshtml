@@ -1,85 +1,158 @@
 ﻿@model PLPSOFT.ERP.Domain.Entities.MasterData.Product
 
-<div class="container-fluid px-4">
-    <h1 class="mt-4">Chi tiết sản phẩm</h1>
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    string V(object? v) => v == null ? "—" : v.ToString();
+}
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-light fw-bold">
-            <i class="fas fa-info-circle"></i> Thông tin sản phẩm
+<!-- HEADER -->
+<div class="plp-page-header">
+    <h1 class="plp-page-title">
+        <i class="bi bi-box-seam text-primary me-2"></i>
+        @Model.ProductName
+        <small><span class="plp-code">@Model.ProductCode</span></small>
+    </h1>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Quay lại
+    </a>
+</div>
+
+<div class="row g-4">
+
+    <!-- LEFT -->
+    <div class="col-lg-8">
+
+        <!-- BASIC -->
+        <div class="plp-card">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-box-seam"></i> Thông tin cơ bản
+                </h2>
+            </div>
+
+            <div class="plp-card-body">
+                <dl class="plp-detail-grid">
+                    <dt>Mã</dt>
+                    <dd><span class="plp-code">@V(Model.ProductCode)</span></dd>
+
+                    <dt>Tên</dt>
+                    <dd class="fw-semibold">@V(Model.ProductName)</dd>
+
+                    <dt>SKU</dt>
+                    <dd>@V(Model.Sku)</dd>
+
+                    <dt>Barcode</dt>
+                    <dd>@V(Model.Barcode)</dd>
+
+                    <dt>Công ty</dt>
+                    <dd>@V(Model.Company?.CompanyName)</dd>
+
+                    <dt>Danh mục</dt>
+                    <dd>
+                        <span class="plp-badge plp-badge-info">
+                            @V(Model.Category?.CategoryName)
+                        </span>
+                    </dd>
+
+                    <dt>Đơn vị</dt>
+                    <dd>@V(Model.BaseUnit?.UnitName)</dd>
+
+                    <dt>Thuế</dt>
+                    <dd>@V(Model.DefaultTaxRate?.TaxName)</dd>
+                </dl>
+            </div>
         </div>
 
-        <div class="card-body">
-
-            <!-- THÔNG TIN CƠ BẢN -->
-            <h5 class="text-primary">Thông tin cơ bản</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Mã:</strong> @Model.ProductCode</p>
-                    <p><strong>Tên:</strong> @Model.ProductName</p>
-                    <p><strong>SKU:</strong> @Model.Sku</p>
-                    <p><strong>Barcode:</strong> @Model.Barcode</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Công ty:</strong> @Model.Company?.CompanyName</p>
-                    <p><strong>Danh mục:</strong> @Model.Category?.CategoryName</p>
-                    <p><strong>Đơn vị:</strong> @Model.BaseUnit?.UnitName</p>
-                    <p><strong>Thuế:</strong> @Model.DefaultTaxRate?.TaxName</p>
-                </div>
+        <!-- PRICE -->
+        <div class="plp-card">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-cash-stack"></i> Giá & Kinh doanh
+                </h2>
             </div>
 
-            <hr />
+            <div class="plp-card-body">
+                <dl class="plp-detail-grid">
+                    <dt>Giá vốn</dt>
+                    <dd>@Model.CostPrice.ToString("N0")</dd>
 
-            <!-- GIÁ -->
-            <h5 class="text-primary">Giá & Kinh doanh</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Giá vốn:</strong> @Model.CostPrice</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Giá bán:</strong> @Model.StandardPrice</p>
-                </div>
+                    <dt>Giá bán</dt>
+                    <dd class="fw-semibold text-primary">
+                        @Model.StandardPrice.ToString("N0")
+                    </dd>
+                </dl>
             </div>
-
-            <hr />
-
-            <!-- KHO -->
-            <h5 class="text-primary">Kho & Vận hành</h5>
-            <div class="row">
-                <div class="col-md-4">
-                    <p><strong>Theo dõi tồn:</strong> @(Model.TrackInventory ? "Có" : "Không")</p>
-                    <p><strong>Cho phép âm kho:</strong> @(Model.AllowBackorder ? "Có" : "Không")</p>
-                </div>
-                <div class="col-md-4">
-                    <p><strong>Min Stock:</strong> @Model.MinStock</p>
-                    <p><strong>Max Stock:</strong> @Model.MaxStock</p>
-                </div>
-                <div class="col-md-4">
-                    <p><strong>Weight:</strong> @Model.Weight</p>
-                    <p><strong>Volume:</strong> @Model.Volume</p>
-                </div>
-            </div>
-
-            <hr />
-
-            <!-- KỸ THUẬT -->
-            <h5 class="text-primary">Kỹ thuật & Bảo hành</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Serial:</strong> @(Model.IsSerialized ? "Có" : "Không")</p>
-                    <p><strong>Lô:</strong> @(Model.IsBatchManaged ? "Có" : "Không")</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Hạn sử dụng:</strong> @(Model.ExpireDateRequired ? "Có" : "Không")</p>
-                    <p><strong>Bảo hành:</strong> @Model.WarrantyMonths tháng</p>
-                </div>
-            </div>
-
-            <div class="mt-3">
-                <a asp-action="Index" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Quay lại
-                </a>
-            </div>
-
         </div>
+
+        <!-- INVENTORY -->
+        <div class="plp-card">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-boxes"></i> Kho & Vận hành
+                </h2>
+            </div>
+
+            <div class="plp-card-body">
+                <dl class="plp-detail-grid">
+
+                    <dt>Theo dõi tồn</dt>
+                    <dd>
+                        <span class="plp-badge @(Model.TrackInventory ? "plp-badge-success" : "plp-badge-muted")">
+                            @(Model.TrackInventory ? "Có" : "Không")
+                        </span>
+                    </dd>
+
+                    <dt>Âm kho</dt>
+                    <dd>
+                        <span class="plp-badge @(Model.AllowBackorder ? "plp-badge-warning" : "plp-badge-muted")">
+                            @(Model.AllowBackorder ? "Cho phép" : "Không")
+                        </span>
+                    </dd>
+
+                    <dt>Min Stock</dt>
+                    <dd>@Model.MinStock</dd>
+
+                    <dt>Max Stock</dt>
+                    <dd>@Model.MaxStock</dd>
+
+                    <dt>Weight</dt>
+                    <dd>@Model.Weight</dd>
+
+                    <dt>Volume</dt>
+                    <dd>@Model.Volume</dd>
+
+                </dl>
+            </div>
+        </div>
+
+        <!-- TECH -->
+        <div class="plp-card">
+            <div class="plp-card-header">
+                <h2 class="plp-card-title">
+                    <i class="bi bi-gear"></i> Kỹ thuật & Bảo hành
+                </h2>
+            </div>
+
+            <div class="plp-card-body">
+                <dl class="plp-detail-grid">
+
+                    <dt>Serial</dt>
+                    <dd>@(Model.IsSerialized ? "Có" : "Không")</dd>
+
+                    <dt>Lô</dt>
+                    <dd>@(Model.IsBatchManaged ? "Có" : "Không")</dd>
+
+                    <dt>Hạn sử dụng</dt>
+                    <dd>@(Model.ExpireDateRequired ? "Có" : "Không")</dd>
+
+                    <dt>Bảo hành</dt>
+                    <dd>@Model.WarrantyMonths tháng</dd>
+
+                </dl>
+            </div>
+        </div>
+
     </div>
+
 </div>

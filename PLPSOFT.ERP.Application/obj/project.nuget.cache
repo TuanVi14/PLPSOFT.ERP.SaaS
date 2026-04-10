@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KDlKRfmqgWQ=",
+  "dgSpecHash": "hiy8SCfFJ9o=",
   "success": true,
-  "projectFilePath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
+  "projectFilePath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MSII\\.nuget\\packages\\mediatr\\14.1.0\\mediatr.14.1.0.nupkg.sha512",
     "C:\\Users\\MSII\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
@@ -20,9 +20,9 @@
       "code": "NU1608",
       "level": "Warning",
       "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 14.1.0 was resolved.",
-      "projectPath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
+      "projectPath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\test\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
+      "filePath": "D:\\test\\ttt\\PLPSOFT.ERP.SaaS\\PLPSOFT.ERP.Application\\PLPSOFT.ERP.Application.csproj",
       "libraryId": "MediatR",
       "targetGraphs": [
         "net9.0"

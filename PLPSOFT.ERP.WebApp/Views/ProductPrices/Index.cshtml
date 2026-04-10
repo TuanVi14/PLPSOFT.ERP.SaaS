@@ -1,150 +1,186 @@
 ﻿@model IEnumerable<PLPSOFT.ERP.Domain.Entities.MasterData.ProductPrice>
 
-<div class="container mt-4">
+@{
+    ViewData["Title"] = "Danh sách bảng giá sản phẩm";
+    var now = DateTime.Now;
+}
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="fw-bold">Danh sách bảng giá sản phẩm</h3>
-        <a asp-action="Create" class="btn btn-primary">
-            + Thêm mới
-        </a>
+<!-- PAGE HEADER -->
+<div class="plp-page-header">
+    <div>
+        <h1 class="plp-page-title">
+            <i class="bi bi-currency-dollar text-primary me-2"></i>
+            Bảng giá sản phẩm
+            <small>Quản lý giá bán theo thời gian</small>
+        </h1>
     </div>
 
-    <form method="get" asp-action="Index" class="mb-3">
-        <div class="input-group">
-            <input type="text"
-                   name="keyword"
-                   class="form-control"
-                   placeholder="Tìm theo sản phẩm, chi nhánh, công ty, giá..."
-                   value="@Context.Request.Query["keyword"]" />
-
-            <button type="submit" class="btn btn-primary">
-                Tìm
-            </button>
-        </div>
-    </form>
-
-    <table class="table table-bordered table-hover align-middle">
-        <thead class="table-dark text-center align-middle">
-            <tr>
-                <th>Sản phẩm</th>
-                <th>Chi nhánh</th>
-                <th>Công ty</th>
-                <th>Giá</th>
-                <th>Hiệu lực từ</th>
-                <th>Hiệu lực đến</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @{
-                var now = DateTime.Now;
-            }
-
-            @foreach (var item in Model)
-            {
-                var effectiveTo = item.EffectiveTo;
-
-             
-                bool isDeleted = effectiveTo.HasValue && effectiveTo.Value <= now;
-
-                bool isActive = !isDeleted;
-
-                <tr class="@(isDeleted ? "table-danger text-muted opacity-75" : "")">
-
-                    <td>@item.Product?.ProductName</td>
-                    <td>@item.Branch?.BranchName</td>
-                    <td>@item.Company?.CompanyName</td>
-
-                    <td class="text-end fw-semibold text-success">
-                        @item.Price.ToString("N0")
-                    </td>
-
-                    <td>@item.EffectiveFrom.ToString("dd/MM/yyyy")</td>
-
-                    <td>
-                        @(item.EffectiveTo.HasValue
-                                            ? item.EffectiveTo.Value.ToString("dd/MM/yyyy")
-                                            : "-")
-                </td>
-
-                    <td class="text-center">
-                    @if (isDeleted)
-                        {
-                            <span class="badge bg-danger">Hết hạn</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-success">Đang hoạt động</span>
-                        }
-                    </td>
-
-                    <td class="text-center">
-                        @if (isDeleted)
-                        {
-                            <button class="btn btn-sm btn-success"
-                                    onclick="restorePrice(@item.PriceId)">
-                                Khôi phục
-                            </button>
-                        }
-                        else
-                        {
-                            <div class="d-flex justify-content-center gap-2">
-                                <a asp-action="Edit"
-                                   asp-route-id="@item.PriceId"
-                                   class="btn btn-sm btn-warning">
-                                    Sửa
-                                </a>
-
-                                <button class="btn btn-sm btn-danger"
-                                        onclick="deletePrice(@item.PriceId)">
-                                    Xóa
-                                </button>
-                            </div>
-                        }
-                    </td>
-
-                </tr>
-            }
-        </tbody>
-    </table>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Thêm mới
+    </a>
 </div>
 
-<script>
-    function deletePrice(id) {
-        if (!confirm("Bạn có chắc muốn xóa không?")) return;
+<!-- FILTER BAR -->
+<div class="plp-filter-bar">
+    <form asp-action="Index" method="get">
+        <div class="row g-2">
+            <div class="col-md-9">
+                <div class="plp-search-group">
+                    <i class="bi bi-search plp-search-icon"></i>
+                    <input type="text"
+                           name="keyword"
+                           class="form-control plp-search-input"
+                           placeholder="Tìm theo sản phẩm, chi nhánh, công ty..."
+                           value="@Context.Request.Query["keyword"]" />
+                </div>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-fill">
+                    <i class="bi bi-search"></i> Tìm
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 
-        fetch('/ProductPrices/Delete', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert("Xóa thất bại");
-            }
-        });
-    }
+<!-- TABLE CARD -->
+<div class="plp-card">
+    <div class="plp-card-header">
+        <h2 class="plp-card-title">
+            <i class="bi bi-table"></i>
+            Danh sách bảng giá
+        </h2>
+    </div>
 
-    function restorePrice(id) {
-        if (!confirm("Bạn có muốn khôi phục không?")) return;
+    <div class="plp-table-wrap">
+        <table class="plp-table">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Chi nhánh</th>
+                    <th>Công ty</th>
+                    <th class="col-num">Giá</th>
+                    <th>Hiệu lực từ</th>
+                    <th>Hiệu lực đến</th>
+                    <th class="col-center">Trạng thái</th>
+                    <th class="col-actions">Thao tác</th>
+                </tr>
+            </thead>
 
-        fetch('/ProductPrices/Restore', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert("Khôi phục thất bại");
-            }
-        });
-    }
-</script>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="8">
+                            <div class="plp-empty">
+                                <i class="bi bi-inbox"></i>
+                                <p>Không có dữ liệu</p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+                @foreach (var item in Model)
+                {
+                    var isExpired = item.EffectiveTo.HasValue && item.EffectiveTo.Value <= now;
+
+                    <tr class="@(isExpired ? "row-inactive" : "")">
+                        <td>@item.Product?.ProductName</td>
+                        <td>@item.Branch?.BranchName</td>
+                        <td class="text-muted">@item.Company?.CompanyName</td>
+
+                        <td class="col-num fw-mono text-success">
+                            @item.Price.ToString("N0")
+                        </td>
+
+                        <td>@item.EffectiveFrom.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @(item.EffectiveTo.HasValue
+                                                    ? item.EffectiveTo.Value.ToString("dd/MM/yyyy")
+                                                    : "-")
+                    </td>
+
+                        <td class="col-center">
+                        @if (isExpired)
+                            {
+                                <span class="plp-badge plp-badge-danger">
+                                    <i class="bi bi-x-circle-fill"></i> Hết hạn
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="plp-badge plp-badge-success">
+                                    <i class="bi bi-check-circle-fill"></i> Đang hoạt động
+                                </span>
+                            }
+                        </td>
+
+                        <td class="col-actions">
+                            <div class="d-flex justify-content-center gap-1">
+                                @if (isExpired)
+                                {
+                                    @* <button type="button"
+                                            class="btn btn-sm btn-outline-success"
+                                            title="Khôi phục"
+                                            onclick="restorePrice(@item.PriceId)">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </button> *@
+                                }
+                                else
+                                {
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.PriceId"
+                                       class="btn btn-sm btn-outline-warning"
+                                       title="Sửa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Ngừng sử dụng"
+                                            onclick="deletePrice(@item.PriceId)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function deletePrice(id) {
+            if (!confirm("Bạn có chắc muốn xóa không?")) return;
+
+            fetch('/ProductPrices/Delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert("Xóa thất bại");
+            });
+        }
+
+        function restorePrice(id) {
+            if (!confirm("Bạn có muốn khôi phục không?")) return;
+
+            fetch('/ProductPrices/Restore', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert("Khôi phục thất bại");
+            });
+        }
+    </script>
+}
